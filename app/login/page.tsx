@@ -5,24 +5,24 @@ export default function LoginPage() {
     <div className="flex flex-col items-center justify-center h-dvh">
       <form className="bg-white p-4 rounded-lg shadow-lg w-96">
         <div className="space-y-4">
-          <label htmlFor="email" className="block">
+          <label htmlFor="email" className="block text-black">
             Email:
             <input
               id="email"
               name="email"
               type="email"
               required
-              className="block w-full px-4 py-2 border-2 border-gray-300 rounded-md focus:bg-yellow-500"
+              className="block w-full px-4 py-2 border-2 border-gray-300 rounded-md text-white"
             />
           </label>
-          <label htmlFor="password" className="block">
+          <label htmlFor="password" className="block text-black">
             Password:
             <input
               id="password"
               name="password"
               type="password"
               required
-              className="block w-full px-4 py-2 border-2 border-gray-300 rounded-md focus:bg-yellow-500"
+              className="block w-full px-4 py-2 border-2 border-gray-300 rounded-md text-white"
             />
           </label>
           <div className="flex justify-center items-center space-x-4">

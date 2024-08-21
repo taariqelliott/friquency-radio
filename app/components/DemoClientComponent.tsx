@@ -28,7 +28,6 @@ export default function DemoClientComponent() {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        border: "1px solid white",
         padding: "1rem",
       }}
     >
