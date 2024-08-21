@@ -3,7 +3,7 @@ import DemoClientComponent from "./components/DemoClientComponent";
 
 export default function Home() {
   return (
-    <main className="flex flex-col items-center justify-center h-svh p-24 mt-4">
+    <main className="flex flex-col items-center justify-center h-dvh p-24 mt-4">
       <DemoClientComponent />
       <form action={logout}>
         <button
