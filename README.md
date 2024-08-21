@@ -1,36 +1,15 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Friquency Radio
 
-## Getting Started
+Welcome to **Friquency Radio** – a cutting-edge platform designed to revolutionize live audio streaming and create interactive listening experiences. Whether you're a DJ looking to host live sessions or a listener eager to tune in and participate, Friquency Radio brings people together through engaging, real-time audio interactions.
 
-First, run the development server:
+## 🚀 What is Friquency Radio?
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+**Friquency Radio** is an interactive audio streaming application that allows DJs to broadcast live sessions to an audience in real-time. Listeners can join rooms, interact with DJs, and enjoy high-quality audio streams. With role-based experiences, Friquency Radio ensures that both DJs and audience members have a tailored and immersive experience.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Key Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Live Audio Streaming**: DJs can broadcast live audio with minimal latency, providing an engaging and real-time listening experience.
+- **Real-Time Interaction**: Audience members can participate in live chats and provide feedback during sessions.
+- **Role-Based Access**: Two distinct roles – DJ (room host) and Audience (regular users) – with customized features and interactions.
+- **Room Management**: DJs can create and manage rooms, allowing listeners to join and engage in the live experience.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
