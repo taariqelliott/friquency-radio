@@ -1,16 +1,15 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
 import "./globals.css";
+import { Roboto_Mono } from "next/font/google";
+import Header from "./components/Header";
 
-import { Roboto_Mono } from 'next/font/google'
- 
 const roboto = Roboto_Mono({
-  weight: '400',
-  subsets: ['latin'],
-  display: 'swap',
-})
+  weight: "400",
+  subsets: ["latin"],
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "fRIQuencyRADIO",
@@ -28,7 +27,10 @@ export default function RootLayout({
         <ColorSchemeScript />
       </head>
       <body className={roboto.className}>
-        <MantineProvider defaultColorScheme="dark">{children}</MantineProvider>
+        <MantineProvider>
+          <Header />
+          {children}
+        </MantineProvider>
       </body>
     </html>
   );

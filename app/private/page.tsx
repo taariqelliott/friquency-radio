@@ -12,14 +12,11 @@ export default async function PrivatePage() {
     redirect("/login");
   }
 
-  let myuuid = uuidv4();
-
   return (
     <div>
       <p>Hello {data.user.email}</p>
       <p>id: {data.user.id}</p>
-      <p>{data.user.created_at}</p>
-      <p>Username: {myuuid}</p>
+      <p>Created at: {data.user.created_at}</p>
     </div>
   );
 }

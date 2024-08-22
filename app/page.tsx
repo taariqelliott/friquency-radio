@@ -1,39 +1,45 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation"; // Import useRouter
+import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import { User } from "@supabase/supabase-js";
 import { logout } from "./logout/actions";
 import { deleteAccount } from "./delete/actions";
 import DemoClientComponent from "./components/DemoClientComponent";
+import Spinner from "./components/Spinner";
 
 export default function Home() {
   const [user, setUser] = useState<User | null>(null);
-  const router = useRouter(); // Initialize router
+
+  const router = useRouter();
 
   useEffect(() => {
-    async function getUser() {
+    async function fetchUser() {
       const supabase = createClient();
       const { data, error } = await supabase.auth.getUser();
       if (error) {
         console.error("Error fetching user:", error);
-        return;
-      }
-      if (data?.user) {
-        setUser(data.user);
       } else {
-        console.log("No user found.");
+        setUser(data.user);
       }
     }
-    getUser();
+    fetchUser();
   }, []);
+
+  if (!user) {
+    return (
+      <div className="flex flex-col items-center justify-center h-dvh">
+        <Spinner />
+      </div>
+    );
+  }
 
   const handleLogout = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
       await logout();
-      router.push("/"); // Redirect to home or another route after logout
+      router.push("/");
     } catch (error) {
       console.error("Error logging out:", error);
     }
@@ -46,7 +52,7 @@ export default function Home() {
     if (user) {
       try {
         await deleteAccount(user.id);
-        router.push("/"); // Redirect to home or another route after account deletion
+        router.push("/");
       } catch (error) {
         console.error("Error deleting account:", error);
       }
@@ -54,9 +60,9 @@ export default function Home() {
   };
 
   return (
-    <main className="flex flex-col items-center justify-center h-dvh p-24 mt-4">
+    <main className="flex flex-col items-center justify-center h-dvh p-24">
       <DemoClientComponent />
-      {user?.is_anonymous ? (
+      {user.is_anonymous ? (
         <form onSubmit={handleDeleteAccount}>
           <button
             className="bg-red-500 text-white hover:bg-red-700 font-bold py-2 px-4 rounded"

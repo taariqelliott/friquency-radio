@@ -8,33 +8,26 @@ export default function DemoClientComponent() {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    async function getUser() {
+    async function fetchUser() {
       const supabase = createClient();
       const { data, error } = await supabase.auth.getUser();
       if (error || !data?.user) {
-        console.log("no user");
+        console.log("No user found");
       } else {
         setUser(data.user);
       }
     }
-    getUser();
+    fetchUser();
   }, []);
-  console.log({ user });
+
+  // console.log({ user });
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "1rem",
-      }}
-    >
+    <div className="flex flex-col items-center justify-center p-4">
       <h1>Client Component</h1>
-      <div>email: {user?.email}</div>
-      <div>id: {user?.id}</div>
-      {user?.role ? <div>role: {user?.role}</div> : <div>not logged in</div>}
+      <div>Email: {user?.email || "Not available"}</div>
+      <div>ID: {user?.id || "Not available"}</div>
+      <div>Role: {user?.role ? user.role : "Not logged in"}</div>
     </div>
   );
 }
