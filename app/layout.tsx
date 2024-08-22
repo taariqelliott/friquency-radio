@@ -1,14 +1,20 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
-import "@mantine/core/styles.css"; // Import Mantine styles
-import "./globals.css"; // Your global styles
+import "@mantine/core/styles.css";
+import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+import { Roboto_Mono } from 'next/font/google'
+ 
+const roboto = Roboto_Mono({
+  weight: '400',
+  subsets: ['latin'],
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
-  title: "My Mantine App",
-  description: "I have followed setup instructions carefully",
+  title: "fRIQuencyRADIO",
+  description: "Live Audio Streaming & Chat",
 };
 
 export default function RootLayout({
@@ -21,7 +27,7 @@ export default function RootLayout({
       <head>
         <ColorSchemeScript />
       </head>
-      <body className={inter.className}>
+      <body className={roboto.className}>
         <MantineProvider defaultColorScheme="dark">{children}</MantineProvider>
       </body>
     </html>
