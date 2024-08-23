@@ -9,7 +9,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        realBlue: "#dc7633",
+        realOrange: "#dc7633",
       },
       backgroundImage: {
         radio: "url('/backgrounds/image.jpg')",

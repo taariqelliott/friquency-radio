@@ -5,7 +5,7 @@ import { createClient } from "@/utils/supabase/server";
 export async function deleteAccount(userId: string) {
   const supabase = createClient();
 
-  // Delete user from Supabase Auth
+  // deletes a user from Supabase Auth
   const { error: authError } = await supabase.auth.admin.deleteUser(userId);
 
   if (authError) {
@@ -13,7 +13,7 @@ export async function deleteAccount(userId: string) {
     throw authError;
   }
 
-  // Delete user from the 'users' table
+  // deletes a user from the 'users' table
   const { error: dbError } = await supabase
     .from("users")
     .delete()

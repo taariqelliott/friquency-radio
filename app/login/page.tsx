@@ -6,18 +6,15 @@ import { createClient } from "@/utils/supabase/client";
 import { User } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
 import { redirect } from "next/navigation";
-import Spinner from "../components/Spinner";
 import "../globals.css";
 
 export default function LoginPage() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const { colorScheme } = useMantineColorScheme();
-
-  // Determine text color based on the theme
   const textColor = colorScheme === "dark" ? "text-black" : "text-black";
   const inputTextColor =
-    colorScheme === "dark" ? "text-realBlue" : "text-black";
+    colorScheme === "dark" ? "text-realOrange" : "text-black";
 
   useEffect(() => {
     async function fetchUser() {
@@ -36,7 +33,7 @@ export default function LoginPage() {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center h-dvh">
-        <Spinner />
+        Loading...
       </div>
     );
   }
@@ -51,7 +48,7 @@ export default function LoginPage() {
       <form className="relative bg-white p-4 rounded-lg shadow-lg w-96">
         <div className="space-y-4">
           <h1
-            className={`text-center [word-spacing:-3px] tracking-tight text-realBlue font-bold text-3xl`}
+            className={`text-center [word-spacing:-3px] tracking-tight text-realOrange font-bold text-3xl`}
           >
             Friquency Radio
           </h1>
@@ -77,19 +74,19 @@ export default function LoginPage() {
           </label>
           <div className="flex justify-center items-center space-x-4">
             <button
-              className="bg-realBlue text-sm [word-spacing:-3px] text-white font-bold py-3 px-4 rounded border-2 border-transparent hover:bg-yellow-500 hover:text-black hover:border-realBlue hover:border-2 transition-all duration-100"
+              className="bg-realOrange text-sm [word-spacing:-3px] text-white font-bold py-3 px-4 rounded border-2 border-transparent hover:bg-yellow-500 hover:text-black hover:border-realOrange hover:border-2 transition-all duration-100"
               formAction={login}
             >
               Log in
             </button>
             <button
-              className="bg-realBlue text-sm [word-spacing:-3px] text-white font-bold py-3 px-4 rounded border-2 border-transparent hover:bg-yellow-500 hover:text-black hover:border-realBlue hover:border-2 transition-all duration-100"
+              className="bg-realOrange text-sm [word-spacing:-3px] text-white font-bold py-3 px-4 rounded border-2 border-transparent hover:bg-yellow-500 hover:text-black hover:border-realOrange hover:border-2 transition-all duration-100"
               formAction={signup}
             >
               Sign up
             </button>
             <button
-              className="bg-realBlue text-sm [word-spacing:-3px] text-white font-bold py-3 px-4 rounded border-2 border-transparent hover:bg-yellow-500 hover:text-black hover:border-realBlue hover:border-2 transition-all duration-100"
+              className="bg-realOrange text-sm [word-spacing:-3px] text-white font-bold py-3 px-4 rounded border-2 border-transparent hover:bg-yellow-500 hover:text-black hover:border-realOrange hover:border-2 transition-all duration-100"
               formAction={anonymousSignIn}
             >
               Anon Sign In

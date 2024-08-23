@@ -7,7 +7,6 @@ import { User } from "@supabase/supabase-js";
 import { logout } from "./logout/actions";
 import { deleteAccount } from "./delete/actions";
 import DemoClientComponent from "./components/DemoClientComponent";
-import Spinner from "./components/Spinner";
 
 export default function Home() {
   const [user, setUser] = useState<User | null>(null);
@@ -26,14 +25,6 @@ export default function Home() {
     }
     fetchUser();
   }, []);
-
-  if (!user) {
-    return (
-      <div className="flex flex-col items-center justify-center h-dvh">
-        <Spinner />
-      </div>
-    );
-  }
 
   const handleLogout = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -62,7 +53,7 @@ export default function Home() {
   return (
     <main className="flex flex-col items-center justify-center h-dvh p-24">
       <DemoClientComponent />
-      {user.is_anonymous ? (
+      {user?.is_anonymous ? (
         <form onSubmit={handleDeleteAccount}>
           <button
             className="bg-red-500 text-white hover:bg-red-700 font-bold py-2 px-4 rounded"
@@ -74,7 +65,7 @@ export default function Home() {
       ) : (
         <form onSubmit={handleLogout}>
           <button
-            className="bg-realBlue text-white hover:bg-yellow-500 hover:text-black font-bold py-2 px-4 rounded"
+            className="bg-realOrange text-white hover:bg-yellow-500 hover:text-black font-bold py-2 px-4 rounded"
             type="submit"
           >
             Logout

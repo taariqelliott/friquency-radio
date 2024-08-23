@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 
 export default function DemoClientComponent() {
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchUser() {
@@ -16,11 +17,18 @@ export default function DemoClientComponent() {
       } else {
         setUser(data.user);
       }
+      setLoading(false);
     }
     fetchUser();
   }, []);
 
-  // console.log({ user });
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center p-4">
+        Loading...
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col items-center justify-center p-4">

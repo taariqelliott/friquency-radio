@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
-import { v4 as uuidv4 } from "uuid";
 
 export default async function PrivatePage() {
   const supabase = createClient();
@@ -13,7 +12,7 @@ export default async function PrivatePage() {
   }
 
   return (
-    <div>
+    <div className="flex flex-col items-center justify-center h-dvh">
       <p>Hello {data.user.email}</p>
       <p>id: {data.user.id}</p>
       <p>Created at: {data.user.created_at}</p>
