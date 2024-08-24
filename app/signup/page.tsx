@@ -4,13 +4,13 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import { User } from "@supabase/supabase-js";
-import { login } from "./actions";
+import { signup } from "./actions";
 import { useMantineColorScheme } from "@mantine/core";
 import "../globals.css";
 import Link from "next/link";
 import { anonymousSignIn } from "../anon/actions";
 
-export default function LoginPage() {
+export default function SignupPage() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
@@ -60,7 +60,7 @@ export default function LoginPage() {
           <h1
             className={`text-center [word-spacing:-3px] tracking-tight text-realOrange font-bold text-3xl`}
           >
-            Login
+            Sign Up
           </h1>
           <label htmlFor="email" className={`block ${textColor}`}>
             email:
@@ -82,20 +82,30 @@ export default function LoginPage() {
               className={`block w-full px-4 py-2 border-2 border-gray-300 font-bold rounded-md ${inputTextColor}`}
             />
           </label>
+          <label htmlFor="username" className={`block ${textColor}`}>
+            username:
+            <input
+              id="username"
+              name="username"
+              type="text"
+              required
+              className={`block w-full px-4 py-2 border-2 border-gray-300 font-bold rounded-md ${inputTextColor}`}
+            />
+          </label>
           <button
             className="bg-realOrange text-center mt-2 text-sm [word-spacing:-3px] text-white font-bold py-2 px-4 rounded border-2 border-transparent hover:bg-yellow-500 hover:text-black hover:border-realOrange hover:border-2 transition-all duration-300"
             type="submit"
-            formAction={login}
+            formAction={signup}
           >
-            login
+            signup
           </button>
         </div>
         <div className="mt-4 flex flex-row items-center text-sm">
           <Link
-            href="/signup"
+            href="/login"
             className="bg-realOrange w-28 text-center text-xs [word-spacing:-3px] text-white font-bold py-1 px-4 ml-2 mr-2 rounded border-2 border-transparent hover:bg-yellow-500 hover:text-black hover:border-realOrange hover:border-2 transition-all duration-300"
           >
-            signup
+            login
           </Link>
           <button
             onClick={async (event) => {

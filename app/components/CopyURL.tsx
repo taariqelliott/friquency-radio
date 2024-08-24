@@ -16,7 +16,7 @@ const ShareButton = () => {
             variant="gradient"
             gradient={{ from: "teal", to: "grape", deg: 90 }}
             onClick={handleCopyURL}
-            style={{ color: "#f472b6" }}
+            style={{ color: "white" }}
           >
             📋 share
           </Button>

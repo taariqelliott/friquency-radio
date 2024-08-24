@@ -1,7 +1,7 @@
-// app/rooms/[id]/page.tsx
 import { createClient } from "@/utils/supabase/server";
 import { notFound } from "next/navigation";
 import CopyURL from "@/app/components/CopyURL";
+import Link from "next/link";
 
 interface Room {
   id: string;
@@ -34,6 +34,9 @@ const RoomPage = async ({ params }: { params: { id: string } }) => {
   return (
     <main className="flex flex-col items-center justify-center h-dvh">
       <div className="flex flex-col items-center justify-center p-6 rounded-lg bg-gray-700">
+        <div className="z-10 hover:text-realOrange text-white transition-all duration-200">
+          <Link href={"/"}>FRIQUENCY RADIO</Link>
+        </div>
         <div className="text-2xl text-blue-500">
           📡 Now listening to Radio Station{" "}
           <span className="text-pink-400 hover:text-pink-600 hover:cursor-pointer">

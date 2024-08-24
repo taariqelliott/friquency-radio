@@ -6,10 +6,9 @@ interface Room {
   name: string;
 }
 
-// ListAllRooms component defined within this file
 const ListAllRooms = ({ rooms }: { rooms: Room[] }) => {
   return (
-    <ul className="flex flex-col space-y-2">
+    <ul className="flex flex-col">
       {rooms.map((room) => (
         <li key={room.id}>
           <Link
