@@ -96,14 +96,12 @@ export default function Home() {
       <div className="">
         <Link
           href="/login"
-          // className="text-blue-500 hover:underline ml-2 mr-2 border p-2 rounded-lg border-2"
           className="bg-realOrange w-28 text-center text-xs [word-spacing:-3px] text-white font-bold py-1 px-4 ml-2 mr-2 rounded border-2 border-transparent hover:bg-yellow-500 hover:text-black hover:border-realOrange hover:border-2 transition-all duration-300"
         >
           login
         </Link>
         <Link
           href="/signup"
-          // className="text-blue-500 hover:underline ml-2 mr-2 border p-2 rounded-lg border-2"
           className="bg-realOrange w-28 text-center text-xs [word-spacing:-3px] text-white font-bold py-1 px-4 ml-2 mr-2 rounded border-2 border-transparent hover:bg-yellow-500 hover:text-black hover:border-realOrange hover:border-2 transition-all duration-300"
         >
           signup
@@ -118,7 +116,6 @@ export default function Home() {
               console.error("Error during anonymous sign-in", error);
             }
           }}
-          // className="text-blue-500 hover:underline ml-2 mr-2 border p-2 rounded-lg border-2"
           className="bg-realOrange w-28  text-xs [word-spacing:-3px] text-white font-bold py-1 px-4 ml-2 mr-2 rounded border-2 border-transparent hover:bg-yellow-500 hover:text-black hover:border-realOrange hover:border-2 transition-all duration-300"
         >
           quick jam

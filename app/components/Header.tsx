@@ -22,7 +22,7 @@ export default function Header() {
               variant="gradient"
               gradient={{ from: "purple", to: "#dc7633", deg: 90 }}
               onClick={button.onClick}
-              className="w-20 hover:opacity-50"
+              className="w-20 hover:opacity-40 transition:all duration-300"
             >
               {button.label}
             </Button>
