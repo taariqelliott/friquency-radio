@@ -1,13 +1,14 @@
 "use client";
 
 import { createClient } from "@/utils/supabase/client";
+import { Button } from "@mantine/core";
 import { useEffect, useState } from "react";
 
 type Profile = {
   username: string | null;
 };
 
-export default function Profile() {
+export default function ProfileEditPage() {
   const [user, setUser] = useState<{ id: string; email: string } | null>(null);
   const [profile, setProfile] = useState<Profile>({ username: null });
   const [username, setUsername] = useState<string>("");
@@ -82,22 +83,33 @@ export default function Profile() {
         alignItems: "center",
         justifyContent: "center",
         padding: "1rem",
+        height: "100vh",
       }}
     >
-      <h1>Profile</h1>
+      <h1>Profil Edit Page</h1>
       <div>Email: {user?.email}</div>
       <div>ID: {user?.id}</div>
       <div>Username: {profile.username || "No username set"}</div>
       <input
         type="text"
-        placeholder="Enter new username"
+        placeholder="enter new username"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
-        style={{ margin: "1rem 0", padding: "0.5rem", fontSize: "1rem" }}
+        style={{
+          margin: "1rem 0",
+          padding: "0.5rem",
+          fontSize: "1rem",
+          textAlign: "center",
+        }}
       />
-      <button onClick={updateUsername} style={{ padding: "0.5rem 1rem" }}>
+      <Button
+        variant="outline"
+        color="lime"
+        onClick={updateUsername}
+        style={{ padding: "0.5rem 1rem" }}
+      >
         Update Username
-      </button>
+      </Button>
     </div>
   );
 }

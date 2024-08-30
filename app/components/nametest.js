@@ -1,5 +1,5 @@
-export default function randomUserNames() {
-  const musicNames = [
+
+const musicNames = [
     "synth",
     "guitar",
     "drummer",
@@ -197,9 +197,9 @@ export default function randomUserNames() {
     "tone",
     "vocaloid",
     "waveSynth",
-  ];
+];
 
-  const musicNames2 = [
+const musicNames2 = [
     "player",
     "artist",
     "creator",
@@ -367,9 +367,9 @@ export default function randomUserNames() {
     "innovator",
     "strategist",
     "champion",
-  ];
+];
 
-  function getRandomUserName() {
+function getRandomUserName() {
     let randomIndex1 = Math.floor(Math.random() * musicNames.length);
     let randomIndex2 = Math.floor(Math.random() * musicNames2.length);
 
@@ -377,18 +377,20 @@ export default function randomUserNames() {
     let randomNumber = Math.floor(Math.random() * 9999) + 1;
 
     // Pad the number with leading zeros to ensure 1-4 digits
-    let paddedNumber = randomNumber
-      .toString()
-      .padStart(Math.floor(Math.random() * 5) + 1, "0");
+    let paddedNumber = randomNumber.toString().padStart(Math.floor(Math.random() * 5) + 1, '0');
 
     return (
-      musicNames[randomIndex1] +
-      "_" +
-      musicNames2[randomIndex2] +
-      "_" +
-      paddedNumber
+        musicNames[randomIndex1] +
+        "_" +
+        musicNames2[randomIndex2] +
+        "_" +
+        paddedNumber
     );
-  }
-
-  return getRandomUserName();
 }
+
+for (let i = 0; i < 100000; i++) {
+    console.log(getRandomUserName());
+}
+
+return getRandomUserName();
+
