@@ -372,15 +372,10 @@ export default function randomUserNames() {
   function getRandomUserName() {
     let randomIndex1 = Math.floor(Math.random() * musicNames.length);
     let randomIndex2 = Math.floor(Math.random() * musicNames2.length);
-
-    // Generate a random number between 1 and 9999
     let randomNumber = Math.floor(Math.random() * 9999) + 1;
-
-    // Pad the number with leading zeros to ensure 1-4 digits
     let paddedNumber = randomNumber
       .toString()
       .padStart(Math.floor(Math.random() * 5) + 1, "0");
-
     return (
       musicNames[randomIndex1] +
       "_" +
@@ -389,6 +384,5 @@ export default function randomUserNames() {
       paddedNumber
     );
   }
-
   return getRandomUserName();
 }
