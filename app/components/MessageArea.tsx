@@ -108,7 +108,7 @@ const MessagesPage = ({ room_id, user }: { room_id: string; user: User }) => {
   }
 
   return (
-    <main className="flex flex-col items-center justify-center h-dvh p-24">
+    <main className="flex flex-col items-center justify-center p-4">
       <h1 className="text-2xl font-bold mb-4">All Messages</h1>
       <MessageArea messages={messages} room_id={room_id} user={user} />
     </main>
