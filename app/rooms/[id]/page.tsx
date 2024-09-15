@@ -2,6 +2,7 @@ import { createClient } from "@/utils/supabase/server";
 import { notFound } from "next/navigation";
 import CopyURL from "@/app/components/CopyURL";
 import Link from "next/link";
+import MessagesPage from "@/app/components/MessageArea";
 
 interface Room {
   id: string;
@@ -14,7 +15,6 @@ const RoomPage = async ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const supabase = createClient();
 
-  // Fetch the room data based on the ID
   const { data: room, error } = await supabase
     .from("rooms")
     .select("*")
@@ -51,6 +51,7 @@ const RoomPage = async ({ params }: { params: { id: string } }) => {
         <p className="text-green-500">Created by: {user.username}</p>
         <p className="text-yellow-300">Created at: {room.created_at}</p>
       </div>
+      <MessagesPage room_id={id} user={user} />
     </main>
   );
 };
