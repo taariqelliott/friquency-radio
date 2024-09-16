@@ -104,7 +104,7 @@ export default function ProfileEditPage() {
       />
       <Button
         variant="outline"
-        color="lime"
+        color="green"
         onClick={updateUsername}
         style={{ padding: "0.5rem 1rem" }}
       >
