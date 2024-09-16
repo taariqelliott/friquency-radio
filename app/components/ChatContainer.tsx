@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
 import ChatMessages from "./MessageList";
 import ChatInput from "./MessageInput";
+import Link from "next/link";
 
 interface User {
   id: string;
@@ -37,6 +38,18 @@ const ChatContainer = ({ id }: ChatContainerProps) => {
       <div className="flex-grow overflow-auto mb-4">
         <ChatMessages room_id={id} user={user} />
       </div>
+      {!user && (
+        <div className="bg-black text-center text-green-500 p-2 border border-gray-600 font-bold rounded-md">
+          <Link href="/login" className="hover:underline hover:text-pink-400">
+            Login
+          </Link>
+          {" or "}
+          <Link href="/signup" className="hover:underline hover:text-pink-400">
+            Sign Up
+          </Link>
+          {" to chat!"}
+        </div>
+      )}
       {user && (
         <div className="mt-auto">
           <ChatInput room_id={id} user_id={user.id} />
