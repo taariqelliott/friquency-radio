@@ -37,7 +37,6 @@ export default async function Home() {
       <h1 className="text-4xl font-bold mb-8">Friquency Radio 📡</h1>
       <div className="flex">
         {" "}
-        {/* Added flex class to align buttons in a row */}
         <Link
           href="/login"
           className="bg-realOrange w-28 text-center text-xs [word-spacing:-3px] text-white font-bold py-1 px-4 ml-2 mr-2 rounded border-2 border-transparent hover:bg-yellow-500 hover:text-black hover:border-realOrange hover:border-2 transition-all duration-300"

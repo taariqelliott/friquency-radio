@@ -30,7 +30,7 @@ export const handleDeleteAccount = async () => {
     try {
       await deleteAccount(user.user.id);
       revalidatePath("/", "page");
-      window.location.reload(); // Refresh the page to rerender
+      window.location.reload();
     } catch (error) {
       console.error("Error deleting account:", error);
     }

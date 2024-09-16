@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { createClient } from "@/utils/supabase/client";
+import Spinner from "./Spinner";
 
 interface Message {
   message_id: string;
@@ -22,7 +23,7 @@ const MessageList = ({
   user,
 }: {
   messages: Message[];
-  user: User;
+  user: User | null;
 }) => {
   const endOfMessagesRef = useRef<HTMLDivElement>(null);
 
@@ -39,27 +40,32 @@ const MessageList = ({
         <li
           key={message.message_id}
           className={`flex ${
-            message.user_id === user.id ? "justify-end" : "justify-start"
+            message.user_id === user?.id ? "justify-end" : "justify-start"
           } mb-4`}
         >
           <div
             className={`bg-black border border-gray-600 rounded-lg p-3 w-full sm:w-3/4 md:w-1/2 ${
-              message.user_id === user.id ? "bg-gray-800" : "bg-black"
+              message.user_id === user?.id ? "bg-gray-800" : "bg-black"
             } break-words`}
           >
             <div className="flex items-center justify-between mb-2">
               <strong
                 className={`text-sm ${
-                  message.user_id === user.id
+                  message.user_id === user?.id
                     ? "text-pink-400"
                     : "text-green-600"
                 }`}
               >
-                {"@" + message.username || "Unknown"}
+                {message.user_id === user?.id ? (
+                  <span className="text-green-600">@</span>
+                ) : (
+                  <span className="text-pink-400">@</span>
+                )}
+                {message.username || "Unknown"}
               </strong>
               <span
                 className={`text-xs  ${
-                  message.user_id === user.id
+                  message.user_id === user?.id
                     ? "text-pink-400"
                     : "text-green-600"
                 }`}
@@ -76,7 +82,13 @@ const MessageList = ({
   );
 };
 
-const ChatMessages = ({ room_id, user }: { room_id: string; user: User }) => {
+const ChatMessages = ({
+  room_id,
+  user,
+}: {
+  room_id: string;
+  user: User | null;
+}) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [fetchError, setFetchError] = useState<string | null>(null);
 
@@ -149,8 +161,16 @@ const ChatMessages = ({ room_id, user }: { room_id: string; user: User }) => {
     return <div>{fetchError}</div>;
   }
 
+  if (!messages.length) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <Spinner />
+      </div>
+    );
+  }
+
   return (
-    <main className="flex flex-col-reverse items-center  p-4 h-full">
+    <main className="flex flex-col-reverse items-center p-4 h-full">
       <MessageList messages={messages} user={user} />
     </main>
   );

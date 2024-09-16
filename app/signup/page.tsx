@@ -49,7 +49,6 @@ export default function SignupPage() {
 
   return (
     <div className="flex flex-col items-center justify-center h-dvh">
-      {/* <div className="absolute inset-0 bg-radio bg-cover bg-center blur-lg z-0 scale-110"></div> */}
       <div className="z-10 hover:text-realOrange transition-all duration-200">
         <Link href={"/"}>FRIQUENCY RADIO</Link>
       </div>
@@ -109,7 +108,7 @@ export default function SignupPage() {
           </Link>
           <button
             onClick={async (event) => {
-              event.preventDefault(); // Prevent form submission
+              event.preventDefault();
               try {
                 await anonymousSignIn();
                 router.push("/");

@@ -17,7 +17,6 @@ export default function DemoClientComponent() {
     async function fetchUser() {
       const supabase = createClient();
 
-      // Get user authentication data
       const { data: authData, error: authError } =
         await supabase.auth.getUser();
       if (authError || !authData?.user) {
@@ -28,7 +27,6 @@ export default function DemoClientComponent() {
 
       setUser(authData.user);
 
-      // Fetch the user's profile data
       const { data: profileData, error: profileError } = await supabase
         .from("users")
         .select("username")

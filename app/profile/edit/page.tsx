@@ -18,7 +18,6 @@ export default function ProfileEditPage() {
     async function getUserData() {
       const supabase = createClient();
 
-      // Get user authentication data
       const { data: authData, error: authError } =
         await supabase.auth.getUser();
       if (authError || !authData?.user) {
@@ -32,7 +31,6 @@ export default function ProfileEditPage() {
         email: authData.user.email!,
       });
 
-      // Fetch the user's profile data (including username)
       const { data: profileData, error: profileError } = await supabase
         .from("users")
         .select("username")
@@ -65,7 +63,7 @@ export default function ProfileEditPage() {
       console.error("Error updating username:", error.message);
     } else {
       setProfile((prev) => ({ ...prev, username }));
-      setUsername(""); // Clear the input field after update
+      setUsername("");
     }
 
     setLoading(false);

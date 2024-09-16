@@ -14,13 +14,7 @@ const ChatInput = ({
   user_id: string;
 }) => {
   const supabase = createClient();
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-    setFocus,
-  } = useForm<ChatInputForm>();
+  const { register, handleSubmit, reset } = useForm<ChatInputForm>();
 
   const onSubmit = async (data: ChatInputForm) => {
     try {

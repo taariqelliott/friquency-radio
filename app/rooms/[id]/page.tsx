@@ -4,20 +4,10 @@ import CopyURL from "@/app/components/CopyURL";
 import Link from "next/link";
 import ChatContainer from "@/app/components/ChatContainer";
 
-interface Room {
-  id: string;
-  name: string;
-}
-
-interface User {
-  username: string;
-}
-
 const RoomPage = async ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const supabase = createClient();
 
-  // Fetch room details
   const { data: room, error } = await supabase
     .from("rooms")
     .select("id, name, created_by")
@@ -56,7 +46,7 @@ const RoomPage = async ({ params }: { params: { id: string } }) => {
           <CopyURL />
         </div>
         <p className="text-green-500">
-          Created by: <span className="font-bold">{"@" + user?.username || "Unknown"}</span>
+          Created by: <span className="font-bold">{"@" + user?.username}</span>
         </p>
       </div>
       <ChatContainer id={id} />

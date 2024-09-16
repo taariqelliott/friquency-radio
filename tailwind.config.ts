@@ -12,9 +12,6 @@ const config: Config = {
         realOrange: "#dc7633",
         darkGray: "#242424",
       },
-      backgroundImage: {
-        radio: "url('/backgrounds/image.jpg')",
-      },
     },
   },
   plugins: [],
