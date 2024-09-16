@@ -1,7 +1,6 @@
 import { createClient } from "@/utils/supabase/client";
 import { Input } from "@mantine/core";
 import { useForm } from "react-hook-form";
-import { Alert } from "@mantine/core";
 
 interface ChatInputForm {
   message_text: string;
