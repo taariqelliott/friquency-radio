@@ -36,7 +36,7 @@ const RoomPage = async ({ params }: { params: { id: string } }) => {
           <Link href="/">FRIQUENCY RADIO</Link>
         </div>
         <div className="text-2xl text-blue-500">
-          📡 Now listening to Radio Station{" "}
+          📡{" "}
           <span className="text-pink-400 hover:text-pink-600 cursor-pointer">
             {room.name}
           </span>{" "}

@@ -10,6 +10,8 @@ export default function Header() {
     { label: "dark", onClick: () => setColorScheme("dark") },
     { label: "auto", onClick: () => setColorScheme("auto") },
     { label: "clear", onClick: clearColorScheme },
+    { label: "home", onClick: () => (window.location.href = "/") },
+    { label: "rooms", onClick: () => (window.location.href = "/rooms/all") },
   ];
 
   return (

@@ -161,13 +161,13 @@ const ChatMessages = ({
     return <div>{fetchError}</div>;
   }
 
-  if (!messages.length) {
-    return (
-      <div className="flex items-center justify-center h-full">
-        <Spinner />
-      </div>
-    );
-  }
+  // if (!messages.length) {
+  //   return (
+  //     <div className="flex items-center justify-center h-full">
+  //       <Spinner />
+  //     </div>
+  //   );
+  // }
 
   return (
     <main className="flex flex-col-reverse items-center p-4 h-full">
