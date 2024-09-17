@@ -55,6 +55,17 @@ const ListAllRooms = () => {
     return <div>Error: {error.message}</div>;
   }
 
+  if (rooms.length === 0) {
+    return (
+      <div className="flex flex-col justify-center items-center">
+        <div className="text-pink-500 text-2xl font-bold">No Rooms Found</div>
+        <h6 className="text-green-500 text-sm font-bold cursor-pointer hover:text-green-300">
+          Create a new room
+        </h6>
+      </div>
+    );
+  }
+
   return (
     <ul className="flex flex-col justify-center items-center">
       {rooms
@@ -63,7 +74,7 @@ const ListAllRooms = () => {
           <li key={room.id}>
             <Link
               href={`/rooms/${room.id}`}
-              className="text-blue-600 hover:underline hover:text-pink-500"
+              className="text-blue-600 hover:underline hover:text-pink-500 text-2xl"
             >
               {room.name}
             </Link>
