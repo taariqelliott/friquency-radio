@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import { createClient } from "@/utils/supabase/client";
-import Spinner from "./Spinner";
 
 interface Message {
   message_id: string;
@@ -160,14 +159,6 @@ const ChatMessages = ({
   if (fetchError) {
     return <div>{fetchError}</div>;
   }
-
-  // if (!messages.length) {
-  //   return (
-  //     <div className="flex items-center justify-center h-full">
-  //       <Spinner />
-  //     </div>
-  //   );
-  // }
 
   return (
     <main className="flex flex-col-reverse items-center p-4 h-full">
