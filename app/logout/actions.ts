@@ -10,8 +10,8 @@ export async function logout() {
 
   if (error) {
     redirect("/error");
+  } else {
+    revalidatePath("/", "layout");
+    redirect("/?auth=" + Date.now());
   }
-
-  revalidatePath("/", "layout");
-  redirect("/");
 }

@@ -47,7 +47,7 @@ export default function DemoClientComponent() {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center p-4">
+      <div className="flex flex-col items-center font-bold text-2xl text-pink-500 justify-center p-4">
         Loading...
       </div>
     );

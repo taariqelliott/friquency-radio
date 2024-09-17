@@ -22,7 +22,7 @@ export default async function Home() {
         ) : (
           <form action={handleLogout}>
             <button
-              className="bg-realOrange text-white hover:bg-yellow-500 hover:text-black font-bold py-2 px-4 rounded"
+              className="bg-realGreen text-white hover:bg-pink-500 hover:text-black font-bold py-2 px-4 rounded"
               type="submit"
             >
               Logout
@@ -35,18 +35,17 @@ export default async function Home() {
   return (
     <main className="flex flex-col items-center justify-center h-dvh p-24">
       <h1 className="text-4xl font-bold mb-8">Friquency Radio 📡</h1>
-      <Link href="/rooms/all" className="pb-2 m-0">Rooms</Link>
       <div className="flex">
         {" "}
         <Link
           href="/login"
-          className="bg-realOrange w-28 text-center text-xs [word-spacing:-3px] text-white font-bold py-1 px-4 ml-2 mr-2 rounded border-2 border-transparent hover:bg-yellow-500 hover:text-black hover:border-realOrange hover:border-2 transition-all duration-300"
+          className="bg-realGreen w-28 text-center text-xs [word-spacing:-3px] text-white font-bold py-1 px-4 ml-2 mr-2 rounded border-2 border-transparent hover:bg-pink-500 hover:text-black hover:border-realGreen hover:border-2 transition-all duration-300"
         >
           login
         </Link>
         <Link
           href="/signup"
-          className="bg-realOrange w-28 text-center text-xs [word-spacing:-3px] text-white font-bold py-1 px-4 ml-2 mr-2 rounded border-2 border-transparent hover:bg-yellow-500 hover:text-black hover:border-realOrange hover:border-2 transition-all duration-300"
+          className="bg-realGreen w-28 text-center text-xs [word-spacing:-3px] text-white font-bold py-1 px-4 ml-2 mr-2 rounded border-2 border-transparent hover:bg-pink-500 hover:text-black hover:border-realGreen hover:border-2 transition-all duration-300"
         >
           signup
         </Link>
@@ -60,7 +59,7 @@ export default async function Home() {
             }
           }}
         >
-          <button className="bg-realOrange w-28 text-xs [word-spacing:-3px] text-white font-bold py-1 px-4 ml-2 mr-2 rounded border-2 border-transparent hover:bg-yellow-500 hover:text-black hover:border-realOrange hover:border-2 transition-all duration-300">
+          <button className="bg-realGreen w-28 text-xs [word-spacing:-3px] text-white font-bold py-1 px-4 ml-2 mr-2 rounded border-2 border-transparent hover:bg-pink-500 hover:text-black hover:border-realGreen hover:border-2 transition-all duration-300">
             quick jam
           </button>
         </form>

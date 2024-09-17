@@ -32,22 +32,22 @@ const RoomPage = async ({ params }: { params: { id: string } }) => {
   return (
     <main className="flex flex-col items-center justify-center h-dvh pt-4">
       <div className="flex flex-col text-center text-pretty items-center justify-center p-4 rounded-lg bg-gray-700">
-        <div className="z-10 hover:text-realOrange text-white transition-all duration-200">
+        <div className="z-10 hover:text-realGreen text-white transition-all duration-200">
           <Link href="/">FRIQUENCY RADIO</Link>
         </div>
         <div className="text-2xl text-blue-500">
           📡{" "}
-          <span className="text-pink-400 hover:text-pink-600 cursor-pointer">
+          <span className="text-pink-400 hover:text-pink-600 cursor-pointer transition-all duration-200">
             {room.name}
           </span>{" "}
           📡
         </div>
+        <p className="text-green-500 text-sm">
+          Curated by: <span className="font-bold">{"@" + user?.username}</span>
+        </p>
         <div className="p-2 hover:opacity-75">
           <CopyURL />
         </div>
-        <p className="text-green-500">
-          Created by: <span className="font-bold">{"@" + user?.username}</span>
-        </p>
       </div>
       <ChatContainer id={id} />
     </main>

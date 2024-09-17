@@ -40,20 +40,17 @@ const ChatContainer = ({ id }: ChatContainerProps) => {
   return (
     <div className="flex flex-col w-[97%] max-w-screen-lg h-[100%] overflow-auto border border-gray-600 rounded-lg p-3 mb-3 mt-3 mx-auto">
       {loading ? (
-        // Center the loading spinner/message both vertically and horizontally
         <div className="flex justify-center items-center h-full">
-          <div className="text-center m-5 text-pink-400 font-bold">
+          <div className="text-center m-5 text-pink-500 text-2xl font-bold">
             loading chat...
           </div>
         </div>
       ) : (
         <>
-          {/* Chat messages container */}
           <div className="flex-grow overflow-auto mb-4">
             <ChatMessages room_id={id} user={user} />
           </div>
 
-          {/* Conditionally render input or login prompt */}
           <div className="mt-auto">
             {!user ? (
               <div className="bg-black text-center text-green-500 p-2 border border-gray-600 font-bold rounded-md">

@@ -14,11 +14,11 @@ const ShareButton = () => {
         <span>
           <Button
             variant="gradient"
-            gradient={{ from: "teal", to: "grape", deg: 90 }}
+            gradient={{ from: "#ec4899", to: "", deg: 90 }}
             onClick={handleCopyURL}
             style={{ color: "white" }}
           >
-            📋 share
+            📋 Share
           </Button>
         </span>
       </Popover.Target>

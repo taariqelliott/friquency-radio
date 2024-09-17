@@ -15,9 +15,9 @@ export default function ProfileEditPage() {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    async function getUserData() {
-      const supabase = createClient();
+    const supabase = createClient();
 
+    async function getUserData() {
       const { data: authData, error: authError } =
         await supabase.auth.getUser();
       if (authError || !authData?.user) {
@@ -26,15 +26,16 @@ export default function ProfileEditPage() {
         return;
       }
 
+      const userId = authData.user.id;
       setUser({
-        id: authData.user.id,
+        id: userId,
         email: authData.user.email!,
       });
 
       const { data: profileData, error: profileError } = await supabase
         .from("users")
         .select("username")
-        .eq("id", authData.user.id)
+        .eq("id", userId)
         .single();
 
       if (profileError) {
@@ -49,11 +50,12 @@ export default function ProfileEditPage() {
   }, []);
 
   const updateUsername = async () => {
-    if (!user || !username) return;
+    if (!user || !username) {
+      return;
+    }
 
     setLoading(true);
     const supabase = createClient();
-
     const { error } = await supabase
       .from("users")
       .update({ username })
@@ -62,15 +64,19 @@ export default function ProfileEditPage() {
     if (error) {
       console.error("Error updating username:", error.message);
     } else {
-      setProfile((prev) => ({ ...prev, username }));
       setUsername("");
+      setProfile({ username });
     }
 
     setLoading(false);
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex justify-center text-2xl text-pink-500 font-bold items-center h-dvh">
+        Loading...
+      </div>
+    );
   }
 
   return (
@@ -84,27 +90,28 @@ export default function ProfileEditPage() {
         height: "100vh",
       }}
     >
-      <h1>Profil Edit Page</h1>
-      <div>Email: {user?.email}</div>
-      <div>ID: {user?.id}</div>
+      <h1>Profile Edit Page</h1>
+      {user?.email && <div>Email: {user?.email}</div>}
       <div>Username: {profile.username || "No username set"}</div>
-      <input
-        type="text"
-        placeholder="enter new username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        style={{
-          margin: "1rem 0",
-          padding: "0.5rem",
-          fontSize: "1rem",
-          textAlign: "center",
-        }}
-      />
+      <form action="submit" onSubmit={updateUsername}>
+        <input
+          type="text"
+          placeholder="Enter new username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          style={{
+            margin: "1rem 0",
+            padding: "0.5rem",
+            fontSize: "1rem",
+            textAlign: "center",
+          }}
+        />
+      </form>
       <Button
         variant="outline"
         color="green"
-        onClick={updateUsername}
         style={{ padding: "0.5rem 1rem" }}
+        onClick={updateUsername}
       >
         Update Username
       </Button>

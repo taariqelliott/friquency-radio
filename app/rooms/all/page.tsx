@@ -48,7 +48,7 @@ const ListAllRooms = () => {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="text-pink-500 text-2xl font-bold">Loading...</div>;
   }
 
   if (error) {
@@ -63,7 +63,7 @@ const ListAllRooms = () => {
           <li key={room.id}>
             <Link
               href={`/rooms/${room.id}`}
-              className="text-blue-600 hover:underline hover:text-yellow-500"
+              className="text-blue-600 hover:underline hover:text-pink-500"
             >
               {room.name}
             </Link>

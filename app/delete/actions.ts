@@ -22,9 +22,6 @@ export async function deleteAccount(userId: string) {
   }
 
   // Delete user from the 'users' table
-  const storedData = profileData?.username;
-  console.log("Username to be deleted:", storedData);
-
   const { error: dbError } = await supabase
     .from("users")
     .delete()
@@ -34,11 +31,4 @@ export async function deleteAccount(userId: string) {
     console.error("Error deleting user from the 'users' table:", dbError);
     throw dbError;
   }
-
-  // Log successful deletion
-  console.log("---------");
-  console.log(
-    `${storedData}` + ` has been successfully deleted!`.toUpperCase()
-  );
-  console.log("---------");
 }
