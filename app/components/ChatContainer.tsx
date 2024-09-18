@@ -47,7 +47,7 @@ const ChatContainer = ({ id }: ChatContainerProps) => {
         </div>
       ) : (
         <>
-          <div className="flex-grow overflow-auto mb-4">
+          <div className="flex-grow overflow-auto ">
             <ChatMessages room_id={id} user={user} />
           </div>
 

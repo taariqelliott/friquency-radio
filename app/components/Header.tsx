@@ -2,7 +2,7 @@
 import { createClient } from "@/utils/supabase/client";
 import { useMantineColorScheme, Button, MantineProvider } from "@mantine/core";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
 
 interface User {
@@ -18,13 +18,13 @@ export default function Header() {
   const buttons = [
     { label: "light", onClick: () => setColorScheme("light") },
     { label: "dark", onClick: () => setColorScheme("dark") },
-    { label: "auto", onClick: () => setColorScheme("auto") },
-    { label: "clear", onClick: clearColorScheme },
     { label: "home", onClick: () => (window.location.href = "/") },
     { label: "rooms", onClick: () => (window.location.href = "/rooms/all") },
+    // { label: "auto", onClick: () => setColorScheme("auto") },
+    // { label: "clear", onClick: clearColorScheme },
   ];
 
-  const fetchUser = async () => {
+  const fetchUser = useCallback(async () => {
     try {
       const {
         data: { user: authUser },
@@ -35,7 +35,9 @@ export default function Header() {
           .select("username")
           .eq("id", authUser.id)
           .single();
-        if (error) throw error;
+        if (error) {
+          throw error;
+        }
         setUser(profile);
       } else {
         setUser(null);
@@ -44,11 +46,13 @@ export default function Header() {
       console.error("Error fetching user:", error);
       setUser(null);
     }
-  };
+  }, [supabase, setUser]);
+  const sessionDepedency = supabase.auth.getSession();
+  const searchDependency = searchParams.get("auth");
 
   useEffect(() => {
     fetchUser();
-  }, [searchParams.get("auth"), supabase.auth.getSession()]);
+  }, [fetchUser, searchDependency, sessionDepedency]);
 
   return (
     <MantineProvider>

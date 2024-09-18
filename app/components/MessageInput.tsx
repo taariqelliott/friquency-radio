@@ -48,7 +48,7 @@ const ChatInput = ({
     >
       <Input
         type="text"
-        className="flex-grow bg-gray-900 text-sm rounded-lg p-1 mr-2 text-gray-200"
+        className="flex-grow bg-gray-900 rounded-lg p-1 mr-2 text-gray-200"
         placeholder="Type your message here"
         {...register("message_text", { required: true })}
       />
