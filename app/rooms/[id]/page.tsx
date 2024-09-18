@@ -51,9 +51,13 @@ const RoomPage = async ({ params }: { params: { id: string } }) => {
         </div>
       </div>
 
-      <div className="flex items-center">
-        <div ><AudioStream /> </div>
-        <ChatContainer id={id} />
+      <div className="flex items-center justify-center mt-4 border border-gray-300 rounded-lg p-4">
+        <div className="flex-1">
+          <AudioStream />{" "}
+        </div>
+        <div className="flex-1 ml-4">
+          <ChatContainer id={id} />
+        </div>
       </div>
     </main>
   );

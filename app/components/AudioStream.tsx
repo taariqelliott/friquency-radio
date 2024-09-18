@@ -37,7 +37,7 @@ const AudioStream = () => {
       role === "Host" ? ZegoUIKitPrebuilt.Host : ZegoUIKitPrebuilt.Audience;
 
     let config: Record<string, boolean> = {};
-    if (role === ZegoUIKitPrebuilt.Host) {
+    if (role === "Host") {
       config = {
         turnOnCameraWhenJoining: false,
         showMyCameraToggleButton: false,
@@ -78,15 +78,9 @@ const AudioStream = () => {
     <div
       id="root"
       style={{
-        width: "500px",
-        height: "500px",
-        display: "flex",
-        justifyContent: "start",
-
+        transform: "scale(0.5)", // Add this line
       }}
-    >
-      {/* The UI Kit will render here */}
-    </div>
+    ></div>
   );
 };
 
