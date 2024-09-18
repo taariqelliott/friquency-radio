@@ -34,7 +34,9 @@ export default async function Home() {
   }
   return (
     <main className="flex flex-col items-center justify-center h-dvh p-24">
-      <h1 className="text-4xl font-bold mb-8">Friquency Radio 📡</h1>
+      <h1 className="text-4xl font-bold mb-8 text-center text-pink-500">
+        Friquency Radio
+      </h1>
       <div className="flex">
         {" "}
         <Link
