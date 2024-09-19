@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import CopyURL from "@/app/components/CopyURL";
 import Link from "next/link";
 import ChatContainer from "@/app/components/ChatContainer";
-import AudioStream from "@/app/components/AudioStream";
 
 const RoomPage = async ({ params }: { params: { id: string } }) => {
   const { id } = params;
@@ -50,15 +49,7 @@ const RoomPage = async ({ params }: { params: { id: string } }) => {
           <CopyURL />
         </div>
       </div>
-
-      <div className="flex items-center justify-center mt-4 border border-gray-300 rounded-lg p-4">
-        <div className="flex-1">
-          <AudioStream />{" "}
-        </div>
-        <div className="flex-1 ml-4">
-          <ChatContainer id={id} />
-        </div>
-      </div>
+      <ChatContainer id={id} />
     </main>
   );
 };
