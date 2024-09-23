@@ -17,23 +17,31 @@ interface User {
 
 const supabase = createClient();
 
-const MessageList = ({
-  messages,
-  user,
-}: {
-  messages: Message[];
-  user: User | null;
-}) => {
+const MessageList = ({ messages, user }: { messages: Message[]; user: User | null }) => {
   const endOfMessagesRef = useRef<HTMLDivElement>(null);
+  const messagesEndRef = useRef<HTMLUListElement>(null);
+  const [isAtBottom, setIsAtBottom] = useState(true);
 
   useEffect(() => {
-    endOfMessagesRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+    if (isAtBottom) {
+      endOfMessagesRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages, isAtBottom]);
+
+  const handleScroll = () => {
+    const messagesEnd = messagesEndRef.current;
+    if (messagesEnd) {
+      const { scrollTop, clientHeight, scrollHeight } = messagesEnd;
+      setIsAtBottom(scrollTop + clientHeight >= scrollHeight - 10);
+    }
+  };
 
   return (
     <ul
       className="flex flex-col overflow-y-auto w-full"
       style={{ maxHeight: "calc(100vh - 200px)" }}
+      onScroll={handleScroll}
+      ref={messagesEndRef}
     >
       {messages.map((message) => (
         <li
@@ -50,9 +58,7 @@ const MessageList = ({
             <div className="flex items-center justify-between mb-2">
               <strong
                 className={`text-sm ${
-                  message.user_id === user?.id
-                    ? "text-pink-400"
-                    : "text-green-600"
+                  message.user_id === user?.id ? "text-pink-400" : "text-green-600"
                 }`}
               >
                 {message.user_id === user?.id ? (
@@ -63,10 +69,8 @@ const MessageList = ({
                 {message.username || "Unknown"}
               </strong>
               <span
-                className={`text-xs  ${
-                  message.user_id === user?.id
-                    ? "text-pink-400"
-                    : "text-green-600"
+                className={`text-xs ${
+                  message.user_id === user?.id ? "text-pink-400" : "text-green-600"
                 }`}
               >
                 {new Date(message.created_at).toLocaleTimeString()}
@@ -81,13 +85,7 @@ const MessageList = ({
   );
 };
 
-const ChatMessages = ({
-  room_id,
-  user,
-}: {
-  room_id: string;
-  user: User | null;
-}) => {
+const ChatMessages = ({ room_id, user }: { room_id: string; user: User | null }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [fetchError, setFetchError] = useState<string | null>(null);
   const [usersMap, setUsersMap] = useState<Map<string, string>>(new Map());
