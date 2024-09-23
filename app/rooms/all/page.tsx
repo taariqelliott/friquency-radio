@@ -3,7 +3,8 @@
 import { createClient } from "@/utils/supabase/client";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { PostgrestError } from "@supabase/supabase-js";
+import { PostgrestError, User } from "@supabase/supabase-js";
+import CreateRoom from "@/app/components/CreateRoom";
 
 interface Room {
   id: string;
@@ -11,6 +12,24 @@ interface Room {
 }
 
 const supabase = createClient();
+const RoomsPage = () => {
+  const [user, setUser] = useState<null | User>(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { data } = await supabase.auth.getUser();
+      setUser(data.user);
+    };
+    fetchUser();
+  }, []);
+
+  return (
+    <main className="flex flex-col items-center justify-center h-dvh p-24">
+      {user && <CreateRoom />}
+      <ListAllRooms />
+    </main>
+  );
+};
 
 const ListAllRooms = () => {
   const [rooms, setRooms] = useState<Room[]>([]);
@@ -59,36 +78,26 @@ const ListAllRooms = () => {
     return (
       <div className="flex flex-col justify-center items-center">
         <div className="text-pink-500 text-2xl font-bold">No Rooms Found</div>
-        <h6 className="text-green-500 text-sm font-bold cursor-pointer hover:text-green-300">
-          Create a new room
-        </h6>
       </div>
     );
   }
 
   return (
-    <ul className="flex flex-col justify-center items-center">
+    <ul className="flex flex-col justify-start items-start text-pretty m-1">
       {rooms
         .sort((a, b) => a.name.localeCompare(b.name))
         .map((room) => (
-          <li key={room.id}>
+          <li key={room.id} className="m-1 p-1">
+            •{" "}
             <Link
               href={`/rooms/${room.id}`}
-              className="text-blue-600 hover:underline hover:text-pink-500 text-2xl"
+              className="text-blue-600 bg-black hover:underline border-l-2 p-1 border-b-2 text-xl rounded-sm border-pink-500 hover:text-green-500"
             >
               {room.name}
             </Link>
           </li>
         ))}
     </ul>
-  );
-};
-
-const RoomsPage = () => {
-  return (
-    <main className="flex flex-col items-center justify-center h-dvh p-24">
-      <ListAllRooms />
-    </main>
   );
 };
 

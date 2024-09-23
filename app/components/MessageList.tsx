@@ -17,7 +17,13 @@ interface User {
 
 const supabase = createClient();
 
-const MessageList = ({ messages, user }: { messages: Message[]; user: User | null }) => {
+const MessageList = ({
+  messages,
+  user,
+}: {
+  messages: Message[];
+  user: User | null;
+}) => {
   const endOfMessagesRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLUListElement>(null);
   const [isAtBottom, setIsAtBottom] = useState(true);
@@ -58,7 +64,9 @@ const MessageList = ({ messages, user }: { messages: Message[]; user: User | nul
             <div className="flex items-center justify-between mb-2">
               <strong
                 className={`text-sm ${
-                  message.user_id === user?.id ? "text-pink-400" : "text-green-600"
+                  message.user_id === user?.id
+                    ? "text-pink-400"
+                    : "text-green-600"
                 }`}
               >
                 {message.user_id === user?.id ? (
@@ -70,7 +78,9 @@ const MessageList = ({ messages, user }: { messages: Message[]; user: User | nul
               </strong>
               <span
                 className={`text-xs ${
-                  message.user_id === user?.id ? "text-pink-400" : "text-green-600"
+                  message.user_id === user?.id
+                    ? "text-pink-400"
+                    : "text-green-600"
                 }`}
               >
                 {new Date(message.created_at).toLocaleTimeString()}
@@ -85,7 +95,13 @@ const MessageList = ({ messages, user }: { messages: Message[]; user: User | nul
   );
 };
 
-const ChatMessages = ({ room_id, user }: { room_id: string; user: User | null }) => {
+const ChatMessages = ({
+  room_id,
+  user,
+}: {
+  room_id: string;
+  user: User | null;
+}) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [fetchError, setFetchError] = useState<string | null>(null);
   const [usersMap, setUsersMap] = useState<Map<string, string>>(new Map());

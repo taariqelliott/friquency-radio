@@ -54,7 +54,7 @@ export default function DemoClientComponent() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center p-4">
+    <div className="flex flex-col items-center justify-center p-4 text-center text-pretty">
       <h1>Client Component</h1>
       <div>Username: {profile.username || "Not set"}</div>
       {(user?.is_anonymous && <div></div>) || <div>Email: {user?.email} </div>}

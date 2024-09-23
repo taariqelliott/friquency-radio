@@ -47,7 +47,9 @@ const RoomPage = async ({ params }: { params: { id: string } }) => {
   return (
     <main className="flex flex-col items-center justify-center h-dvh pt-4">
       {user.username === currentUser?.username && (
-        <h3 className="text-red-600">ROOM OWNER</h3>
+        <h3 className="text-white bg-red-600 p-1 m-1 text-sm rounded-lg border-2 border-black">
+          Start Stream
+        </h3>
       )}
       <div className="flex flex-col text-center text-pretty items-center justify-center p-4 rounded-lg bg-gray-700">
         <div className="z-10 hover:text-realGreen text-white transition-all duration-200">
