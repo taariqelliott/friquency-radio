@@ -83,16 +83,16 @@ const ListAllRooms = () => {
   }
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col justify-start items-start">
       <ul className="flex flex-col text-pretty m-1 overflow-auto">
         {rooms
           .sort((a, b) => a.name.localeCompare(b.name))
           .map((room) => (
-            <li key={room.id} className="m-1 p-1">
-              <span className="text-pink-500">•</span>{" "}
+            <li key={room.id} className="m-2 p-1">
+              <span className="text-pink-500">• </span>
               <Link
                 href={`/rooms/${room.id}`}
-                className="text-blue-600 bg-black hover:underline border-l-2 p-1 border-b-2 rounded-sm border-pink-500 hover:text-green-500"
+                className="text-blue-600 bg-black hover:underline border-l-2 p-1 border-b-2 rounded-sm border-pink-500 text-xl hover:text-green-500"
               >
                 {room.name}
               </Link>
