@@ -19,21 +19,18 @@ const RoomPage = async ({ params }: { params: { id: string } }) => {
     notFound();
   }
 
-  // Fetch current user data
-  const { data: currentUserResponse, error: currentUserError } =
-    await supabase.auth.getUser();
-  if (currentUserError) {
-    console.error("Error fetching current user:", currentUserError);
-    notFound();
-  }
+  // Fetch current user data (optional)
+  const { data: currentUserResponse } = await supabase.auth.getUser();
   const currentUsername = currentUserResponse?.user?.id;
 
-  // Fetch current user's username
-  const { data: currentUser } = await supabase
-    .from("users")
-    .select("username")
-    .eq("id", currentUsername)
-    .single();
+  // Fetch current user's username if logged in
+  const { data: currentUser } = currentUsername
+    ? await supabase
+        .from("users")
+        .select("username")
+        .eq("id", currentUsername)
+        .single()
+    : { data: null };
 
   // Fetch room owner's username
   const { data: user, error: userError } = await supabase
