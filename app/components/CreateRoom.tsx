@@ -3,17 +3,22 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createRoom } from "../rooms/all/actions";
-import { Popover, Button, TextInput, Modal } from "@mantine/core";
+import { TextInput, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 
 export default function CreateRoom() {
   const [opened, { open, close }] = useDisclosure(false);
-
   const [name, setName] = useState("");
   const router = useRouter();
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+
+    if (name.length > 26) {
+      alert("Name is too long!");
+      setName("");
+      return;
+    }
 
     if (!name) {
       alert("Room name is required!");

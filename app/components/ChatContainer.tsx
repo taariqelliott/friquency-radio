@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
-import ChatMessages from "./MessageList";
+import ChatMessages from "./ChatMessages";
 import ChatInput from "./MessageInput";
 import Link from "next/link";
 
@@ -48,7 +48,7 @@ const ChatContainer = ({ id }: ChatContainerProps) => {
       ) : (
         <>
           <div className="flex-grow overflow-auto ">
-            <ChatMessages room_id={id} user={user} />
+            <ChatMessages user={user} room_id={id} />
           </div>
 
           <div className="mt-auto">

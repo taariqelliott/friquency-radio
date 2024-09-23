@@ -1,5 +1,4 @@
-import { useState, useEffect, useRef } from "react";
-import { createClient } from "@/utils/supabase/client";
+import { useEffect, useRef } from "react";
 
 interface Message {
   message_id: string;
@@ -15,8 +14,6 @@ interface User {
   username: string;
 }
 
-const supabase = createClient();
-
 const MessageList = ({
   messages,
   user,
@@ -25,29 +22,15 @@ const MessageList = ({
   user: User | null;
 }) => {
   const endOfMessagesRef = useRef<HTMLDivElement>(null);
-  const messagesEndRef = useRef<HTMLUListElement>(null);
-  const [isAtBottom, setIsAtBottom] = useState(true);
 
   useEffect(() => {
-    if (isAtBottom) {
-      endOfMessagesRef.current?.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [messages, isAtBottom]);
-
-  const handleScroll = () => {
-    const messagesEnd = messagesEndRef.current;
-    if (messagesEnd) {
-      const { scrollTop, clientHeight, scrollHeight } = messagesEnd;
-      setIsAtBottom(scrollTop + clientHeight >= scrollHeight - 10);
-    }
-  };
+    endOfMessagesRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   return (
     <ul
       className="flex flex-col overflow-y-auto w-full"
       style={{ maxHeight: "calc(100vh - 200px)" }}
-      onScroll={handleScroll}
-      ref={messagesEndRef}
     >
       {messages.map((message) => (
         <li
@@ -77,7 +60,7 @@ const MessageList = ({
                 {message.username || "Unknown"}
               </strong>
               <span
-                className={`text-xs ${
+                className={`text-xs  ${
                   message.user_id === user?.id
                     ? "text-pink-400"
                     : "text-green-600"
@@ -95,95 +78,4 @@ const MessageList = ({
   );
 };
 
-const ChatMessages = ({
-  room_id,
-  user,
-}: {
-  room_id: string;
-  user: User | null;
-}) => {
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [fetchError, setFetchError] = useState<string | null>(null);
-  const [usersMap, setUsersMap] = useState<Map<string, string>>(new Map());
-
-  useEffect(() => {
-    const retrieveMessages = async () => {
-      try {
-        const { data: messagesData, error: messagesError } = await supabase
-          .from("chat")
-          .select("*")
-          .eq("room_id", room_id);
-
-        if (messagesError) throw messagesError;
-
-        const { data: usersData, error: usersError } = await supabase
-          .from("users")
-          .select("*");
-
-        if (usersError) throw usersError;
-
-        const userMap = new Map(
-          usersData.map((user) => [user.id, user.username])
-        );
-        setUsersMap(userMap);
-
-        const messagesWithUsernames =
-          messagesData?.map((message) => ({
-            ...message,
-            username: userMap.get(message.user_id),
-          })) ?? [];
-
-        setMessages(messagesWithUsernames);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setFetchError("Error loading messages or users.");
-      }
-    };
-
-    const subscribeToNewMessages = () => {
-      const channel = supabase
-        .channel("public:chat")
-        .on(
-          "postgres_changes",
-          { event: "INSERT", schema: "public", table: "chat" },
-          (payload) => {
-            // Check if the new message belongs to the current room
-            if (payload.new.room_id === room_id) {
-              const newMessage = {
-                ...payload.new,
-                username: usersMap.get(payload.new.user_id),
-              };
-              setMessages((prevMessages) => [
-                ...prevMessages,
-                newMessage as Message,
-              ]);
-            }
-          }
-        )
-        .subscribe();
-
-      return () => {
-        channel.unsubscribe();
-      };
-    };
-
-    retrieveMessages();
-    const unsubscribe = subscribeToNewMessages();
-
-    return () => {
-      unsubscribe();
-    };
-  }, [room_id, usersMap]);
-
-  if (fetchError) {
-    return <div>{fetchError}</div>;
-  }
-
-  return (
-    <main className="flex flex-col-reverse items-center p-4 h-full">
-      <MessageList messages={messages} user={user} />
-    </main>
-  );
-};
-
-export default ChatMessages;
+export default MessageList;

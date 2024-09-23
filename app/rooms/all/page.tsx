@@ -12,6 +12,7 @@ interface Room {
 }
 
 const supabase = createClient();
+
 const RoomsPage = () => {
   const [user, setUser] = useState<null | User>(null);
 
@@ -34,7 +35,6 @@ const RoomsPage = () => {
 const ListAllRooms = () => {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [loading, setLoading] = useState(true);
-
   const [error, setError] = useState<PostgrestError | null>(null);
 
   useEffect(() => {
@@ -83,21 +83,23 @@ const ListAllRooms = () => {
   }
 
   return (
-    <ul className="flex flex-col justify-start items-start text-pretty m-1">
-      {rooms
-        .sort((a, b) => a.name.localeCompare(b.name))
-        .map((room) => (
-          <li key={room.id} className="m-1 p-1">
-            •{" "}
-            <Link
-              href={`/rooms/${room.id}`}
-              className="text-blue-600 bg-black hover:underline border-l-2 p-1 border-b-2 text-xl rounded-sm border-pink-500 hover:text-green-500"
-            >
-              {room.name}
-            </Link>
-          </li>
-        ))}
-    </ul>
+    <div className="flex flex-col">
+      <ul className="flex flex-col text-pretty m-1 overflow-auto">
+        {rooms
+          .sort((a, b) => a.name.localeCompare(b.name))
+          .map((room) => (
+            <li key={room.id} className="m-1 p-1">
+              <span className="text-pink-500">•</span>{" "}
+              <Link
+                href={`/rooms/${room.id}`}
+                className="text-blue-600 bg-black hover:underline border-l-2 p-1 border-b-2 rounded-sm border-pink-500 hover:text-green-500 text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl"
+              >
+                {room.name}
+              </Link>
+            </li>
+          ))}
+      </ul>
+    </div>
   );
 };
 

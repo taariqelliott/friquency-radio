@@ -29,11 +29,11 @@ const ChatInput = ({
         room_id,
         user_id,
       });
+      reset();
 
       if (error) {
         console.error("Error inserting message:", error);
       } else {
-        reset();
         console.log("Message inserted successfully");
       }
     } catch (err) {
