@@ -92,7 +92,7 @@ const ListAllRooms = () => {
               <span className="text-pink-500">•</span>{" "}
               <Link
                 href={`/rooms/${room.id}`}
-                className="text-blue-600 bg-black hover:underline border-l-2 p-1 border-b-2 rounded-sm border-pink-500 hover:text-green-500 text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl"
+                className="text-blue-600 bg-black hover:underline border-l-2 p-1 border-b-2 rounded-sm border-pink-500 hover:text-green-500"
               >
                 {room.name}
               </Link>
