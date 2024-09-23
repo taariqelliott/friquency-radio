@@ -90,31 +90,39 @@ const ChatMessages = ({
 }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [fetchError, setFetchError] = useState<string | null>(null);
+  const [usersMap, setUsersMap] = useState<Map<string, string>>(new Map());
 
   useEffect(() => {
     const retrieveMessages = async () => {
       try {
-        const { data: messagesData } = await supabase
+        const { data: messagesData, error: messagesError } = await supabase
           .from("chat")
           .select("*")
           .eq("room_id", room_id);
 
-        const { data: usersData } = await supabase.from("users").select("*");
+        if (messagesError) throw messagesError;
 
-        const usersMap = new Map(
-          usersData?.map((user) => [user.id, user.username])
+        const { data: usersData, error: usersError } = await supabase
+          .from("users")
+          .select("*");
+
+        if (usersError) throw usersError;
+
+        const userMap = new Map(
+          usersData.map((user) => [user.id, user.username])
         );
+        setUsersMap(userMap);
 
         const messagesWithUsernames =
           messagesData?.map((message) => ({
             ...message,
-            username: usersMap.get(message.user_id),
+            username: userMap.get(message.user_id),
           })) ?? [];
 
         setMessages(messagesWithUsernames);
       } catch (error) {
         console.error("Error fetching data:", error);
-        setFetchError("Error loading messages");
+        setFetchError("Error loading messages or users.");
       }
     };
 
@@ -124,13 +132,7 @@ const ChatMessages = ({
         .on(
           "postgres_changes",
           { event: "INSERT", schema: "public", table: "chat" },
-          async (payload) => {
-            const { data: usersData } = await supabase
-              .from("users")
-              .select("*");
-            const usersMap = new Map(
-              usersData?.map((user) => [user.id, user.username])
-            );
+          (payload) => {
             const newMessage = {
               ...payload.new,
               username: usersMap.get(payload.new.user_id),
@@ -154,7 +156,7 @@ const ChatMessages = ({
     return () => {
       unsubscribe();
     };
-  }, [room_id]);
+  }, [room_id, usersMap]);
 
   if (fetchError) {
     return <div>{fetchError}</div>;
