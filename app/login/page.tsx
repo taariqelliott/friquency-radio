@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import { User } from "@supabase/supabase-js";
@@ -9,7 +9,6 @@ import { useMantineColorScheme } from "@mantine/core";
 import "../globals.css";
 import Link from "next/link";
 import { anonymousSignIn } from "../anon/actions";
-import Spinner from "../components/Spinner";
 
 export default function LoginPage() {
   const [user, setUser] = useState<User | null>(null);
@@ -49,73 +48,71 @@ export default function LoginPage() {
   }
 
   return (
-    <Suspense fallback={<Spinner />}>
-      <div className="flex flex-col items-center justify-center h-dvh">
-        <div className="z-10 hover:text-realGreen transition-all duration-200">
-          <Link href={"/"}>FRIQUENCY RADIO</Link>
-        </div>
-        <form
-          className={`relative ${bgColor} p-4 rounded-lg shadow-lg w-96 flex flex-col items-center`}
-        >
-          <div className="w-full flex flex-col items-center">
-            <h1
-              className={`text-center [word-spacing:-3px] tracking-tight text-realGreen font-bold text-3xl`}
-            >
-              Login
-            </h1>
-            <label htmlFor="email" className={`block ${textColor}`}>
-              email:
-              <input
-                id="email"
-                name="email"
-                type="email"
-                required
-                className={`block w-full px-4 py-2 border-2 border-gray-300 font-bold rounded-md ${inputTextColor}`}
-              />
-            </label>
-            <label htmlFor="password" className={`block ${textColor}`}>
-              password:
-              <input
-                id="password"
-                name="password"
-                type="password"
-                required
-                className={`block w-full px-4 py-2 border-2 border-gray-300 font-bold rounded-md ${inputTextColor}`}
-              />
-            </label>
-            <button
-              className="bg-realGreen text-center mt-2 text-sm [word-spacing:-3px] text-white font-bold py-2 px-4 rounded border-2 border-transparent hover:bg-pink-500 hover:text-black hover:border-realGreen hover:border-2 transition-all duration-300"
-              type="submit"
-              formAction={login}
-            >
-              login
-            </button>
-          </div>
-          <div className="mt-4 flex flex-row items-center text-sm">
-            <Link
-              href="/signup"
-              className="bg-realGreen w-28 text-center text-xs [word-spacing:-3px] text-white font-bold py-1 px-4 ml-2 mr-2 rounded border-2 border-transparent hover:bg-pink-500 hover:text-black hover:border-realGreen hover:border-2 transition-all duration-300"
-            >
-              signup
-            </Link>
-            <button
-              onClick={async (event) => {
-                event.preventDefault();
-                try {
-                  await anonymousSignIn();
-                  router.push("/");
-                  window.location.reload();
-                } catch (error) {
-                  console.error("Error during anonymous sign-in", error);
-                }
-              }}
-              className="bg-realGreen w-28 text-center text-xs [word-spacing:-3px] text-white font-bold py-1 px-4 ml-2 mr-2 rounded border-2 border-transparent hover:bg-pink-500 hover:text-black hover:border-realGreen hover:border-2 transition-all duration-300"
-            >
-              quick jam
-            </button>
-          </div>
-        </form>
+    <div className="flex flex-col items-center justify-center h-dvh">
+      <div className="z-10 hover:text-realGreen transition-all duration-200">
+        <Link href={"/"}>FRIQUENCY RADIO</Link>
       </div>
-    </Suspense>
+      <form
+        className={`relative ${bgColor} p-4 rounded-lg shadow-lg w-96 flex flex-col items-center`}
+      >
+        <div className="w-full flex flex-col items-center">
+          <h1
+            className={`text-center [word-spacing:-3px] tracking-tight text-realGreen font-bold text-3xl`}
+          >
+            Login
+          </h1>
+          <label htmlFor="email" className={`block ${textColor}`}>
+            email:
+            <input
+              id="email"
+              name="email"
+              type="email"
+              required
+              className={`block w-full px-4 py-2 border-2 border-gray-300 font-bold rounded-md ${inputTextColor}`}
+            />
+          </label>
+          <label htmlFor="password" className={`block ${textColor}`}>
+            password:
+            <input
+              id="password"
+              name="password"
+              type="password"
+              required
+              className={`block w-full px-4 py-2 border-2 border-gray-300 font-bold rounded-md ${inputTextColor}`}
+            />
+          </label>
+          <button
+            className="bg-realGreen text-center mt-2 text-sm [word-spacing:-3px] text-white font-bold py-2 px-4 rounded border-2 border-transparent hover:bg-pink-500 hover:text-black hover:border-realGreen hover:border-2 transition-all duration-300"
+            type="submit"
+            formAction={login}
+          >
+            login
+          </button>
+        </div>
+        <div className="mt-4 flex flex-row items-center text-sm">
+          <Link
+            href="/signup"
+            className="bg-realGreen w-28 text-center text-xs [word-spacing:-3px] text-white font-bold py-1 px-4 ml-2 mr-2 rounded border-2 border-transparent hover:bg-pink-500 hover:text-black hover:border-realGreen hover:border-2 transition-all duration-300"
+          >
+            signup
+          </Link>
+          <button
+            onClick={async (event) => {
+              event.preventDefault();
+              try {
+                await anonymousSignIn();
+                router.push("/");
+                window.location.reload();
+              } catch (error) {
+                console.error("Error during anonymous sign-in", error);
+              }
+            }}
+            className="bg-realGreen w-28 text-center text-xs [word-spacing:-3px] text-white font-bold py-1 px-4 ml-2 mr-2 rounded border-2 border-transparent hover:bg-pink-500 hover:text-black hover:border-realGreen hover:border-2 transition-all duration-300"
+          >
+            quick jam
+          </button>
+        </div>
+      </form>
+    </div>
   );
 }

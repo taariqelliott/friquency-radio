@@ -2,9 +2,8 @@
 
 import { createClient } from "@/utils/supabase/client";
 import Link from "next/link";
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect } from "react";
 import { PostgrestError } from "@supabase/supabase-js";
-import Spinner from "@/app/components/Spinner";
 
 interface Room {
   id: string;
@@ -87,11 +86,9 @@ const ListAllRooms = () => {
 
 const RoomsPage = () => {
   return (
-    <Suspense fallback={<Spinner />}>
-      <main className="flex flex-col items-center justify-center h-dvh p-24">
-        <ListAllRooms />
-      </main>
-    </Suspense>
+    <main className="flex flex-col items-center justify-center h-dvh p-24">
+      <ListAllRooms />
+    </main>
   );
 };
 

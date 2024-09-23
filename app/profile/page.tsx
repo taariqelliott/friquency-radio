@@ -1,8 +1,6 @@
 // app/private/page.tsx
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import { Suspense } from "react";
-import Spinner from "../components/Spinner";
 
 export default async function ProfilePage() {
   const supabase = createClient();
@@ -27,15 +25,13 @@ export default async function ProfilePage() {
   }
 
   return (
-    <Suspense fallback={<Spinner />}>
-      <div className="flex flex-col items-center justify-center h-dvh">
-        {(authData.user?.is_anonymous && (
-          <p>Hello {profileData?.username}</p>
-        )) || <div>Hello {authData.user.email}</div>}
-        <p>Username: {profileData?.username || "No username set"}</p>
-        <p>ID: {authData.user.id}</p>
-        <p>Created at: {authData.user.created_at}</p>
-      </div>
-    </Suspense>
+    <div className="flex flex-col items-center justify-center h-dvh">
+      {(authData.user?.is_anonymous && (
+        <p>Hello {profileData?.username}</p>
+      )) || <div>Hello {authData.user.email}</div>}
+      <p>Username: {profileData?.username || "No username set"}</p>
+      <p>ID: {authData.user.id}</p>
+      <p>Created at: {authData.user.created_at}</p>
+    </div>
   );
 }

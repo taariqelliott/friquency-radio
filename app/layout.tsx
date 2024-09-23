@@ -4,6 +4,7 @@ import "@mantine/core/styles.css";
 import "./globals.css";
 import { Roboto_Mono } from "next/font/google";
 import Header from "./components/Header";
+import { Suspense } from "react";
 
 const roboto = Roboto_Mono({
   weight: "400",
@@ -28,8 +29,10 @@ export default function RootLayout({
       </head>
       <body className={roboto.className}>
         <MantineProvider>
-          <Header />
-          {children}
+          <Suspense fallback={null}>
+            <Header />
+            {children}
+          </Suspense>
         </MantineProvider>
       </body>
     </html>
