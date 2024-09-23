@@ -1,8 +1,9 @@
 "use client";
 
+import Spinner from "@/app/components/Spinner";
 import { createClient } from "@/utils/supabase/client";
 import { Button } from "@mantine/core";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 type Profile = {
   username: string | null;
@@ -80,41 +81,43 @@ export default function ProfileEditPage() {
   }
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "1rem",
-        height: "100vh",
-      }}
-    >
-      <h1>Profile Edit Page</h1>
-      {user?.email && <div>Email: {user?.email}</div>}
-      <div>Username: {profile.username || "No username set"}</div>
-      <form action="submit" onSubmit={updateUsername}>
-        <input
-          type="text"
-          placeholder="Enter new username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          style={{
-            margin: "1rem 0",
-            padding: "0.5rem",
-            fontSize: "1rem",
-            textAlign: "center",
-          }}
-        />
-      </form>
-      <Button
-        variant="outline"
-        color="green"
-        style={{ padding: "0.5rem 1rem" }}
-        onClick={updateUsername}
+    <Suspense fallback={<Spinner />}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "1rem",
+          height: "100vh",
+        }}
       >
-        Update Username
-      </Button>
-    </div>
+        <h1>Profile Edit Page</h1>
+        {user?.email && <div>Email: {user?.email}</div>}
+        <div>Username: {profile.username || "No username set"}</div>
+        <form action="submit" onSubmit={updateUsername}>
+          <input
+            type="text"
+            placeholder="Enter new username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            style={{
+              margin: "1rem 0",
+              padding: "0.5rem",
+              fontSize: "1rem",
+              textAlign: "center",
+            }}
+          />
+        </form>
+        <Button
+          variant="outline"
+          color="green"
+          style={{ padding: "0.5rem 1rem" }}
+          onClick={updateUsername}
+        >
+          Update Username
+        </Button>
+      </div>
+    </Suspense>
   );
 }
