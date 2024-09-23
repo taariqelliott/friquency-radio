@@ -133,14 +133,17 @@ const ChatMessages = ({
           "postgres_changes",
           { event: "INSERT", schema: "public", table: "chat" },
           (payload) => {
-            const newMessage = {
-              ...payload.new,
-              username: usersMap.get(payload.new.user_id),
-            };
-            setMessages((prevMessages) => [
-              ...prevMessages,
-              newMessage as Message,
-            ]);
+            // Check if the new message belongs to the current room
+            if (payload.new.room_id === room_id) {
+              const newMessage = {
+                ...payload.new,
+                username: usersMap.get(payload.new.user_id),
+              };
+              setMessages((prevMessages) => [
+                ...prevMessages,
+                newMessage as Message,
+              ]);
+            }
           }
         )
         .subscribe();
