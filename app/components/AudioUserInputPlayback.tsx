@@ -47,27 +47,23 @@ export const AudioUserInputPlayback = () => {
       }
       if (audioContextRef.current.state === "suspended") {
         await audioContextRef.current.resume();
-        console.log("AudioContext resumed");
       }
 
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      console.log("Stream details:", stream);
 
+      // Create audio source node from the user's input stream
       audioSourceNodeRef.current =
         audioContextRef.current.createMediaStreamSource(stream);
+
+      // Connect the audio source node to a MediaStreamAudioDestinationNode
       audioDestinationNodeRef.current =
         audioContextRef.current.createMediaStreamDestination();
       audioSourceNodeRef.current.connect(audioDestinationNodeRef.current);
 
+      // Publish the audio track to the LiveKit room
       publishedTrack.current =
         audioDestinationNodeRef.current.stream.getAudioTracks()[0];
-      if (!publishedTrack.current) {
-        console.log("No audio track to publish");
-        return;
-      }
-
-      console.log("Publishing track:", publishedTrack.current);
-      await localParticipant.publishTrack(publishedTrack.current, {
+      localParticipant.publishTrack(publishedTrack.current, {
         name: "user_audio_input",
         source: Track.Source.Microphone,
       });
@@ -78,6 +74,21 @@ export const AudioUserInputPlayback = () => {
       cleanup();
     }
   };
+
+  useEffect(() => {
+    // Listen for updates on other participants to determine if audio is already started
+    const handleParticipantConnected = (participant: any) => {
+      if (participant.identity === localParticipant.identity) {
+        setIsAudioStarted(true);
+      }
+    };
+
+    room.on("participantConnected", handleParticipantConnected);
+
+    return () => {
+      room.off("participantConnected", handleParticipantConnected);
+    };
+  }, [room, localParticipant]);
 
   useEffect(() => {
     return cleanup;
