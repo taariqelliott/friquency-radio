@@ -1,62 +1,77 @@
 "use client";
 
 import {
-  LiveKitRoom,
-  RoomAudioRenderer,
   ControlBar,
+  GridLayout,
+  LiveKitRoom,
+  ParticipantTile,
+  RoomAudioRenderer,
+  useTracks,
 } from "@livekit/components-react";
 import "@livekit/components-styles";
+import { Track } from "livekit-client";
 import { useEffect, useState } from "react";
 
-export default function AudioStreamingPage() {
-  const room = "audio-stream-room"; // Define the room name or get it dynamically
-  const username = "user-audio"; // Define or fetch the username dynamically
+export default function Page() {
+  // TODO: get user input for room and name
+  const room = "quickstart-room";
+  const name = "quickstart-user";
   const [token, setToken] = useState("");
 
-  // Fetch the participant token for LiveKit
   useEffect(() => {
     (async () => {
       try {
         const resp = await fetch(
-          `/api/get-participant-token?room=${room}&username=${username}`
+          `/api/get-participant-token?room=${room}&username=${name}`
         );
         const data = await resp.json();
         setToken(data.token);
       } catch (e) {
-        console.error("Error fetching token", e);
+        console.error(e);
       }
     })();
-  }, [room, username]);
+  }, []);
 
-  // Handle token fetch state
   if (token === "") {
     return <div>Getting token...</div>;
   }
 
-  // Ensure a user gesture before starting audio context
-  const startAudioContext = () => {
-    const audioContext = new window.AudioContext();
-    audioContext.resume().then(() => {
-      console.log("AudioContext resumed");
-    });
-  };
-
   return (
-    <div onClick={startAudioContext}>
-      {/* LiveKitRoom is responsible for handling the real-time connection */}
-      <LiveKitRoom
-        token={token}
-        serverUrl={process.env.NEXT_PUBLIC_LIVEKIT_URL}
-        audio={true} // Enable audio streaming
-        video={false} // Disable video
-        data-lk-theme="default"
-        style={{ height: "100dvh" }}
-      >
-        {/* Room-wide audio playback */}
-        <RoomAudioRenderer />
-        {/* Control bar for muting/unmuting audio */}
-        <ControlBar />
-      </LiveKitRoom>
-    </div>
+    <LiveKitRoom
+      video={true}
+      audio={true}
+      token={token}
+      serverUrl={process.env.NEXT_PUBLIC_LIVEKIT_URL}
+      // Use the default LiveKit theme for nice styles.
+      data-lk-theme="default"
+      style={{ height: '100dvh' }}
+    >
+      {/* Your custom component with basic video conferencing functionality. */}
+      <MyVideoConference />
+      {/* The RoomAudioRenderer takes care of room-wide audio for you. */}
+      <RoomAudioRenderer />
+      {/* Controls for the user to start/stop audio, video, and screen
+      share tracks and to leave the room. */}
+      <ControlBar />
+    </LiveKitRoom>
+  );
+}
+
+function MyVideoConference() {
+  // `useTracks` returns all camera and screen share tracks. If a user
+  // joins without a published camera track, a placeholder track is returned.
+  const tracks = useTracks(
+    [
+      { source: Track.Source.Camera, withPlaceholder: true },
+      { source: Track.Source.ScreenShare, withPlaceholder: false },
+    ],
+    { onlySubscribed: false },
+  );
+  return (
+    <GridLayout tracks={tracks} style={{ height: 'calc(100vh - var(--lk-control-bar-height))' }}>
+      {/* The GridLayout accepts zero or one child. The child is used
+      as a template to render all passed in tracks. */}
+      <ParticipantTile />
+    </GridLayout>
   );
 }
