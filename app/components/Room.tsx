@@ -1,7 +1,5 @@
-"use client";
-
-import { LiveKitRoom, RoomAudioRenderer } from "@livekit/components-react";
-import { AudioUserInputPlayback } from "./AudioUserInputPlayback";
+import { LiveKitRoom } from "@livekit/components-react";
+import { AudioInputPlayback } from "./AudioUserInputPlayback";
 
 type RoomProps = {
   token: string;
@@ -11,10 +9,7 @@ type RoomProps = {
 export const Room = ({ token, wsUrl }: RoomProps) => {
   return (
     <LiveKitRoom token={token} serverUrl={wsUrl} connect={true}>
-      {/* This will stream the user's microphone input */}
-      <AudioUserInputPlayback />
-      {/* Ensure the RoomAudioRenderer is present to play audio from other participants */}
-      <RoomAudioRenderer />
+      <AudioInputPlayback />
     </LiveKitRoom>
   );
 };

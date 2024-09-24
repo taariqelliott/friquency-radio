@@ -1,19 +1,14 @@
-"use client";
-
-import { useEffect, useRef, useCallback, useState } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import { Track } from "livekit-client";
-import { useLocalParticipant, useRoomContext } from "@livekit/components-react";
+import { useLocalParticipant } from "@livekit/components-react";
 
-export const AudioUserInputPlayback = () => {
-  const audioSourceNodeRef = useRef<MediaStreamAudioSourceNode | null>(null);
+export const AudioInputPlayback = () => {
   const audioContextRef = useRef<AudioContext | null>(null);
+  const audioSourceNodeRef = useRef<MediaStreamAudioSourceNode | null>(null);
   const audioDestinationNodeRef =
     useRef<MediaStreamAudioDestinationNode | null>(null);
   const publishedTrack = useRef<MediaStreamTrack | null>(null);
   const { localParticipant } = useLocalParticipant();
-  const [isAudioStarted, setIsAudioStarted] = useState(false);
-  const room = useRoomContext();
-  const isConnected = room.state === "connected";
 
   const cleanup = useCallback(() => {
     if (publishedTrack.current) {
@@ -36,12 +31,6 @@ export const AudioUserInputPlayback = () => {
 
   const startAudio = async () => {
     try {
-      if (!room || !isConnected) {
-        console.log("Waiting for LiveKit room connection...");
-        return;
-      }
-
-      // Create or resume AudioContext after a user gesture
       if (!audioContextRef.current) {
         audioContextRef.current = new AudioContext();
       }
@@ -67,8 +56,6 @@ export const AudioUserInputPlayback = () => {
         name: "user_audio_input",
         source: Track.Source.Microphone,
       });
-
-      setIsAudioStarted(true);
     } catch (error) {
       console.error("Error accessing user media: ", error);
       cleanup();
@@ -76,25 +63,12 @@ export const AudioUserInputPlayback = () => {
   };
 
   useEffect(() => {
-    // Listen for updates on other participants to determine if audio is already started
-    const handleParticipantConnected = (participant: any) => {
-      if (participant.identity === localParticipant.identity) {
-        setIsAudioStarted(true);
-      }
-    };
-
-    room.on("participantConnected", handleParticipantConnected);
-
-    return () => {
-      room.off("participantConnected", handleParticipantConnected);
-    };
-  }, [room, localParticipant]);
-
-  useEffect(() => {
     return cleanup;
   }, [cleanup]);
 
   return (
-    <>{!isAudioStarted && <button onClick={startAudio}>Start Audio</button>}</>
+    <>
+      <button onClick={startAudio}>Start Audio</button>
+    </>
   );
 };
