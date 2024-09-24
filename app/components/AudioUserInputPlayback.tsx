@@ -50,10 +50,12 @@ export const AudioUserInputPlayback = () => {
       }
 
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      console.log("Stream details:", stream);
 
       // Create audio source node from the user's input stream
       audioSourceNodeRef.current =
         audioContextRef.current.createMediaStreamSource(stream);
+      console.log("Audio source node created:", audioSourceNodeRef.current);
 
       // Connect the audio source node to a MediaStreamAudioDestinationNode
       audioDestinationNodeRef.current =
@@ -63,6 +65,8 @@ export const AudioUserInputPlayback = () => {
       // Publish the audio track to the LiveKit room
       publishedTrack.current =
         audioDestinationNodeRef.current.stream.getAudioTracks()[0];
+      console.log("Publishing track:", publishedTrack.current);
+
       localParticipant.publishTrack(publishedTrack.current, {
         name: "user_audio_input",
         source: Track.Source.Microphone,
@@ -80,6 +84,8 @@ export const AudioUserInputPlayback = () => {
   }, [cleanup]);
 
   return (
-    <>{!isAudioStarted && <button onClick={startAudio}>Start Audio</button>}</>
+    <>
+      {!isAudioStarted && <button onClick={startAudio}>Start Audio</button>}
+    </>
   );
 };

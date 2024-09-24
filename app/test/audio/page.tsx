@@ -50,7 +50,7 @@ export default function AudioStreamingPage() {
         audio={true} // Enable audio streaming
         video={false} // Disable video
         data-lk-theme="default"
-        style={{ height: '100dvh' }}
+        style={{ height: "100dvh" }}
       >
         {/* Room-wide audio playback */}
         <RoomAudioRenderer />
