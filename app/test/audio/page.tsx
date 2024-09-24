@@ -49,6 +49,11 @@ export default function Page() {
       token={token}
       serverUrl={process.env.NEXT_PUBLIC_LIVEKIT_URL}
       data-lk-theme="default"
+      options={{
+        publishDefaults: {
+          red: false,
+        },
+      }}
     >
       <RoomContent />
     </LiveKitRoom>
