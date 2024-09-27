@@ -20,6 +20,18 @@ export default function CreateRoom() {
       return;
     }
 
+    if (name.trim().length === 0) {
+      alert("Name cannot be empty!");
+      setName("");
+      return;
+    }
+
+    if (name.length < 3) {
+      alert("Name is too short!");
+      setName("");
+      return;
+    }
+
     if (!name) {
       alert("Room name is required!");
       return;
@@ -46,7 +58,7 @@ export default function CreateRoom() {
     <div>
       <button
         onClick={open}
-        className="mt-4 text-green-500 text-center border border-green-500 w-full max-w-xs hover:bg-green-500 hover:text-white font-bold py-2 px-4 rounded"
+        className="mt-4 transition duration-200 text-green-500 text-center border border-pink-500 w-full max-w-xs hover:bg-green-500 hover:text-black font-bold py-2 px-4 rounded"
       >
         Create Room
       </button>

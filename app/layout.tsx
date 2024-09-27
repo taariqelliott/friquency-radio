@@ -81,7 +81,7 @@ export default function RootLayout({
         <ColorSchemeScript />
       </head>
       <body className={roboto.className}>
-        <MantineProvider>
+        <MantineProvider defaultColorScheme="dark">
           <Suspense fallback={null}>
             <Header />
             {children}

@@ -3,6 +3,8 @@
 import { createClient } from "@/utils/supabase/client";
 import { User } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
+import Link from "next/link";
+import CreateRoom from "./CreateRoom";
 
 type Profile = {
   username: string | null;
@@ -54,11 +56,24 @@ export default function DemoClientComponent() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center p-4 text-center text-pretty">
-      <h1>Client Component</h1>
-      <div>Username: {profile.username || "Not set"}</div>
-      {(user?.is_anonymous && <div></div>) || <div>Email: {user?.email} </div>}
-      <div>ID: {user?.id || "Not available"}</div>
+    <div className="flex flex-col items-center justify-center p-4 rounded-lg bg-black border-pink-500 border shadow-lg m-2">
+      <div className="text-sm text-green-500 text-center">
+        Welcome to Friquency Radio
+      </div>
+      <div className="flex flex-row justify-center items-center mt-2 font-bold">
+        <span className="text-green-500">@</span>
+        <span className="text-white"> {profile.username || "Not set"}</span>
+      </div>
+      {user && (
+        <div className="flex flex-row justify-center items-center gap-2">
+          <Link href="/rooms/all">
+            <button className="mt-4 transition duration-200 text-green-500 text-center border border-pink-500 w-full max-w-xs hover:bg-green-500 hover:text-black font-bold py-2 px-4 rounded">
+              Join Room
+            </button>
+          </Link>
+          <CreateRoom />
+        </div>
+      )}
     </div>
   );
 }
