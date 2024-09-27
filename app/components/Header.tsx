@@ -60,7 +60,7 @@ export default function Header() {
   };
 
   return (
-    <MantineProvider>
+    <MantineProvider defaultColorScheme="dark">
       <div className="absolute z-10 text-white right-2 mt-2">
         <div className="flex flex-row items-start">
           {user && (
