@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import {
   ControlBar,
@@ -13,10 +13,14 @@ import {
   AudioPresets,
   LocalParticipant,
 } from "livekit-client";
-import { IconVolume, IconX } from "@tabler/icons-react";
+import { IconVolume } from "@tabler/icons-react";
 import { useMantineColorScheme } from "@mantine/core";
 
-export default function LiveRoom() {
+interface LiveRoomProps {
+  isBroadcaster: boolean;
+}
+
+export default function LiveRoom({ isBroadcaster }: LiveRoomProps) {
   const [room] = useState("quickstart-room");
   const [name] = useState(`user-${Math.random().toString(36).substring(7)}`);
   const [token, setToken] = useState("");
@@ -58,22 +62,43 @@ export default function LiveRoom() {
         overflow: "hidden",
       }}
     >
-      <RoomContent />
+      <RoomContent isBroadcaster={isBroadcaster} />
     </LiveKitRoom>
   );
 }
 
-function RoomContent() {
+interface RoomContentProps {
+  isBroadcaster: boolean;
+}
+
+function RoomContent({ isBroadcaster }: RoomContentProps) {
   const localParticipant = useLocalParticipant();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const modalRef = useRef<HTMLDivElement>(null);
   const { colorScheme } = useMantineColorScheme();
 
-  // Ref for the modal container
-  const modalRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(event.target as Node)
+      ) {
+        setIsModalOpen(false); // Close modal if clicked outside
+      }
+    };
+
+    // Attach event listener
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      // Clean up event listener
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   useEffect(() => {
     const publishAudioTrack = async () => {
-      if (localParticipant) {
+      if (localParticipant && isBroadcaster) {
         const audioTrack = await createLocalAudioTrack({
           channelCount: 2,
           echoCancellation: false,
@@ -91,32 +116,7 @@ function RoomContent() {
     };
 
     publishAudioTrack();
-  }, [localParticipant]);
-
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
-
-  const handleClickOutside = (event: MouseEvent) => {
-    if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-      closeModal();
-    }
-  };
-
-  const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.key === "Escape") {
-      closeModal();
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    document.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
+  }, [localParticipant, isBroadcaster]);
 
   return (
     <div>
@@ -138,26 +138,22 @@ function RoomContent() {
                   }}
                 />
               </div>
-              {/* <button
-                className="absolute top-2 right-2 bg-transparent text-white rounded-full flex items-center justify-center w-8 h-8"
-                onClick={closeModal}
-              >
-                <IconX width={20} height={20} />
-              </button> */}
             </div>
           </div>
         </div>
       )}
-      <div>
-        <button
-          className={`${
-            colorScheme === "dark" ? "text-green-500" : "text-black"
-          }`}
-          onClick={openModal}
-        >
-          <IconVolume size={24} />
-        </button>
-      </div>
+      {isBroadcaster && (
+        <div>
+          <button
+            className={`${
+              colorScheme === "dark" ? "text-green-500" : "text-black"
+            }`}
+            onClick={() => setIsModalOpen(true)}
+          >
+            <IconVolume size={24} />
+          </button>
+        </div>
+      )}
     </div>
   );
 }

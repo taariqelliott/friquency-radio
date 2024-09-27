@@ -20,7 +20,7 @@ const RoomPage = async ({ params }: { params: { id: string } }) => {
     notFound();
   }
 
-  // Fetch current user data (optional)
+  // Fetch current user data
   const { data: currentUserResponse } = await supabase.auth.getUser();
   const currentUsername = currentUserResponse?.user?.id;
 
@@ -45,14 +45,14 @@ const RoomPage = async ({ params }: { params: { id: string } }) => {
     notFound();
   }
 
+  const isBroadcaster = user.username === currentUser?.username;
+
   return (
     <main className="flex flex-col items-center justify-center h-dvh pt-4">
-      {user.username === currentUser?.username && (
-        <div className="top-2 left-2 absolute">
-          <LiveRoom />
-        </div>
-      )}
-      {user.username === currentUser?.username && (
+      <div className="top-2 left-2 absolute">
+        <LiveRoom isBroadcaster={isBroadcaster} />
+      </div>
+      {isBroadcaster && (
         <h3 className="text-white bg-red-600 p-1 m-1 text-sm rounded-lg border-2 border-black">
           Start Stream
         </h3>
