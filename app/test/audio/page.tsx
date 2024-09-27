@@ -138,15 +138,12 @@ function RoomContent() {
                   }}
                 />
               </div>
-              <button
-                className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 flex items-center justify-center w-18 h-18"
+              {/* <button
+                className="absolute top-2 right-2 bg-transparent text-white rounded-full flex items-center justify-center w-8 h-8"
                 onClick={closeModal}
               >
-                <span className="hidden sm:flex">Close</span>
-                <span className="sm:hidden">
-                  <IconX width={20} height={20} />
-                </span>
-              </button>
+                <IconX width={20} height={20} />
+              </button> */}
             </div>
           </div>
         </div>
