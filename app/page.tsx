@@ -41,13 +41,13 @@ export default async function Home() {
         {" "}
         <Link
           href="/login"
-          className="bg-realGreen w-28 text-center text-xs [word-spacing:-3px] text-white font-bold py-1 px-4 ml-2 mr-2 rounded border-2 border-transparent hover:bg-pink-500 hover:text-black hover:border-realGreen hover:border-2 transition-all duration-300"
+          className="bg-realGreen w-28 text-center text-xs [word-spacing:-3px] text-white font-bold py-1 px-4 ml-2 mr-2 rounded border-2 border-transparent hover:bg-pink-500 hover:text-black hover:border-realGreen hover:border-2 transition-all duration-500"
         >
           login
         </Link>
         <Link
           href="/signup"
-          className="bg-realGreen w-28 text-center text-xs [word-spacing:-3px] text-white font-bold py-1 px-4 ml-2 mr-2 rounded border-2 border-transparent hover:bg-pink-500 hover:text-black hover:border-realGreen hover:border-2 transition-all duration-300"
+          className="bg-realGreen w-28 text-center text-xs [word-spacing:-3px] text-white font-bold py-1 px-4 ml-2 mr-2 rounded border-2 border-transparent hover:bg-pink-500 hover:text-black hover:border-realGreen hover:border-2 transition-all duration-500"
         >
           signup
         </Link>
@@ -61,7 +61,7 @@ export default async function Home() {
             }
           }}
         >
-          <button className="bg-realGreen w-28 text-xs [word-spacing:-3px] text-white font-bold py-1 px-4 ml-2 mr-2 rounded border-2 border-transparent hover:bg-pink-500 hover:text-black hover:border-realGreen hover:border-2 transition-all duration-300">
+          <button className="bg-realGreen w-28 text-xs [word-spacing:-3px] text-white font-bold py-1 px-4 ml-2 mr-2 rounded border-2 border-transparent hover:bg-pink-500 hover:text-black hover:border-realGreen hover:border-2 transition-all duration-500">
             quick jam
           </button>
         </form>
