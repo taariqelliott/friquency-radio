@@ -14,12 +14,16 @@ const RoomPage = ({ params }: { params: Params }) => {
   const { id } = params;
   const supabase = createClient();
 
-  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
+  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(
+    null
+  );
   const [isRecording, setIsRecording] = useState(false);
   const [loading, setLoading] = useState(true);
   const [room, setRoom] = useState<any>(null);
   const [currentUsername, setCurrentUsername] = useState<string | null>(null);
-  const [roomOwnerUsername, setRoomOwnerUsername] = useState<string | null>(null);
+  const [roomOwnerUsername, setRoomOwnerUsername] = useState<string | null>(
+    null
+  );
   const [inputDevices, setInputDevices] = useState<MediaDeviceInfo[]>([]);
   const [selectedDeviceId, setSelectedDeviceId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -114,9 +118,29 @@ const RoomPage = ({ params }: { params: Params }) => {
       if (data.length > 0 && audioRef.current) {
         const audioUrl = data[0].url;
         const audioElement = audioRef.current;
-        audioElement.src = audioUrl; // Update the source URL directly
+
+        // Pause the audio element before changing the source
+        audioElement.pause();
+
+        // Create a new source element with the correct type
+        const sourceElement = document.createElement("source");
+        sourceElement.src = audioUrl;
+        sourceElement.type = "audio/webm";
+
+        // Remove any existing source elements
+        audioElement.innerHTML = "";
+
+        // Append the new source element to the audio element
+        audioElement.appendChild(sourceElement);
+
         audioElement.load();
-        audioElement.play();
+
+        // Check if the audio element is not already playing or paused
+        if (!audioElement.paused) {
+          audioElement.play().catch((e) => {
+            console.error("Error playing audio:", e);
+          });
+        }
       }
     } catch (error) {
       console.error("Error in fetchLatestAudioChunk:", error);
@@ -289,7 +313,11 @@ const RoomPage = ({ params }: { params: Params }) => {
           <CopyURL />
         </div>
       </div>
-      <audio ref={audioRef} autoPlay muted={currentUsername === roomOwnerUsername} />
+      <audio
+        ref={audioRef}
+        autoPlay
+        muted={currentUsername === roomOwnerUsername}
+      />
       <div>
         <label htmlFor="audioDevices" className="text-white">
           Select Audio Input Device:
