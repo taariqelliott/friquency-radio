@@ -5,6 +5,13 @@ import { notFound } from "next/navigation";
 import CopyURL from "@/app/components/CopyURL";
 import Link from "next/link";
 import ChatContainer from "@/app/components/ChatContainer";
+import { AudioVisualizer } from "@/app/components/AudioVisualizer";
+
+interface Room {
+  id: string;
+  name: string;
+  created_by: string;
+}
 
 interface Params {
   id: string;
@@ -14,12 +21,13 @@ const RoomPage = ({ params }: { params: Params }) => {
   const { id } = params;
   const supabase = createClient();
 
+  // State management
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(
     null
   );
   const [isRecording, setIsRecording] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [room, setRoom] = useState<any>(null);
+  const [room, setRoom] = useState<Room | null>(null);
   const [currentUsername, setCurrentUsername] = useState<string | null>(null);
   const [roomOwnerUsername, setRoomOwnerUsername] = useState<string | null>(
     null
@@ -27,12 +35,31 @@ const RoomPage = ({ params }: { params: Params }) => {
   const [inputDevices, setInputDevices] = useState<MediaDeviceInfo[]>([]);
   const [selectedDeviceId, setSelectedDeviceId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [visualizerData, setVisualizerData] = useState<number[]>([]);
 
+  // Audio Context and nodes
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const sourceNodeRef = useRef<AudioBufferSourceNode | null>(null);
+  const analyserNodeRef = useRef<AnalyserNode | null>(null);
+  const audioBufferQueue = useRef<AudioBuffer[]>([]);
+  const isPlayingRef = useRef(false);
+
+  // Initialize AudioContext and Analyzer
+  useEffect(() => {
+    audioContextRef.current = new AudioContext();
+    analyserNodeRef.current = audioContextRef.current.createAnalyser();
+    analyserNodeRef.current.fftSize = 256;
+    analyserNodeRef.current.connect(audioContextRef.current.destination);
+
+    return () => {
+      audioContextRef.current?.close();
+    };
+  }, []);
+
+  // Room and user data fetching
   useEffect(() => {
     const fetchRoomData = async () => {
       try {
-        console.log("Fetching room data...");
         const { data: roomData, error: roomError } = await supabase
           .from("rooms")
           .select("id, name, created_by")
@@ -45,7 +72,6 @@ const RoomPage = ({ params }: { params: Params }) => {
           return;
         }
 
-        console.log("Room data fetched:", roomData);
         setRoom(roomData);
 
         const { data: user, error: userError } = await supabase
@@ -58,7 +84,6 @@ const RoomPage = ({ params }: { params: Params }) => {
           console.error("Error fetching user:", userError);
           setError("Error fetching room owner information");
         } else {
-          console.log("Room owner username fetched:", user.username);
           setRoomOwnerUsername(user.username);
         }
       } catch (error) {
@@ -71,7 +96,6 @@ const RoomPage = ({ params }: { params: Params }) => {
 
     const fetchCurrentUser = async () => {
       try {
-        console.log("Fetching current user...");
         const { data: currentUserResponse } = await supabase.auth.getUser();
         const currentUserId = currentUserResponse?.user?.id;
 
@@ -86,7 +110,6 @@ const RoomPage = ({ params }: { params: Params }) => {
             console.error("Error fetching current user:", userError);
             setError("Error fetching user information");
           } else {
-            console.log("Current user fetched:", currentUser);
             setCurrentUsername(currentUser?.username || null);
           }
         }
@@ -100,7 +123,22 @@ const RoomPage = ({ params }: { params: Params }) => {
     fetchCurrentUser();
   }, [id, supabase]);
 
+  // Audio visualization update
+  const updateVisualizerData = useCallback(() => {
+    if (!analyserNodeRef.current) return;
+
+    const dataArray = new Uint8Array(analyserNodeRef.current.frequencyBinCount);
+    analyserNodeRef.current.getByteFrequencyData(dataArray);
+    setVisualizerData(Array.from(dataArray));
+
+    requestAnimationFrame(updateVisualizerData);
+  }, []);
+
+  // Audio chunk fetching and playing
   const fetchLatestAudioChunk = useCallback(async () => {
+    if (!audioContextRef.current || currentUsername === roomOwnerUsername)
+      return;
+
     try {
       const { data, error } = await supabase
         .from("streams")
@@ -109,56 +147,80 @@ const RoomPage = ({ params }: { params: Params }) => {
         .order("created_at", { ascending: false })
         .limit(1);
 
-      if (error) {
-        console.error("Error fetching latest audio chunk:", error);
-        setError("Error loading latest audio chunk");
-        return;
-      }
+      if (error) throw error;
 
-      if (data.length > 0 && audioRef.current) {
+      if (data.length > 0) {
         const audioUrl = data[0].url;
-        const audioElement = audioRef.current;
 
-        // Pause the audio element before changing the source
-        audioElement.pause();
+        const response = await fetch(audioUrl);
+        const arrayBuffer = await response.arrayBuffer();
 
-        // Update the source URL directly
-        audioElement.src = audioUrl;
-        audioElement.load();
+        const audioBuffer = await audioContextRef.current.decodeAudioData(
+          arrayBuffer
+        );
+        audioBufferQueue.current.push(audioBuffer);
 
-        // Play the audio
-        audioElement.play().catch((e) => {
-          console.error("Error playing audio:", e);
-        });
+        if (!isPlayingRef.current) {
+          playNextBuffer();
+          updateVisualizerData();
+        }
       }
     } catch (error) {
       console.error("Error in fetchLatestAudioChunk:", error);
       setError("Error loading latest audio chunk");
     }
-  }, [id, supabase]);
+  }, [id, supabase, currentUsername, roomOwnerUsername, updateVisualizerData]);
 
   useEffect(() => {
-    const interval = setInterval(fetchLatestAudioChunk, 1000); // Fetch latest chunk every second
+    const interval = setInterval(fetchLatestAudioChunk, 1000);
     return () => clearInterval(interval);
   }, [fetchLatestAudioChunk]);
 
+  // Audio buffer playback
+  const playNextBuffer = useCallback(() => {
+    if (
+      !audioContextRef.current ||
+      !analyserNodeRef.current ||
+      audioBufferQueue.current.length === 0
+    ) {
+      isPlayingRef.current = false;
+      return;
+    }
+
+    isPlayingRef.current = true;
+    const buffer = audioBufferQueue.current.shift();
+
+    if (buffer) {
+      const source = audioContextRef.current.createBufferSource();
+      source.buffer = buffer;
+      source.connect(analyserNodeRef.current);
+
+      source.onended = () => {
+        playNextBuffer();
+      };
+
+      source.start(0);
+      sourceNodeRef.current = source;
+    }
+  }, []);
+
+  // Audio chunk upload
   const uploadChunkToSupabase = useCallback(
     async (chunk: BlobPart, chunkIndex: number) => {
       try {
         const fileName = `audio-chunk-${Date.now()}-${chunkIndex}.webm`;
-        const file = new File([chunk], fileName, { type: "audio/webm" });
+        const file = new File([chunk], fileName, {
+          type: "audio/webm; codecs=opus",
+        });
 
         const { data, error: uploadError } = await supabase.storage
           .from("streams")
           .upload(`rooms/${id}/${fileName}`, file, {
+            contentType: "audio/webm",
             upsert: true,
           });
 
-        if (uploadError) {
-          console.error("Error uploading chunk to storage:", uploadError);
-          setError("Error uploading audio chunk");
-          return;
-        }
+        if (uploadError) throw uploadError;
 
         const {
           data: { publicUrl },
@@ -168,15 +230,10 @@ const RoomPage = ({ params }: { params: Params }) => {
           room_id: id,
           file_name: fileName,
           url: publicUrl,
+          created_at: new Date().toISOString(),
         });
 
-        if (insertError) {
-          console.error("Error inserting stream record:", insertError);
-          setError("Error saving audio chunk information");
-          return;
-        }
-
-        console.log("Chunk upload successful:", publicUrl);
+        if (insertError) throw insertError;
       } catch (error) {
         console.error("Error in chunk upload process:", error);
         setError("Error during chunk upload process");
@@ -185,6 +242,7 @@ const RoomPage = ({ params }: { params: Params }) => {
     [id, supabase]
   );
 
+  // Device handling
   const handleDeviceChange = useCallback(async () => {
     try {
       const devices = await navigator.mediaDevices.enumerateDevices();
@@ -192,7 +250,6 @@ const RoomPage = ({ params }: { params: Params }) => {
         (device) => device.kind === "audioinput"
       );
 
-      console.log("Available audio devices:", audioInputDevices);
       setInputDevices(audioInputDevices);
 
       if (selectedDeviceId === null && audioInputDevices.length > 0) {
@@ -208,6 +265,7 @@ const RoomPage = ({ params }: { params: Params }) => {
     handleDeviceChange();
   }, [handleDeviceChange]);
 
+  // Recording controls
   const startRecording = useCallback(async () => {
     if (!selectedDeviceId) {
       setError("No audio device selected");
@@ -221,27 +279,27 @@ const RoomPage = ({ params }: { params: Params }) => {
           echoCancellation: true,
           noiseSuppression: true,
           autoGainControl: true,
+          sampleRate: 48000,
         },
       });
 
       const recorder = new MediaRecorder(stream, {
-        mimeType: "audio/webm",
+        mimeType: "audio/webm;codecs=opus",
+        audioBitsPerSecond: 128000,
       });
 
       let chunkIndex = 0;
 
       recorder.ondataavailable = async (event) => {
         if (event.data.size > 0) {
-          console.log("Data chunk received:", event.data.size);
           await uploadChunkToSupabase(event.data, chunkIndex++);
         }
       };
 
-      recorder.start(1000); // Collect data every second
+      recorder.start(1000);
       setMediaRecorder(recorder);
       setIsRecording(true);
       setError(null);
-      console.log("Recording started");
     } catch (error) {
       console.error("Error starting recording:", error);
       setError("Error starting recording");
@@ -254,7 +312,6 @@ const RoomPage = ({ params }: { params: Params }) => {
       mediaRecorder.stop();
       mediaRecorder.stream.getTracks().forEach((track) => track.stop());
       setIsRecording(false);
-      console.log("Recording stopped");
     }
   }, [mediaRecorder]);
 
@@ -266,33 +323,30 @@ const RoomPage = ({ params }: { params: Params }) => {
     }
   }, [isRecording, startRecording, stopRecording]);
 
+  if (loading) {
+    return <div className="text-white">Loading...</div>;
+  }
+
   return (
-    <main className="flex flex-col items-center justify-center h-dvh pt-4">
+    <main className="flex flex-col items-center justify-center min-h-dvh pt-4 bg-gray-900">
       {error && (
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
           {error}
         </div>
       )}
 
-      {roomOwnerUsername === currentUsername && (
-        <h3 className="text-white bg-red-600 p-1 m-1 text-sm rounded-lg border-2 border-black">
-          <button onClick={handleRecord}>
-            {isRecording ? "Stop Recording" : "Start Recording"}
-          </button>
-        </h3>
-      )}
-      <div className="flex flex-col text-center text-pretty items-center justify-center p-4 rounded-lg bg-gray-700">
-        <div className="z-10 hover:text-realGreen text-white transition-all duration-200">
+      <div className="flex flex-col text-center items-center justify-center p-4 rounded-lg bg-gray-800 shadow-xl mb-4">
+        <div className="z-10 text-white hover:text-green-400 transition-all duration-200">
           <Link href="/">FRIQUENCY RADIO</Link>
         </div>
-        <div className="text-2xl text-blue-500">
+        <div className="text-2xl text-blue-400">
           📡{" "}
           <span className="text-pink-400 hover:text-pink-600 cursor-pointer transition-all duration-200">
             {room?.name}
           </span>{" "}
           📡
         </div>
-        <p className="text-green-500 text-sm">
+        <p className="text-green-400 text-sm">
           Curated by:{" "}
           <span className="font-bold">
             {"@" + (roomOwnerUsername || "Unknown")}
@@ -302,30 +356,39 @@ const RoomPage = ({ params }: { params: Params }) => {
           <CopyURL />
         </div>
       </div>
-      <audio
-        ref={audioRef}
-        autoPlay
-        muted={currentUsername === roomOwnerUsername}
-      />
-      <div>
-        <label htmlFor="audioDevices" className="text-white">
-          Select Audio Input Device:
-        </label>
-        <select
-          id="audioDevices"
-          value={selectedDeviceId || ""}
-          onChange={(e) => setSelectedDeviceId(e.target.value)}
-        >
-          <option value="" disabled>
-            Select an audio device
-          </option>
-          {inputDevices.map((device) => (
-            <option key={device.deviceId} value={device.deviceId}>
-              {device.label || `Device ${device.deviceId}`}
+
+      {roomOwnerUsername === currentUsername && (
+        <div className="mb-4">
+          <select
+            id="audioDevices"
+            value={selectedDeviceId || ""}
+            onChange={(e) => setSelectedDeviceId(e.target.value)}
+            className="bg-gray-700 text-white rounded px-3 py-2 mr-2"
+          >
+            <option value="" disabled>
+              Select an audio device
             </option>
-          ))}
-        </select>
-      </div>
+            {inputDevices.map((device) => (
+              <option key={device.deviceId} value={device.deviceId}>
+                {device.label || `Device ${device.deviceId}`}
+              </option>
+            ))}
+          </select>
+
+          <button
+            onClick={handleRecord}
+            className={`px-4 py-2 rounded-lg font-semibold ${
+              isRecording
+                ? "bg-red-600 hover:bg-red-700"
+                : "bg-green-600 hover:bg-green-700"
+            } text-white transition-all duration-200`}
+          >
+            {isRecording ? "Stop Broadcasting" : "Start Broadcasting"}
+          </button>
+        </div>
+      )}
+
+      <AudioVisualizer data={visualizerData} />
       <ChatContainer id={id} />
     </main>
   );
