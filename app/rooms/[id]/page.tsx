@@ -14,16 +14,12 @@ const RoomPage = ({ params }: { params: Params }) => {
   const { id } = params;
   const supabase = createClient();
 
-  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(
-    null
-  );
+  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
   const [isRecording, setIsRecording] = useState(false);
   const [loading, setLoading] = useState(true);
   const [room, setRoom] = useState<any>(null);
   const [currentUsername, setCurrentUsername] = useState<string | null>(null);
-  const [roomOwnerUsername, setRoomOwnerUsername] = useState<string | null>(
-    null
-  );
+  const [roomOwnerUsername, setRoomOwnerUsername] = useState<string | null>(null);
   const [inputDevices, setInputDevices] = useState<MediaDeviceInfo[]>([]);
   const [selectedDeviceId, setSelectedDeviceId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -118,10 +114,7 @@ const RoomPage = ({ params }: { params: Params }) => {
       if (data.length > 0 && audioRef.current) {
         const audioUrl = data[0].url;
         const audioElement = audioRef.current;
-        const source = document.createElement("source");
-        source.src = audioUrl;
-        source.type = "audio/webm";
-        audioElement.appendChild(source);
+        audioElement.src = audioUrl; // Update the source URL directly
         audioElement.load();
         audioElement.play();
       }
@@ -296,7 +289,7 @@ const RoomPage = ({ params }: { params: Params }) => {
           <CopyURL />
         </div>
       </div>
-      <audio ref={audioRef} autoPlay />
+      <audio ref={audioRef} autoPlay muted={currentUsername === roomOwnerUsername} />
       <div>
         <label htmlFor="audioDevices" className="text-white">
           Select Audio Input Device:
