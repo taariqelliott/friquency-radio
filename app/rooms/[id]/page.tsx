@@ -134,6 +134,34 @@ const RoomPage = ({ params }: { params: Params }) => {
     requestAnimationFrame(updateVisualizerData);
   }, []);
 
+  // Audio buffer playback
+  const playNextBuffer = useCallback(() => {
+    if (
+      !audioContextRef.current ||
+      !analyserNodeRef.current ||
+      audioBufferQueue.current.length === 0
+    ) {
+      isPlayingRef.current = false;
+      return;
+    }
+
+    isPlayingRef.current = true;
+    const buffer = audioBufferQueue.current.shift();
+
+    if (buffer) {
+      const source = audioContextRef.current.createBufferSource();
+      source.buffer = buffer;
+      source.connect(analyserNodeRef.current);
+
+      source.onended = () => {
+        playNextBuffer();
+      };
+
+      source.start(0);
+      sourceNodeRef.current = source;
+    }
+  }, []);
+
   // Audio chunk fetching and playing
   const fetchLatestAudioChunk = useCallback(async () => {
     if (!audioContextRef.current || currentUsername === roomOwnerUsername)
@@ -169,40 +197,19 @@ const RoomPage = ({ params }: { params: Params }) => {
       console.error("Error in fetchLatestAudioChunk:", error);
       setError("Error loading latest audio chunk");
     }
-  }, [id, supabase, currentUsername, roomOwnerUsername, updateVisualizerData]);
+  }, [
+    id,
+    supabase,
+    currentUsername,
+    roomOwnerUsername,
+    updateVisualizerData,
+    playNextBuffer,
+  ]);
 
   useEffect(() => {
     const interval = setInterval(fetchLatestAudioChunk, 1000);
     return () => clearInterval(interval);
   }, [fetchLatestAudioChunk]);
-
-  // Audio buffer playback
-  const playNextBuffer = useCallback(() => {
-    if (
-      !audioContextRef.current ||
-      !analyserNodeRef.current ||
-      audioBufferQueue.current.length === 0
-    ) {
-      isPlayingRef.current = false;
-      return;
-    }
-
-    isPlayingRef.current = true;
-    const buffer = audioBufferQueue.current.shift();
-
-    if (buffer) {
-      const source = audioContextRef.current.createBufferSource();
-      source.buffer = buffer;
-      source.connect(analyserNodeRef.current);
-
-      source.onended = () => {
-        playNextBuffer();
-      };
-
-      source.start(0);
-      sourceNodeRef.current = source;
-    }
-  }, []);
 
   // Audio chunk upload
   const uploadChunkToSupabase = useCallback(
