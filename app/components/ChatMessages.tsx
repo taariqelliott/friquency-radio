@@ -5,6 +5,7 @@ import MessageList from "./MessageList";
 interface Message {
   message_id: string;
   message_text: string;
+  image_url?: string;
   created_at: string;
   user_id: string;
   room_id: string;
@@ -40,10 +41,12 @@ const ChatMessages = ({
           throw error;
         }
 
+      
         const messagesWithUsernames =
           messagesData?.map((message: any) => ({
             ...message,
             username: message.users?.username || "Unknown",
+            image_url: message.image_url || null,
           })) ?? [];
 
         setMessages(messagesWithUsernames);
@@ -79,6 +82,7 @@ const ChatMessages = ({
               const newMessage = {
                 ...payload.new,
                 username: newMessageData?.username || "Unknown",
+                image_url: payload.new.image_url || null,
               };
 
               setMessages((prevMessages) => [

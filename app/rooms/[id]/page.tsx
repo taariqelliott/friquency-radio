@@ -19,7 +19,7 @@ const RoomPage = async ({ params }: { params: { id: string } }) => {
     notFound();
   }
 
-  // Fetch current user data (optional)
+  // Fetch current user data
   const { data: currentUserResponse } = await supabase.auth.getUser();
   const currentUsername = currentUserResponse?.user?.id;
 
