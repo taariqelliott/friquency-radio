@@ -122,25 +122,14 @@ const RoomPage = ({ params }: { params: Params }) => {
         // Pause the audio element before changing the source
         audioElement.pause();
 
-        // Create a new source element with the correct type
-        const sourceElement = document.createElement("source");
-        sourceElement.src = audioUrl;
-        sourceElement.type = "audio/webm";
-
-        // Remove any existing source elements
-        audioElement.innerHTML = "";
-
-        // Append the new source element to the audio element
-        audioElement.appendChild(sourceElement);
-
+        // Update the source URL directly
+        audioElement.src = audioUrl;
         audioElement.load();
 
-        // Check if the audio element is not already playing or paused
-        if (!audioElement.paused) {
-          audioElement.play().catch((e) => {
-            console.error("Error playing audio:", e);
-          });
-        }
+        // Play the audio
+        audioElement.play().catch((e) => {
+          console.error("Error playing audio:", e);
+        });
       }
     } catch (error) {
       console.error("Error in fetchLatestAudioChunk:", error);
