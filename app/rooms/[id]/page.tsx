@@ -14,16 +14,12 @@ const RoomPage = ({ params }: { params: Params }) => {
   const { id } = params;
   const supabase = createClient();
 
-  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(
-    null
-  );
+  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
   const [isRecording, setIsRecording] = useState(false);
   const [loading, setLoading] = useState(true);
   const [room, setRoom] = useState<any>(null);
   const [currentUsername, setCurrentUsername] = useState<string | null>(null);
-  const [roomOwnerUsername, setRoomOwnerUsername] = useState<string | null>(
-    null
-  );
+  const [roomOwnerUsername, setRoomOwnerUsername] = useState<string | null>(null);
   const [inputDevices, setInputDevices] = useState<MediaDeviceInfo[]>([]);
   const [selectedDeviceId, setSelectedDeviceId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -289,7 +285,7 @@ const RoomPage = ({ params }: { params: Params }) => {
         <p className="text-green-500 text-sm">
           Curated by:{" "}
           <span className="font-bold">
-            {"@" + (roomOwnerUsername || "")}
+            {"@" + (roomOwnerUsername || "Unknown")}
           </span>
         </p>
         <div className="p-2 hover:opacity-75">
@@ -297,6 +293,25 @@ const RoomPage = ({ params }: { params: Params }) => {
         </div>
       </div>
       <audio ref={audioRef} autoPlay />
+      <div>
+        <label htmlFor="audioDevices" className="text-white">
+          Select Audio Input Device:
+        </label>
+        <select
+          id="audioDevices"
+          value={selectedDeviceId || ""}
+          onChange={(e) => setSelectedDeviceId(e.target.value)}
+        >
+          <option value="" disabled>
+            Select an audio device
+          </option>
+          {inputDevices.map((device) => (
+            <option key={device.deviceId} value={device.deviceId}>
+              {device.label || `Device ${device.deviceId}`}
+            </option>
+          ))}
+        </select>
+      </div>
       <ChatContainer id={id} />
     </main>
   );
