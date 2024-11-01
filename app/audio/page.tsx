@@ -1,50 +1,52 @@
-"use client";
+'use client';
 
 import {
   ControlBar,
   LiveKitRoom,
   RoomAudioRenderer,
-} from "@livekit/components-react";
-import "@livekit/components-styles";
-import { useEffect, useState } from "react";
+} from '@livekit/components-react';
+import '@livekit/components-styles';
+import { useEffect, useState } from 'react';
 
-export default function Page() {
-  // TODO: get user input for room and name
-  const room = "quickstart-room";
-  const name = "quickstart-user";
-  const [token, setToken] = useState("");
+export default function AudioOnlyPage() {
+  // Define the room name and participant name (these can be customized as needed)
+  const room = 'quickstart-room';
+  const name = 'quickstart-user';
+  const [token, setToken] = useState('');
 
   useEffect(() => {
+    // Fetch the token for authentication when the component mounts
     (async () => {
       try {
-        const resp = await fetch(
+        const response = await fetch(
           `/api/get-participant-token?room=${room}&username=${name}`
         );
-        const data = await resp.json();
+        const data = await response.json();
         setToken(data.token);
-      } catch (e) {
-        console.error(e);
+      } catch (error) {
+        console.error('Error fetching token:', error);
       }
     })();
   }, []);
 
-  if (token === "") {
+  // Show a loading message while fetching the token
+  if (!token) {
     return <div>Getting token...</div>;
   }
 
   return (
     <LiveKitRoom
-      video={false} // Disable video
       audio={true} // Enable audio
+      video={false} // Ensure video is disabled
       token={token}
       serverUrl={process.env.NEXT_PUBLIC_LIVEKIT_URL}
-      // Use the default LiveKit theme for nice styles.
+      // Apply the default LiveKit theme
       data-lk-theme="default"
-      style={{ height: "100dvh" }}
+      style={{ height: '100dvh' }}
     >
-      {/* No video conference component needed, just RoomAudioRenderer */}
+      {/* Render only audio components */}
       <RoomAudioRenderer />
-      {/* Controls for the user to start/stop audio and to leave the room. */}
+      {/* Control bar for managing audio and leaving the room */}
       <ControlBar />
     </LiveKitRoom>
   );
