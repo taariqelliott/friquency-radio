@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { useState, useRef } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import { IconPhotoPlus } from "@tabler/icons-react";
+import Image from "next/image";
 
 interface ChatInputForm {
   message_text: string;
@@ -134,7 +135,7 @@ const ChatInput = ({
 
       {imageFile && (
         <div className="flex relative items-center justify-center">
-          <img
+          <Image
             src={URL.createObjectURL(imageFile)}
             className="h-11 w-11 object-cover rounded mr-2"
             alt=""

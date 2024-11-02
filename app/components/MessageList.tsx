@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 interface Message {
@@ -108,7 +109,7 @@ const MessageList = ({
             </div>
 
             {message.image_url && (
-              <img
+              <Image
                 src={message.image_url}
                 alt="Uploaded"
                 className="mt-2 max-w-full rounded"

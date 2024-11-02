@@ -41,7 +41,6 @@ const ChatMessages = ({
           throw error;
         }
 
-      
         const messagesWithUsernames =
           messagesData?.map((message: any) => ({
             ...message,

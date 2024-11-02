@@ -11,7 +11,7 @@ import {
   LiveKitRoom,
   RoomAudioRenderer,
 } from "@livekit/components-react";
-import { createLocalAudioTrack, AudioPresets } from "livekit-client";
+import { createLocalAudioTrack } from "livekit-client";
 import "@livekit/components-styles";
 import { useEffect, useState } from "react";
 
