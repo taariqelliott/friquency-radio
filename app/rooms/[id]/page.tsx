@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import CopyURL from "@/app/components/CopyURL";
 import Link from "next/link";
 import ChatContainer from "@/app/components/ChatContainer";
+import ClientPlayer from "../../components/TwitchComponent";
 
 const RoomPage = async ({ params }: { params: { id: string } }) => {
   const { id } = params;
@@ -47,10 +48,13 @@ const RoomPage = async ({ params }: { params: { id: string } }) => {
   return (
     <main className="flex flex-col items-center justify-center h-dvh pt-4">
       {user.username === currentUser?.username && (
-        <h3 className="text-white bg-red-600 p-1 m-1 text-sm rounded-lg border-2 border-black">
-          Start Stream
-        </h3>
+        <div>
+          <h3 className="text-white bg-red-600 p-1 m-1 text-sm rounded-lg border-2 border-black">
+            Start Stream
+          </h3>
+        </div>
       )}
+      <ClientPlayer />
       <div className="flex flex-col text-center text-pretty items-center justify-center p-4 rounded-lg bg-gray-700">
         <div className="z-10 hover:text-realGreen text-white transition-all duration-200">
           <Link href="/">FRIQUENCY RADIO</Link>
