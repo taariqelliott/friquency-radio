@@ -22,7 +22,7 @@ const RoomPage = async ({ params }: { params: { id: string } }) => {
 
   // Fetch current user data
   const { data: currentUserResponse } = await supabase.auth.getUser();
-  const currentUsername = currentUserResponse?.user?.id;
+  const currentUsername = currentUserResponse?.user?.id ?? null;
 
   // Fetch current user's username if logged in
   const { data: currentUser } = currentUsername
@@ -47,14 +47,14 @@ const RoomPage = async ({ params }: { params: { id: string } }) => {
 
   return (
     <main className="flex flex-col items-center justify-center h-dvh pt-4">
-      {user.username === currentUser?.username && (
+      {user?.username && currentUser?.username === user.username && (
         <div>
           <h3 className="text-white bg-red-600 p-1 m-1 text-sm rounded-lg border-2 border-black">
             Start Stream
           </h3>
         </div>
       )}
-      <ClientPlayer />
+      <ClientPlayer room={room} />
       <div className="flex flex-col text-center text-pretty items-center justify-center p-4 rounded-lg bg-gray-700">
         <div className="z-10 hover:text-realGreen text-white transition-all duration-200">
           <Link href="/">FRIQUENCY RADIO</Link>

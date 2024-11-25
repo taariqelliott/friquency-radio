@@ -5,11 +5,14 @@ import { useRouter } from "next/navigation";
 import { createRoom } from "../rooms/all/actions";
 import { TextInput, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { createClient } from "@/utils/supabase/client";
 
 export default function CreateRoom() {
   const [opened, { open, close }] = useDisclosure(false);
   const [name, setName] = useState("");
+  const [twitchUsername, setTwitchUsername] = useState("");
   const router = useRouter();
+  const supabase = createClient();
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -43,7 +46,24 @@ export default function CreateRoom() {
     try {
       const result = await createRoom(formData);
       if ("roomId" in result) {
-        router.push(`/rooms/${result.roomId}`);
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+        if (user) {
+          const { error } = await supabase
+            .from("users")
+            .update({ twitchUsername })
+            .eq("id", user.id);
+
+          if (error) {
+            console.error("Error updating Twitch username:", error);
+            alert(`Failed to update Twitch username: ${error.message}`);
+          } else {
+            router.push(`/rooms/${result.roomId}`);
+          }
+        } else {
+          alert("User not authenticated");
+        }
       } else if ("error" in result) {
         console.error("Error creating room:", result.error);
         alert(`Failed to create room: ${result.error}`);
@@ -73,6 +93,17 @@ export default function CreateRoom() {
               required
               value={name}
               onChange={(event) => setName(event.target.value)}
+            />
+          </label>
+          <label htmlFor="twitchUsername" className="block w-full mb-2">
+            Twitch Username:
+            <TextInput
+              id="twitchUsername"
+              name="twitchUsername"
+              type="text"
+              required
+              value={twitchUsername}
+              onChange={(event) => setTwitchUsername(event.target.value)}
             />
           </label>
           <button
