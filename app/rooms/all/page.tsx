@@ -9,9 +9,31 @@ import CreateRoom from "@/app/components/CreateRoom";
 interface Room {
   id: string;
   name: string;
+  created_by: string;
+  username: string;
 }
 
 const supabase = createClient();
+
+const fetchCurrentUser = async () => {
+  const { data: currentUserResponse } = await supabase.auth.getUser();
+  const currentUserId = currentUserResponse?.user?.id ?? null;
+
+  if (!currentUserId) return null;
+
+  const { data: currentUser, error } = await supabase
+    .from("users")
+    .select("username")
+    .eq("id", currentUserId)
+    .single();
+
+  if (error) {
+    console.error("Error fetching current user:", error.message);
+    return null;
+  }
+
+  return currentUser?.username || null;
+};
 
 const RoomsPage = () => {
   const [user, setUser] = useState<null | User>(null);
@@ -34,20 +56,41 @@ const RoomsPage = () => {
 
 const ListAllRooms = () => {
   const [rooms, setRooms] = useState<Room[]>([]);
+  const [currentUsername, setCurrentUsername] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<PostgrestError | null>(null);
 
   useEffect(() => {
-    const fetchRooms = async () => {
-      const { data, error } = await supabase.from("rooms").select("*");
+    const fetchRoomsAndCurrentUser = async () => {
+      // Fetch the current user's username
+      const username = await fetchCurrentUser();
+      setCurrentUsername(username);
+
+      // Fetch rooms with creator usernames
+      const { data, error } = await supabase.from("rooms").select(`
+        id,
+        name,
+        created_by,
+        users:created_by (username)
+      `);
+
       if (error) {
         setError(error);
       } else {
-        setRooms(data);
+        // Map the result to flatten the username into the room object
+        const roomsWithCreators = data.map((room: any) => ({
+          id: room.id,
+          name: room.name,
+          created_by: room.created_by,
+          username: room.users.username, // Extract username from the joined data
+        }));
+        setRooms(roomsWithCreators);
       }
+
       setLoading(false);
     };
-    fetchRooms();
+
+    fetchRoomsAndCurrentUser();
 
     const channel = supabase
       .channel("public:rooms")
@@ -96,6 +139,18 @@ const ListAllRooms = () => {
               >
                 {room.name}
               </Link>
+              <span> -</span>
+              <span className="ml-4 text-sm">
+                {room.username === currentUsername ? (
+                  <span className="bg-black text-green-500 border border-pink-500 p-1 rounded-sm">
+                    My Room
+                  </span>
+                ) : (
+                  <span className="text-gray-400">
+                    Created by: {room.username}
+                  </span>
+                )}
+              </span>
             </li>
           ))}
       </ul>

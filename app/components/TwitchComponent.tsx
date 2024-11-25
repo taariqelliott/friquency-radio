@@ -32,12 +32,10 @@ export default function ClientPlayer({ room }: { room: Room }) {
   useEffect(() => {
     const checkRoomOwnership = async () => {
       try {
-        // Get current user data
         const { data: currentUserResponse } = await supabase.auth.getUser();
         const currentUserId = currentUserResponse?.user?.id;
 
         if (currentUserId) {
-          // Get current user's username
           const { data: currentUser } = await supabase
             .from("users")
             .select("username")
@@ -47,7 +45,6 @@ export default function ClientPlayer({ room }: { room: Room }) {
           setCurrentUserName(currentUser?.username || null);
         }
 
-        // Get room owner's username
         const { data: roomOwner } = await supabase
           .from("users")
           .select("username")
@@ -55,11 +52,8 @@ export default function ClientPlayer({ room }: { room: Room }) {
           .single();
 
         setRoomOwnerName(roomOwner?.username || null);
-
-        // Set room ownership based on usernames
         setIsRoomOwner(currentUserName === roomOwnerName);
 
-        // Get Twitch username for the room owner
         const { data: twitchData, error: twitchError } = await supabase
           .from("users")
           .select("twitchUsername")
@@ -117,38 +111,35 @@ export default function ClientPlayer({ room }: { room: Room }) {
           onChange={(event) => setEditUsername(event.currentTarget.value)}
           placeholder="Enter your Twitch username"
         />
-        <Button onClick={handleUpdateUsername}>Update Username</Button>
+        <Button onClick={handleUpdateUsername} className="mt-2">
+          Update Username
+        </Button>
       </Modal>
 
       <div className="">
-        {/* Show play/pause for non-room owners */}
-        {currentUserName &&
-          roomOwnerName &&
-          currentUserName !== roomOwnerName && (
-            <button
-              onClick={togglePlayback}
-              className="play-button border-2 rounded-lg border-pink-500 p-2 bg-black text-green-500 hover:opacity-50"
-            >
-              {isPlaying ? <IconPlayerPause /> : <IconPlayerPlay />}
-            </button>
-          )}
+        {(!currentUserName || currentUserName !== roomOwnerName) && (
+          <button
+            onClick={togglePlayback}
+            className="play-button border-2 rounded-lg border-pink-500 p-2 bg-black text-green-500 hover:opacity-50"
+          >
+            {isPlaying ? <IconPlayerPause /> : <IconPlayerPlay />}
+          </button>
+        )}
 
-        {/* Show settings for room owner */}
         {currentUserName &&
           roomOwnerName &&
           currentUserName === roomOwnerName && (
             <button
               onClick={open}
-              className="border-2 rounded-lg border-pink-500 p-2 bg-black text-green-500 hover:opacity-50"
+              className="border-2 rounded-lg border-pink-500 p-2 bg-black text-green-500 hover:opacity-50 "
             >
               <IconSettings />
             </button>
           )}
       </div>
 
-      {/* Always show the iframe and currently playing text when playing */}
       {isPlaying && (
-        <>
+        <div>
           <iframe
             src={twitchStream}
             height="0"
@@ -167,7 +158,7 @@ export default function ClientPlayer({ room }: { room: Room }) {
               {twitchUsername}
             </a>
           </h1>
-        </>
+        </div>
       )}
     </div>
   );
