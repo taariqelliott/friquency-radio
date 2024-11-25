@@ -95,7 +95,11 @@ export default function ClientPlayer({ room }: { room: Room }) {
     }
   };
 
-  const twitchStream = `https://player.twitch.tv/?channel=${twitchUsername}&parent=localhost&muted=false`;
+  const hostname =
+    typeof window !== "undefined" ? window.location.hostname : "localhost";
+
+  // Include multiple domains for local and production
+  const twitchStream = `https://player.twitch.tv/?channel=${twitchUsername}&parent=${hostname}&parent=yourdomain.com&muted=false`;
 
   return (
     <div className="absolute top-4 left-4">
