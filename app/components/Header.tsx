@@ -82,7 +82,7 @@ export default function Header() {
               </Modal>
               <button
                 onClick={open}
-                className="hover:text-pink-500 mr-2 mt-[2px] hidden md:flex"
+                className="hover:text-pink-500 mr-2 mt-[2px]"
               >
                 <span className="text-sm bg-black border rounded-md border-pink-500 px-2 py-1">
                   <span className=" text-green-500">@</span>
