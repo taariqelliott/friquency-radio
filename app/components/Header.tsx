@@ -1,10 +1,16 @@
 "use client";
 import { createClient } from "@/utils/supabase/client";
-import { useMantineColorScheme, Button, MantineProvider } from "@mantine/core";
-import Link from "next/link";
+import {
+  useMantineColorScheme,
+  Button,
+  MantineProvider,
+  Modal,
+} from "@mantine/core";
 import { useEffect, useState, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconBrightness2, IconMoonStars } from "@tabler/icons-react";
+import { useDisclosure } from "@mantine/hooks";
+import ProfileEditPage from "../profile/edit/page";
 
 interface User {
   username: string;
@@ -16,6 +22,7 @@ export default function Header() {
   const [isClient, setIsClient] = useState(false);
   const [supabase] = useState(() => createClient());
   const searchParams = useSearchParams();
+  const [opened, { open, close }] = useDisclosure(false);
 
   const buttons = [
     { label: "home", onClick: () => (window.location.href = "/") },
@@ -64,15 +71,25 @@ export default function Header() {
       <div className="absolute z-10 text-white right-2 mt-2">
         <div className="flex flex-row items-start">
           {user && (
-            <Link
-              href="/profile/edit"
-              className="hover:text-pink-500 mr-2 mt-[2px] hidden md:flex"
-            >
-              <span className="text-sm bg-black border rounded-md border-pink-500 px-2 py-1">
-                <span className="text-green-500">@</span>
-                {user.username}
-              </span>
-            </Link>
+            <div>
+              <Modal
+                opened={opened}
+                centered
+                onClose={close}
+                title="Edit your profile"
+              >
+                <ProfileEditPage />
+              </Modal>
+              <button
+                onClick={open}
+                className="hover:text-pink-500 mr-2 mt-[2px] hidden md:flex"
+              >
+                <span className="text-sm bg-black border rounded-md border-pink-500 px-2 py-1">
+                  <span className=" text-green-500">@</span>
+                  {user.username}
+                </span>
+              </button>
+            </div>
           )}
           <div className="flex flex-col gap-1">
             <Button

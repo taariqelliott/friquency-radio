@@ -73,7 +73,7 @@ export default function ProfileEditPage() {
 
   if (loading) {
     return (
-      <div className="flex justify-center text-2xl text-pink-500 font-bold items-center h-dvh">
+      <div className="text-2xl text-center text-pink-500 font-bold">
         Loading...
       </div>
     );
@@ -85,14 +85,19 @@ export default function ProfileEditPage() {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        justifyContent: "center",
         padding: "1rem",
-        height: "100vh",
       }}
     >
-      <h1>Profile Edit Page</h1>
+      {/* <h1 className="text-green-500 bg-black border-pink-500 border rounded p-1">
+        Edit your profile
+      </h1> */}
       {user?.email && <div>Email: {user?.email}</div>}
-      <div>Username: {profile.username || "No username set"}</div>
+      <div className="text-green-500 bg-black border-pink-500 border rounded p-1 px-2">
+        Username:{" "}
+        <span className="text-white font-bold">
+          {profile.username || "No username set"}
+        </span>
+      </div>
       <form action="submit" onSubmit={updateUsername}>
         <input
           type="text"
