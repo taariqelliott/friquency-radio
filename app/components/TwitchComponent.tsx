@@ -17,7 +17,7 @@ interface Room {
 
 export default function TwitchClientPlayer({ room }: { room: Room }) {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isVisible, setIsVisible] = useState(false); // State for visibility
+  const [isVisible, setIsVisible] = useState(false);
   const [twitchUsername, setTwitchUsername] = useState<string | null>(null);
   const [isRoomOwner, setIsRoomOwner] = useState(false);
   const [currentUserName, setCurrentUserName] = useState<string | null>(null);
@@ -116,7 +116,6 @@ export default function TwitchClientPlayer({ room }: { room: Room }) {
         >
           <TextInput
             label="Twitch Username:"
-            // className="text-center"
             value={editUsername}
             onChange={(event) => setEditUsername(event.currentTarget.value)}
             placeholder="Enter your Twitch username"
