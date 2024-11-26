@@ -115,19 +115,25 @@ export default function TwitchClientPlayer({ room }: { room: Room }) {
           centered
         >
           <TextInput
-            label="Twitch Username"
+            label="Twitch Username:"
+            // className="text-center"
             value={editUsername}
             onChange={(event) => setEditUsername(event.currentTarget.value)}
             placeholder="Enter your Twitch username"
           />
-          <Button onClick={handleUpdateUsername} className="mt-2">
-            Update Username
-          </Button>
+          <div className="flex items-center justify-center">
+            <Button
+              onClick={handleUpdateUsername}
+              color="green"
+              className="mt-2"
+            >
+              Update Username
+            </Button>
+          </div>
         </Modal>
 
         <div>
           <div className="flex flex-col justify-start">
-            {/* Buttons */}
             <div className="flex flex-row justify-start">
               {(!currentUserName || currentUserName !== roomOwnerName) && (
                 <button
@@ -138,15 +144,18 @@ export default function TwitchClientPlayer({ room }: { room: Room }) {
                 </button>
               )}
 
-              <button
-                onClick={toggleVisibility}
-                className="ml-2 border-2 rounded-lg border-blue-500 p-2 bg-black text-white hover:opacity-75"
-              >
-                {isVisible ? "Hide" : "Show"}
-              </button>
+              {currentUserName &&
+                roomOwnerName &&
+                currentUserName !== roomOwnerName && (
+                  <button
+                    onClick={toggleVisibility}
+                    className="ml-2 border-2 rounded-lg border-blue-500 p-2 bg-black text-white hover:opacity-75"
+                  >
+                    {isVisible ? "Hide" : "Show"}
+                  </button>
+                )}
             </div>
 
-            {/* Display username */}
             <div className="mt-2">
               {isPlaying && (
                 <a
@@ -175,12 +184,14 @@ export default function TwitchClientPlayer({ room }: { room: Room }) {
           {currentUserName &&
             roomOwnerName &&
             currentUserName === roomOwnerName && (
-              <button
-                onClick={open}
-                className="ml-2 border-2 rounded-lg border-pink-500 p-2 bg-black text-green-500 hover:opacity-50"
-              >
-                <IconSettings />
-              </button>
+              <div className="flex flex-col justify-start">
+                <button
+                  onClick={open}
+                  className="border-2 absolute left-0 top-0 rounded-lg border-pink-500 p-2 bg-black text-green-500 hover:opacity-50"
+                >
+                  <IconSettings className="" />
+                </button>
+              </div>
             )}
         </div>
       </div>
