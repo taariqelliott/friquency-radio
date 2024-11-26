@@ -58,14 +58,14 @@ const ChatContainer = ({ id }: ChatContainerProps) => {
                   href="/login"
                   className="hover:underline hover:text-pink-400"
                 >
-                  Login
+                  login
                 </Link>
                 {" or "}
                 <Link
                   href="/signup"
                   className="hover:underline hover:text-pink-400"
                 >
-                  Sign Up
+                  sign up
                 </Link>
                 {" to chat!"}
               </div>

@@ -59,7 +59,7 @@ export default function LoginPage() {
           <h1
             className={`text-center [word-spacing:-3px] tracking-tight text-realGreen font-bold text-3xl`}
           >
-            Login
+            login
           </h1>
           <label htmlFor="email" className={`block ${textColor}`}>
             email:
