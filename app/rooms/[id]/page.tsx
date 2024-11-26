@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import CopyURL from "@/app/components/CopyURL";
 import Link from "next/link";
 import ChatContainer from "@/app/components/ChatContainer";
-import ClientPlayer from "../../components/TwitchComponent";
+import TwitchClientPlayer from "../../components/TwitchComponent";
 
 const RoomPage = async ({ params }: { params: { id: string } }) => {
   const { id } = params;
@@ -46,39 +46,46 @@ const RoomPage = async ({ params }: { params: { id: string } }) => {
   }
 
   return (
-    <main className="flex flex-col items-center justify-center h-dvh pt-4">
-      {user?.username && currentUser?.username === user.username && (
-        <div>
-          <h3 className="text-white bg-red-600 p-1 m-1 text-sm rounded-lg border-2 border-black">
-            Room Owner
-          </h3>
-        </div>
-      )}
-      <ClientPlayer room={room} />
-      <div className="flex flex-col text-center text-pretty items-center justify-center p-4 rounded-lg bg-gray-700">
-        <div className="z-10 hover:text-realGreen text-white transition-all duration-200">
-          <Link href="/">FRIQUENCY RADIO</Link>
-        </div>
-        <div className="text-2xl text-blue-500">
-          📡{" "}
-          <span className="text-pink-400 hover:text-pink-600 cursor-pointer transition-all duration-200">
-            {room.name}
-          </span>{" "}
-          📡
-        </div>
-        <p className="text-green-500 text-sm">
-          Curated by:{" "}
-          <span className="font-bold">
-            {"@" + (user?.username || "Unknown")}
-          </span>
-        </p>
-        <div className="p-2 hover:opacity-75">
-          <CopyURL />
+    <main className="flex flex-col items-center justify-start h-dvh pt-6">
+      <div className="scale-[85%]">
+        {user?.username && currentUser?.username === user.username && (
+          <div className="flex justify-center w-full mt-2">
+            <h3 className="text-white bg-red-600 p-1 m-1 text-sm rounded-lg border-2 border-black">
+              Room Owner
+            </h3>
+          </div>
+        )}
+
+        <div className="flex flex-col items-center justify-center sm:p-2 rounded-lg bg-gray-700 mx-auto mt-1">
+          {/* Hide "FRIQUENCY RADIO" on small and medium screens */}
+          <div className="z-10 hover:text-realGreen text-white transition-all duration-200 hidden sm:block">
+            <Link href="/">FRIQUENCY RADIO</Link>
+          </div>
+
+          <div className="text-2xl text-blue-500 mt-1">
+            📡{" "}
+            <span className="text-pink-400 hover:text-pink-600 cursor-pointer transition-all duration-200">
+              {room.name}
+            </span>{" "}
+            📡
+          </div>
+
+          <p className="text-green-500 text-sm px-2">
+            Curated by:{" "}
+            <span className="font-bold">
+              {"@" + (user?.username || "Unknown")}
+            </span>
+          </p>
+
+          <div className="p-1 pb-2 hover:opacity-75 ">
+            <CopyURL />
+          </div>
         </div>
       </div>
+
+      <TwitchClientPlayer room={room} />
       <ChatContainer id={id} />
     </main>
   );
 };
-
 export default RoomPage;

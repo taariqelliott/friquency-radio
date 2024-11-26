@@ -49,7 +49,7 @@ const RoomsPage = () => {
   }, []);
 
   return (
-    <main className="flex flex-col items-center justify-center h-dvh p-24 gap-2">
+    <main className="flex flex-col items-center justify-center h-dvh p-12 gap-2">
       {user && <CreateRoom />}
       <ListAllRooms />
     </main>

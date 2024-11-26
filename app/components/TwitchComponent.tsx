@@ -15,8 +15,9 @@ interface Room {
   created_by: string;
 }
 
-export default function ClientPlayer({ room }: { room: Room }) {
+export default function TwitchClientPlayer({ room }: { room: Room }) {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isVisible, setIsVisible] = useState(false); // State for visibility
   const [twitchUsername, setTwitchUsername] = useState<string | null>(null);
   const [isRoomOwner, setIsRoomOwner] = useState(false);
   const [currentUserName, setCurrentUserName] = useState<string | null>(null);
@@ -27,6 +28,10 @@ export default function ClientPlayer({ room }: { room: Room }) {
 
   const togglePlayback = () => {
     setIsPlaying((currentState) => !currentState);
+  };
+
+  const toggleVisibility = () => {
+    setIsVisible((currentState) => !currentState);
   };
 
   useEffect(() => {
@@ -98,72 +103,97 @@ export default function ClientPlayer({ room }: { room: Room }) {
   const hostname =
     typeof window !== "undefined" ? window.location.hostname : "localhost";
 
-  // Include multiple domains for local and production
   const twitchStream = `https://player.twitch.tv/?channel=${twitchUsername}&parent=${hostname}&parent=yourdomain.com&muted=false`;
 
   return (
-    <div className="absolute top-4 left-4">
-      <Modal
-        opened={opened}
-        onClose={close}
-        title="Update Twitch Username"
-        centered
-      >
-        <TextInput
-          label="Twitch Username"
-          value={editUsername}
-          onChange={(event) => setEditUsername(event.currentTarget.value)}
-          placeholder="Enter your Twitch username"
-        />
-        <Button onClick={handleUpdateUsername} className="mt-2">
-          Update Username
-        </Button>
-      </Modal>
+    <div>
+      <div className="absolute top-2 left-2">
+        <Modal
+          opened={opened}
+          onClose={close}
+          title="Update Twitch Username"
+          centered
+        >
+          <TextInput
+            label="Twitch Username"
+            value={editUsername}
+            onChange={(event) => setEditUsername(event.currentTarget.value)}
+            placeholder="Enter your Twitch username"
+          />
+          <Button onClick={handleUpdateUsername} className="mt-2">
+            Update Username
+          </Button>
+        </Modal>
 
-      <div className="">
-        {(!currentUserName || currentUserName !== roomOwnerName) && (
-          <button
-            onClick={togglePlayback}
-            className="play-button border-2 rounded-lg border-pink-500 p-2 bg-black text-green-500 hover:opacity-50"
-          >
-            {isPlaying ? <IconPlayerPause /> : <IconPlayerPlay />}
-          </button>
-        )}
+        <div>
+          <div className="flex flex-col justify-start">
+            {/* Buttons */}
+            <div className="flex flex-row justify-start">
+              {(!currentUserName || currentUserName !== roomOwnerName) && (
+                <button
+                  onClick={togglePlayback}
+                  className="play-button border-2 rounded-lg border-pink-500 p-2 bg-black text-green-500 hover:opacity-50"
+                >
+                  {isPlaying ? <IconPlayerPause /> : <IconPlayerPlay />}
+                </button>
+              )}
 
-        {currentUserName &&
-          roomOwnerName &&
-          currentUserName === roomOwnerName && (
-            <button
-              onClick={open}
-              className="border-2 rounded-lg border-pink-500 p-2 bg-black text-green-500 hover:opacity-50 "
-            >
-              <IconSettings />
-            </button>
-          )}
+              <button
+                onClick={toggleVisibility}
+                className="ml-2 border-2 rounded-lg border-blue-500 p-2 bg-black text-white hover:opacity-75"
+              >
+                {isVisible ? "Hide" : "Show"}
+              </button>
+            </div>
+
+            {/* Display username */}
+            <div className="mt-2">
+              {isPlaying && (
+                <a
+                  className="text-sm text-green-500 hover:text-black hover:bg-green-500 hover:border-pink-500 bg-black rounded p-1 border-2 border-pink-500 md:hidden"
+                  href={twitchStream}
+                  target="_blank"
+                >
+                  @{twitchUsername}
+                </a>
+              )}
+              {isPlaying && (
+                <h1 className="hidden md:block mt-2">
+                  Currently playing{" "}
+                  <a
+                    className="text-green-500 hover:text-black hover:bg-green-500 hover:border-pink-500 bg-black rounded p-2 border-2 border-pink-500"
+                    href={twitchStream}
+                    target="_blank"
+                  >
+                    @{twitchUsername}
+                  </a>
+                </h1>
+              )}
+            </div>
+          </div>
+
+          {currentUserName &&
+            roomOwnerName &&
+            currentUserName === roomOwnerName && (
+              <button
+                onClick={open}
+                className="ml-2 border-2 rounded-lg border-pink-500 p-2 bg-black text-green-500 hover:opacity-50"
+              >
+                <IconSettings />
+              </button>
+            )}
+        </div>
       </div>
 
-      {isPlaying && (
-        <div>
-          <iframe
-            src={twitchStream}
-            height="0"
-            width="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            hidden
-            data-tilt-gyroscope="false"
-          ></iframe>
-          <h1 className="mt-2">
-            Currently playing{" "}
-            <a
-              className="text-green-500 hover:text-black hover:bg-green-500 hover:border-pink-500 bg-black rounded p-2 border-2 border-pink-500"
-              href={twitchStream}
-              target="_blank"
-            >
-              {twitchUsername}
-            </a>
-          </h1>
-        </div>
-      )}
+      <div className={isVisible ? "relative pt-3" : "hidden"}>
+        <iframe
+          src={`${twitchStream}&autoplay=${isPlaying ? "true" : "false"}`}
+          width="100%"
+          height="calc(75% * 9 / 16)"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; allow-fullscreen"
+          data-tilt-gyroscope="false"
+        ></iframe>
+      </div>
     </div>
   );
 }
