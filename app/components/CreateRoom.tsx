@@ -78,7 +78,7 @@ export default function CreateRoom() {
     <div>
       <button
         onClick={open}
-        className="mt-4 transition duration-200 text-green-500 text-center border border-pink-500 w-full max-w-xs hover:bg-green-500 hover:text-black font-bold py-2 px-4 rounded"
+        className="mt-4 transition duration-200 text-green-500 text-center bg-black border border-pink-500 w-full max-w-xs hover:bg-green-500 hover:text-black font-bold py-2 px-4 rounded"
       >
         Create Room
       </button>
@@ -110,7 +110,7 @@ export default function CreateRoom() {
             type="submit"
             className="mt-4 text-green-500 text-center border border-green-500 w-full max-w-xs hover:bg-green-500 hover:text-white font-bold py-2 px-4 rounded"
           >
-            Add Room
+            Create Room
           </button>
         </form>
       </Modal>

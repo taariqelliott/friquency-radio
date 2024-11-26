@@ -93,8 +93,8 @@ export default function Header() {
           )}
           <div className="flex flex-col gap-1">
             <Button
-              variant="gradient"
-              gradient={{ from: "#ec4899", to: "", deg: 90 }}
+              variant="filled"
+              color="#22c55e"
               onClick={toggleColorScheme}
               className="w-20 hover:opacity-40 transition-all duration-300"
             >
@@ -108,8 +108,8 @@ export default function Header() {
             {buttons.map((button, index) => (
               <Button
                 key={index}
-                variant="gradient"
-                gradient={{ from: "#ec4899", to: "", deg: 90 }}
+                variant="filled"
+                color="#22c55e"
                 onClick={button.onClick}
                 className="w-20 hover:opacity-40 transition-all duration-300"
               >

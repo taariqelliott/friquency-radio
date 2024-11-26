@@ -114,7 +114,7 @@ export default function ProfileEditPage() {
       </form>
       <Button
         variant="outline"
-        color="green"
+        color="#22c55e"
         style={{ padding: "0.5rem 1rem" }}
         onClick={updateUsername}
       >
