@@ -50,7 +50,7 @@ const RoomPage = async ({ params }: { params: { id: string } }) => {
       {user?.username && currentUser?.username === user.username && (
         <div>
           <h3 className="text-white bg-red-600 p-1 m-1 text-sm rounded-lg border-2 border-black">
-            Start Stream
+            Room Owner
           </h3>
         </div>
       )}

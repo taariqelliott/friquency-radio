@@ -94,7 +94,7 @@ export default function Header() {
           <div className="flex flex-col gap-1">
             <Button
               variant="filled"
-              color="#22c55e"
+              color="#ec4899"
               onClick={toggleColorScheme}
               className="w-20 hover:opacity-40 transition-all duration-300"
             >
@@ -109,7 +109,7 @@ export default function Header() {
               <Button
                 key={index}
                 variant="filled"
-                color="#22c55e"
+                color="#ec4899"
                 onClick={button.onClick}
                 className="w-20 hover:opacity-40 transition-all duration-300"
               >
