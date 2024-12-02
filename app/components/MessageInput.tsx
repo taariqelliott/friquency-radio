@@ -156,7 +156,7 @@ const ChatInput = ({
         }
         {...register("message_text")}
         onPaste={handlePaste}
-        onKeyPress={handleKeyPress}
+        onKeyDown={handleKeyPress}
       />
       <button
         className="text-white bg-pink-500 hover:bg-pink-600 hover:text-black focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 transition duration-200 ease-in-out"
