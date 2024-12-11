@@ -5,10 +5,11 @@ import {
   Button,
   MantineProvider,
   Modal,
+  Drawer,
 } from "@mantine/core";
 import { useEffect, useState, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
-import { IconBrightness2, IconMoonStars } from "@tabler/icons-react";
+import { IconBrightness2, IconMoonStars, IconMenu2 } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 import ProfileEditPage from "../profile/edit/page";
 
@@ -22,7 +23,10 @@ export default function Header() {
   const [isClient, setIsClient] = useState(false);
   const [supabase] = useState(() => createClient());
   const searchParams = useSearchParams();
-  const [opened, { open, close }] = useDisclosure(false);
+  const [modalOpened, { open: openModal, close: closeModal }] =
+    useDisclosure(false);
+  const [drawerOpened, { open: openDrawer, close: closeDrawer }] =
+    useDisclosure(false);
 
   const buttons = [
     { label: "home", onClick: () => (window.location.href = "/") },
@@ -73,15 +77,15 @@ export default function Header() {
           {user && (
             <div>
               <Modal
-                opened={opened}
+                opened={modalOpened}
                 centered
-                onClose={close}
+                onClose={closeModal}
                 title="Edit your profile"
               >
                 <ProfileEditPage />
               </Modal>
               <button
-                onClick={open}
+                onClick={openModal}
                 className="hover:text-pink-500 mr-2 mt-[2px]"
               >
                 <span className="text-sm bg-black border hidden md:flex rounded-md border-pink-500 px-2 py-1">
@@ -91,7 +95,7 @@ export default function Header() {
               </button>
             </div>
           )}
-          <div className="flex flex-col gap-1">
+          <div className="hidden md:flex flex-col gap-1">
             <Button
               variant="filled"
               color="#ec4899"
@@ -116,6 +120,66 @@ export default function Header() {
                 {button.label}
               </Button>
             ))}
+          </div>
+          <div className="md:hidden">
+            <Button
+              variant="filled"
+              color="#ec4899"
+              onClick={openDrawer}
+              className="hover:opacity-70 transition-all duration-300"
+            >
+              <IconMenu2 />
+            </Button>
+            <Drawer
+              opened={drawerOpened}
+              onClose={closeDrawer}
+              title="Friquency Radio"
+              transitionProps={{
+                transition: "rotate-left",
+                duration: 150,
+                timingFunction: "linear",
+              }}
+              // padding="md"
+              size="50%"
+              position="top"
+            >
+              <div className="flex flex-col gap-2">
+                <button
+                  onClick={openModal}
+                  className="hover:text-pink-500 mr-2 mt-[2px]"
+                >
+                  <span className="text-sm bg-black border rounded-md border-pink-500 px-2 py-1">
+                    <span className=" text-green-500">@</span>
+                    {user?.username}
+                  </span>
+                </button>
+                <Button
+                  variant="filled"
+                  color="#ec4899"
+                  onClick={toggleColorScheme}
+                  className="w-full hover:opacity-40 transition-all duration-300"
+                >
+                  {isClient &&
+                    (colorScheme === "dark" ? (
+                      <IconBrightness2 stroke={2} />
+                    ) : (
+                      <IconMoonStars stroke={2} />
+                    ))}
+                </Button>
+
+                {buttons.map((button, index) => (
+                  <Button
+                    key={index}
+                    variant="filled"
+                    color="#ec4899"
+                    onClick={button.onClick}
+                    className="w-full hover:opacity-40 transition-all duration-300"
+                  >
+                    {button.label}
+                  </Button>
+                ))}
+              </div>
+            </Drawer>
           </div>
         </div>
       </div>

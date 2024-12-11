@@ -47,9 +47,9 @@ const RoomPage = async ({ params }: { params: { id: string } }) => {
 
   return (
     <main className="flex flex-col items-center justify-start h-dvh pt-6">
-      <div className="scale-[85%]">
+      <div className="scale-[83%]">
         {user?.username && currentUser?.username === user.username && (
-          <div className="flex justify-center w-full mt-2">
+          <div className="flex justify-center w-full ">
             <h3 className="text-white bg-red-600 p-1 m-1 text-sm rounded-lg border-2 border-black">
               Room Owner
             </h3>
@@ -71,7 +71,7 @@ const RoomPage = async ({ params }: { params: { id: string } }) => {
           </div>
 
           <p className="text-green-500 text-sm px-2">
-            Curated by:{" "}
+            By:{" "}
             <span className="font-bold">
               {"@" + (user?.username || "Unknown")}
             </span>

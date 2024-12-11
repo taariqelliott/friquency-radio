@@ -80,12 +80,12 @@ export default function CreateRoom() {
         onClick={open}
         className="mt-4 transition duration-200 text-green-500 text-center bg-black border border-pink-500 w-full max-w-xs hover:bg-green-500 hover:text-black font-bold py-2 px-4 rounded"
       >
-        Create Room
+        Create Station
       </button>
       <Modal opened={opened} onClose={close} title="Create Room" centered>
         <form onSubmit={handleSubmit} className="flex flex-col items-center ">
           <label htmlFor="name" className="block w-full mb-2">
-            Room name:
+            Station name:
             <TextInput
               id="name"
               name="name"

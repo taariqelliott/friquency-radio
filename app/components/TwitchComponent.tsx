@@ -1,9 +1,11 @@
 "use client";
 import { useState, useEffect } from "react";
 import {
-  IconPlayerPlay,
-  IconPlayerPause,
+  IconVolume,
+  IconVolumeOff,
   IconSettings,
+  IconVideoOff,
+  IconVideo,
 } from "@tabler/icons-react";
 import { createClient } from "@/utils/supabase/client";
 import { useDisclosure } from "@mantine/hooks";
@@ -106,7 +108,7 @@ export default function TwitchClientPlayer({ room }: { room: Room }) {
   const twitchStream = `https://player.twitch.tv/?channel=${twitchUsername}&parent=${hostname}&parent=yourdomain.com&muted=false`;
 
   return (
-    <div>
+    <div className="mb-1">
       <div className="absolute top-2 left-2">
         <Modal
           opened={opened}
@@ -133,69 +135,60 @@ export default function TwitchClientPlayer({ room }: { room: Room }) {
 
         <div>
           <div className="flex flex-col justify-start">
-            <div className="flex flex-row justify-start">
-              {(!currentUserName || currentUserName !== roomOwnerName) && (
-                <button
-                  onClick={togglePlayback}
-                  className="play-button border-2 rounded-lg border-pink-500 p-2 bg-black text-green-500 hover:opacity-50"
-                >
-                  {isPlaying ? <IconPlayerPause /> : <IconPlayerPlay />}
-                </button>
-              )}
-
+            <div className="flex flex-col gap-y-2 justify-start">
               {currentUserName &&
                 roomOwnerName &&
-                currentUserName !== roomOwnerName && (
-                  <button
-                    onClick={toggleVisibility}
-                    className="ml-2 border-2 rounded-lg border-blue-500 p-2 bg-black text-white hover:opacity-75"
-                  >
-                    {isVisible ? "Hide" : "Show"}
-                  </button>
+                currentUserName === roomOwnerName && (
+                  <div className="flex flex-col justify-start ">
+                    <button
+                      onClick={open}
+                      className="border-2 w-12 flex justify-center items-center rounded-lg border-pink-500 p-2 bg-black text-green-500 hover:opacity-50"
+                    >
+                      <IconSettings className="" />
+                    </button>
+                  </div>
                 )}
+
+              <button
+                onClick={togglePlayback}
+                className="play-button border-2 w-12 items-center justify-center flex rounded-lg border-pink-500 p-2 bg-black text-green-500 hover:opacity-50"
+              >
+                {isPlaying ? <IconVolume /> : <IconVolumeOff />}
+              </button>
+
+              <button
+                onClick={toggleVisibility}
+                className="border-2 rounded-lg w-12 border-blue-500 flex items-center justify-center p-2 bg-black text-white hover:opacity-75"
+              >
+                {isVisible ? <IconVideoOff /> : <IconVideo />}
+              </button>
             </div>
 
             <div className="mt-2">
-              {isPlaying && (
+              <a
+                className="text-sm text-green-500 hover:text-black font-bold hover:bg-green-500 hover:border-pink-500 bg-black rounded p-1 border-2 border-pink-500 md:hidden"
+                href={twitchStream}
+                target="_blank"
+              >
+                @{twitchUsername}
+              </a>
+
+              <h1 className="hidden md:block">
+                Currently playing{" "}
                 <a
-                  className="text-sm text-green-500 hover:text-black hover:bg-green-500 hover:border-pink-500 bg-black rounded p-1 border-2 border-pink-500 md:hidden"
+                  className="text-green-500 hover:text-black font-bold hover:bg-green-500 hover:border-pink-500 bg-black rounded p-2 border-2 border-pink-500"
                   href={twitchStream}
                   target="_blank"
                 >
                   @{twitchUsername}
                 </a>
-              )}
-              {isPlaying && (
-                <h1 className="hidden md:block mt-2">
-                  Currently playing{" "}
-                  <a
-                    className="text-green-500 hover:text-black hover:bg-green-500 hover:border-pink-500 bg-black rounded p-2 border-2 border-pink-500"
-                    href={twitchStream}
-                    target="_blank"
-                  >
-                    @{twitchUsername}
-                  </a>
-                </h1>
-              )}
+              </h1>
             </div>
           </div>
-
-          {currentUserName &&
-            roomOwnerName &&
-            currentUserName === roomOwnerName && (
-              <div className="flex flex-col justify-start">
-                <button
-                  onClick={open}
-                  className="border-2 absolute left-0 top-0 rounded-lg border-pink-500 p-2 bg-black text-green-500 hover:opacity-50"
-                >
-                  <IconSettings className="" />
-                </button>
-              </div>
-            )}
         </div>
       </div>
 
-      <div className={isVisible ? "relative pt-3" : "hidden"}>
+      <div className={isVisible ? "relative mt-4 " : "hidden"}>
         <iframe
           src={`${twitchStream}&autoplay=${isPlaying ? "true" : "false"}`}
           width="100%"

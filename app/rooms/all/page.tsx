@@ -38,6 +38,7 @@ const fetchCurrentUser = async () => {
 };
 
 const RoomsPage = () => {
+  const [scale, setScale] = useState(1);
   const [user, setUser] = useState<null | User>(null);
 
   useEffect(() => {
@@ -48,8 +49,18 @@ const RoomsPage = () => {
     fetchUser();
   }, []);
 
+  useEffect(() => {
+    const width = window.innerWidth;
+    if (width < 640) setScale(0.75); // `sm` breakpoint
+    else if (width < 768) setScale(0.95); // `md` breakpoint
+    else setScale(1); // Default
+  }, []);
+
   return (
-    <main className="flex flex-col items-center justify-center h-dvh p-12 gap-2">
+    <main
+      className="flex flex-col items-center justify-center h-dvh gap-2"
+      style={{ transform: `scale(${scale})` }}
+    >
       {user && <CreateRoom />}
       <ListAllRooms />
     </main>
@@ -147,7 +158,7 @@ const ListAllRooms = () => {
     .sort((a, b) => a.name.localeCompare(b.name))
     .map((room) => (
       <Table.Tr key={room.id}>
-        <Table.Td style={{ width: "25%" }}>
+        <Table.Td>
           <Link
             href={`/rooms/${room.id}`}
             className="text-blue-600 hover:underline font-bold"
@@ -155,14 +166,14 @@ const ListAllRooms = () => {
             {room.name}
           </Link>
         </Table.Td>
-        <Table.Td style={{ width: "25%" }}>
+        <Table.Td>
           {room.username === currentUsername ? (
             <span className="text-green-500 font-bold">(You) 👑</span>
           ) : (
             <span className="text-pink-500">@{room.username}</span>
           )}
         </Table.Td>
-        <Table.Td style={{ width: "25%" }}>
+        <Table.Td>
           <Link
             href={`/rooms/${room.id}`}
             className="bg-black text-green-500 border border-pink-500 px-2 py-1 rounded hover:bg-green-500 hover:text-black font-bold"
@@ -170,7 +181,7 @@ const ListAllRooms = () => {
             Enter
           </Link>
         </Table.Td>
-        <Table.Td style={{ width: "5%" }}>
+        <Table.Td>
           {room.username === currentUsername ? (
             <button
               onClick={() => handleDelete(room.id)}
@@ -188,7 +199,7 @@ const ListAllRooms = () => {
     ));
 
   return (
-    <div className="w-full max-w-3xl flex flex-col justify-around">
+    <div className="flex flex-col justify-around items-center">
       {rooms.length > 0 ? (
         <Table stickyHeader stickyHeaderOffset={60} striped withTableBorder>
           <Table.Caption>-Frequency Radio Stations-</Table.Caption>
@@ -196,21 +207,17 @@ const ListAllRooms = () => {
             <Table.Tr>
               {currentUsername ? (
                 <>
-                  <Table.Th style={{ width: "25%" }}>Room Name</Table.Th>
-                  <Table.Th style={{ width: "25%" }}>Creator</Table.Th>
-                  <Table.Th style={{ width: "25%" }}>Actions</Table.Th>
+                  <Table.Th>Station Name</Table.Th>
+                  <Table.Th>Creator</Table.Th>
+                  <Table.Th>Actions</Table.Th>
 
-                  <Table.Th
-                    style={{ width: "5%", right: "10px", position: "relative" }}
-                  >
-                    Delete
-                  </Table.Th>
+                  <Table.Th>Delete</Table.Th>
                 </>
               ) : (
                 <>
-                  <Table.Th style={{ width: "33.33%" }}>Room Name</Table.Th>
-                  <Table.Th style={{ width: "33.33%" }}>Creator</Table.Th>
-                  <Table.Th style={{ width: "33.33%" }}>Actions</Table.Th>
+                  <Table.Th>Station Name</Table.Th>
+                  <Table.Th>Creator</Table.Th>
+                  <Table.Th>Actions</Table.Th>
                 </>
               )}
             </Table.Tr>
@@ -219,7 +226,7 @@ const ListAllRooms = () => {
         </Table>
       ) : (
         <div className="text-center text-pink-500 text-2xl mt-4">
-          No Rooms Found
+          No Stations Found
         </div>
       )}
     </div>
