@@ -166,7 +166,7 @@ export default function TwitchClientPlayer({ room }: { room: Room }) {
 
             <div className="mt-2">
               <a
-                className="text-sm text-green-500 hover:text-black font-bold hover:bg-green-500 hover:border-pink-500 bg-black rounded p-1 border-2 border-pink-500 md:hidden"
+                className="text-green-500 text-xs hover:text-black font-bold hover:bg-green-500 hover:border-pink-500 bg-black rounded p-1 border-2 border-pink-500 md:hidden"
                 href={twitchStream}
                 target="_blank"
               >
