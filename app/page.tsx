@@ -13,7 +13,7 @@ export default async function Home() {
         {user.user.is_anonymous ? (
           <form action={handleDeleteAccount}>
             <button
-              className="bg-pink-500 text-white hover:bg-green-500 font-bold py-2 px-4 rounded"
+              className="bg-pink-500 text-white hover:bg-green-500 font-bold py-2 px-4 rounded transition-all duration-300"
               type="submit"
             >
               Logout{" "}
@@ -22,7 +22,7 @@ export default async function Home() {
         ) : (
           <form action={handleLogout}>
             <button
-              className="bg-pink-500 text-white hover:bg-green-500 hover:text-black font-bold py-2 px-4 rounded"
+              className="bg-pink-500 text-white hover:bg-green-500 hover:text-black font-bold py-2 px-4 rounded transition-all duration-300"
               type="submit"
             >
               Logout

@@ -50,10 +50,23 @@ const RoomsPage = () => {
   }, []);
 
   useEffect(() => {
-    const width = window.innerWidth;
-    if (width < 640) setScale(0.75); // `sm` breakpoint
-    else if (width < 768) setScale(0.95); // `md` breakpoint
-    else setScale(1); // Default
+    const handleResize = () => {
+      const width = window.innerWidth;
+      if (width < 640) setScale(0.8); // `sm` breakpoint
+      else if (width < 768) setScale(0.95); // `md` breakpoint
+      else setScale(1.2); // Default
+    };
+
+    // Initial check
+    handleResize();
+
+    // Add event listener
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   return (
