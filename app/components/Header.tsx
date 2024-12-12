@@ -88,7 +88,7 @@ export default function Header() {
                 onClick={openModal}
                 className="hover:text-pink-500 mr-2 mt-[2px]"
               >
-                <span className="text-sm bg-black border hidden md:flex rounded-md border-pink-500 px-2 py-1">
+                <span className="text-sm bg-black border-2 hidden md:flex rounded-md border-pink-500 px-2 py-1">
                   <span className=" text-green-500">@</span>
                   {user.username}
                 </span>
@@ -139,16 +139,16 @@ export default function Header() {
                 duration: 150,
                 timingFunction: "linear",
               }}
-              // padding="md"
+              padding="md"
               size="50%"
               position="top"
             >
               <div className="flex flex-col gap-2">
                 <button
                   onClick={openModal}
-                  className="hover:text-pink-500 mr-2 mt-[2px]"
+                  className="hover:text-pink-500 mr-2 pb-1 mt-[12px]"
                 >
-                  <span className="text-sm bg-black text-slate-100 border rounded-md border-pink-500 px-2 py-1">
+                  <span className=" bg-black text-slate-100 border-2 rounded-md border-pink-500 px-2 py-1 mt-2 ">
                     <span className=" text-green-500">@</span>
                     {user?.username}
                   </span>

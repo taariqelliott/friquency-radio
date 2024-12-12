@@ -113,7 +113,7 @@ const ChatMessages = ({
   }
 
   return (
-    <main className="flex flex-col-reverse items-center p-4 h-full">
+    <main className="flex flex-col-reverse items-center  h-full">
       <MessageList messages={messages} user={user} />
     </main>
   );

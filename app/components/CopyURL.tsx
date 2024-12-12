@@ -16,7 +16,7 @@ const ShareButton = () => {
             variant="filled"
             color="black"
             onClick={handleCopyURL}
-            style={{ color: "white", border: "#ec4899 1px solid" }}
+            style={{ color: "white", border: "#ec4899 2px solid" }}
             className="hover:opacity-65"
           >
             📋 Share

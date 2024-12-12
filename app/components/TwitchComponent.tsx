@@ -142,7 +142,7 @@ export default function TwitchClientPlayer({ room }: { room: Room }) {
                   <div className="flex flex-col justify-start ">
                     <button
                       onClick={open}
-                      className="border-2 w-12 flex justify-center items-center rounded-lg border-pink-500 p-2 bg-black text-green-500 hover:opacity-50"
+                      className="border-2 w-12 flex justify-center items-center rounded-lg border-pink-500 p-2 bg-black text-green-500 hover:bg-green-500 hover:text-black"
                     >
                       <IconSettings className="" />
                     </button>
@@ -151,14 +151,14 @@ export default function TwitchClientPlayer({ room }: { room: Room }) {
 
               <button
                 onClick={togglePlayback}
-                className="play-button border-2 w-12 items-center justify-center flex rounded-lg border-pink-500 p-2 bg-black text-green-500 hover:opacity-50"
+                className="play-button border-2 w-12 items-center justify-center flex rounded-lg border-pink-500 p-2 bg-black text-green-500 hover:bg-green-500 hover:text-black"
               >
                 {isPlaying ? <IconVolume /> : <IconVolumeOff />}
               </button>
 
               <button
                 onClick={toggleVisibility}
-                className="border-2 rounded-lg w-12 border-blue-500 flex items-center justify-center p-2 bg-black text-white hover:opacity-75"
+                className="border-2 rounded-lg w-12 border-pink-500 text-green-500 flex items-center justify-center p-2 bg-black hover:bg-green-500 hover:text-black"
               >
                 {isVisible ? <IconVideoOff /> : <IconVideo />}
               </button>
@@ -188,7 +188,11 @@ export default function TwitchClientPlayer({ room }: { room: Room }) {
         </div>
       </div>
 
-      <div className={isVisible ? "relative mt-4 " : "hidden"}>
+      <div
+        className={
+          isVisible ? "relative mt-4 border-pink-500 border-2" : "hidden"
+        }
+      >
         <iframe
           src={`${twitchStream}&autoplay=${isPlaying ? "true" : "false"}`}
           width="100%"
