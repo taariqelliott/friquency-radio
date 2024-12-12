@@ -49,9 +49,9 @@ const RoomPage = async ({ params }: { params: { id: string } }) => {
     <main className="flex flex-col items-center justify-start h-dvh pt-6">
       <div className="scale-[83%]">
         {user?.username && currentUser?.username === user.username && (
-          <div className="flex justify-center w-full ">
+          <div className="flex justify-center opacity-0 w-full ">
             <h3 className="text-white bg-red-600 p-1 m-1 text-sm rounded-lg border-2 border-black">
-              Room Owner
+              {"Room Owner"}
             </h3>
           </div>
         )}

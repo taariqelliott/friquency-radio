@@ -108,7 +108,7 @@ export default function TwitchClientPlayer({ room }: { room: Room }) {
   const twitchStream = `https://player.twitch.tv/?channel=${twitchUsername}&parent=${hostname}&parent=yourdomain.com&muted=false`;
 
   return (
-    <div className="mb-1">
+    <div className={isVisible ? "mb-[-12px]" : "mb-1"}>
       <div className="absolute top-2 left-2">
         <Modal
           opened={opened}
@@ -190,7 +190,7 @@ export default function TwitchClientPlayer({ room }: { room: Room }) {
 
       <div
         className={
-          isVisible ? "relative mt-4 border-pink-500 border-2" : "hidden"
+          isVisible ? "relative mt-6 border-pink-500 border-2" : "hidden"
         }
       >
         <iframe
