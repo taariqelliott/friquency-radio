@@ -59,7 +59,7 @@ export default function SignupPage() {
           <h1
             className={`text-center [word-spacing:-3px] tracking-tight text-realGreen font-bold text-3xl`}
           >
-            Sign Up
+            sign up
           </h1>
           <label htmlFor="email" className={`block ${textColor}`}>
             Email:
@@ -96,7 +96,7 @@ export default function SignupPage() {
             type="submit"
             formAction={signup}
           >
-            Sign Up
+            sign up
           </button>
         </div>
         <div className="mt-4 flex flex-row items-center text-sm">
@@ -104,7 +104,7 @@ export default function SignupPage() {
             href="/login"
             className="bg-realGreen w-28 text-center text-xs [word-spacing:-3px] text-white font-bold py-1 px-4 ml-2 mr-2 rounded border-2 border-transparent hover:bg-pink-500 hover:text-black hover:border-realGreen hover:border-2 transition-all duration-300"
           >
-            Login
+            login
           </Link>
           <button
             onClick={async (event) => {
@@ -119,7 +119,7 @@ export default function SignupPage() {
             }}
             className="bg-realGreen w-28 text-center text-xs [word-spacing:-3px] text-white font-bold py-1 px-4 ml-2 mr-2 rounded border-2 border-transparent hover:bg-pink-500 hover:text-black hover:border-realGreen hover:border-2 transition-all duration-300"
           >
-            Quick Jam
+            quick jam
           </button>
         </div>
       </form>

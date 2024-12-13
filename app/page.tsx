@@ -13,7 +13,7 @@ export default async function Home() {
         {user.user.is_anonymous ? (
           <form action={handleDeleteAccount}>
             <button
-              className="bg-realGreen text-white hover:bg-green-700 font-bold py-2 px-4 rounded"
+              className="bg-pink-500 text-white hover:bg-green-500 font-bold py-2 px-4 rounded transition-all duration-300"
               type="submit"
             >
               Logout{" "}
@@ -22,7 +22,7 @@ export default async function Home() {
         ) : (
           <form action={handleLogout}>
             <button
-              className="bg-realGreen text-white hover:bg-pink-500 hover:text-black font-bold py-2 px-4 rounded"
+              className="bg-pink-500 text-white hover:bg-green-500 hover:text-black font-bold py-2 px-4 rounded transition-all duration-300"
               type="submit"
             >
               Logout
@@ -34,7 +34,7 @@ export default async function Home() {
   }
   return (
     <main className="flex flex-col items-center justify-center h-dvh p-24">
-      <h1 className="text-4xl font-bold mb-8 text-center text-pink-500">
+      <h1 className="text-4xl font-bold mb-8 pb-3 text-center bg-black border-2 border-x-pink-500 border-y-realGreen rounded p-2 text-white">
         Friquency Radio
       </h1>
       <div className="flex">
