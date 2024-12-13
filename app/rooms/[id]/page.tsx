@@ -4,6 +4,8 @@ import CopyURL from "@/app/components/CopyURL";
 import Link from "next/link";
 import ChatContainer from "@/app/components/ChatContainer";
 import TwitchClientPlayer from "../../components/TwitchComponent";
+import RoomsPage from "../all/page";
+import AllRoomsPage from "@/app/components/AllRoomsList";
 
 const RoomPage = async ({ params }: { params: { id: string } }) => {
   const { id } = params;
@@ -47,18 +49,17 @@ const RoomPage = async ({ params }: { params: { id: string } }) => {
 
   return (
     <main className="flex flex-col items-center justify-start h-dvh pt-6">
-      <div className="scale-[83%]">
+      <div className="lg:scale-110 md:scale-100 sm:scale-90 scale-90">
         {user?.username && currentUser?.username === user.username && (
-          <div className="flex justify-center opacity-0 w-full ">
+          <div className="flex justify-center opacity-0 w-full">
             <h3 className="text-white bg-red-600 p-1 m-1 text-sm rounded-lg border-2 border-black">
               {"Room Owner"}
             </h3>
           </div>
         )}
 
-        <div className="flex flex-col items-center justify-center sm:p-2 rounded-lg bg-gray-700 mx-auto mt-1">
-          {/* Hide "FRIQUENCY RADIO" on small and medium screens */}
-          <div className="z-10 hover:text-realGreen text-white transition-all duration-200 hidden sm:block">
+        <div className="flex flex-col items-center justify-center sm:p-2 rounded-lg bg-gray-700 mx-auto p-1 mt-5">
+          <div className=" hover:text-realGreen text-white transition-all duration-200 hidden md:block">
             <Link href="/">FRIQUENCY RADIO</Link>
           </div>
 

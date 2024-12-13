@@ -136,13 +136,33 @@ export default function TwitchClientPlayer({ room }: { room: Room }) {
         <div>
           <div className="flex flex-col justify-start">
             <div className="flex flex-col gap-y-2 justify-start">
+              <div className="">
+                <a
+                  className="text-green-500 text-xs hover:text-black font-bold hover:bg-green-500 hover:border-pink-500 bg-black rounded p-1 border-2 border-pink-500 md:hidden"
+                  href={twitchStream}
+                  target="_blank"
+                >
+                  @{twitchUsername}
+                </a>
+
+                <h1 className="hidden font-bold md:block">
+                  Now playing:{" "}
+                  <a
+                    className="text-green-500 hover:text-black text-sm font-bold hover:bg-green-500 hover:border-pink-500 bg-black rounded px-2 py-1 border-2 border-pink-500"
+                    href={twitchStream}
+                    target="_blank"
+                  >
+                    @{twitchUsername}
+                  </a>
+                </h1>
+              </div>
               {currentUserName &&
                 roomOwnerName &&
                 currentUserName === roomOwnerName && (
                   <div className="flex flex-col justify-start ">
                     <button
                       onClick={open}
-                      className="border-2 w-12 flex justify-center items-center rounded-lg border-pink-500 p-2 bg-black text-green-500 hover:bg-green-500 hover:text-black"
+                      className="border-2 mt-1 w-12 flex justify-center items-center rounded-lg border-pink-500 p-2 bg-black text-green-500 hover:bg-green-500 hover:text-black"
                     >
                       <IconSettings className="" />
                     </button>
@@ -163,34 +183,15 @@ export default function TwitchClientPlayer({ room }: { room: Room }) {
                 {isVisible ? <IconVideoOff /> : <IconVideo />}
               </button>
             </div>
-
-            <div className="mt-2">
-              <a
-                className="text-green-500 text-xs hover:text-black font-bold hover:bg-green-500 hover:border-pink-500 bg-black rounded p-1 border-2 border-pink-500 md:hidden"
-                href={twitchStream}
-                target="_blank"
-              >
-                @{twitchUsername}
-              </a>
-
-              <h1 className="hidden md:block">
-                Currently playing{" "}
-                <a
-                  className="text-green-500 hover:text-black font-bold hover:bg-green-500 hover:border-pink-500 bg-black rounded p-2 border-2 border-pink-500"
-                  href={twitchStream}
-                  target="_blank"
-                >
-                  @{twitchUsername}
-                </a>
-              </h1>
-            </div>
           </div>
         </div>
       </div>
 
       <div
         className={
-          isVisible ? "relative mt-6 border-pink-500 border-2" : "hidden"
+          isVisible
+            ? "relative lg:mt-4 md:mt-2 sm:mt-0 mt-3 border-pink-500 border-2"
+            : "hidden"
         }
       >
         <iframe

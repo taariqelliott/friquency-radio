@@ -6,8 +6,7 @@ import { useState, useEffect } from "react";
 import { PostgrestError, User } from "@supabase/supabase-js";
 import CreateRoom from "@/app/components/CreateRoom";
 import { Table } from "@mantine/core";
-import { DeleteRoom } from "./DeleteRoom";
-
+import { DeleteRoom } from "../rooms/all/DeleteRoom";
 interface Room {
   id: string;
   name: string;
@@ -37,8 +36,7 @@ const fetchCurrentUser = async () => {
   return currentUser?.username || null;
 };
 
-const RoomsPage = () => {
-  const [scale, setScale] = useState(1);
+const AllRoomsPage = () => {
   const [user, setUser] = useState<null | User>(null);
 
   useEffect(() => {
@@ -49,27 +47,9 @@ const RoomsPage = () => {
     fetchUser();
   }, []);
 
-  useEffect(() => {
-    const handleResize = () => {
-      const width = window.innerWidth;
-      if (width < 640) setScale(0.8);
-      else if (width < 768) setScale(0.95);
-      else setScale(1);
-    };
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
   return (
-    <main
-      className="flex flex-col items-center justify-center h-dvh gap-2"
-      style={{ transform: `scale(${scale})` }}
-    >
+    <main className="flex flex-col items-center justify-center gap-2">
+      <h1>All Stations</h1>
       {user && <CreateRoom />}
       <ListAllRooms />
     </main>
@@ -166,72 +146,20 @@ const ListAllRooms = () => {
   const rows = rooms
     .sort((a, b) => a.name.localeCompare(b.name))
     .map((room) => (
-      <Table.Tr key={room.id}>
-        <Table.Td>
-          <Link
-            href={`/rooms/${room.id}`}
-            className="text-blue-600 hover:underline font-bold"
-          >
-            {room.name}
-          </Link>
-        </Table.Td>
-        <Table.Td>
-          {room.username === currentUsername ? (
-            <span className="text-green-500 font-bold">(You) 👑</span>
-          ) : (
-            <span className="text-pink-500">@{room.username}</span>
-          )}
-        </Table.Td>
-        <Table.Td>
-          <Link
-            href={`/rooms/${room.id}`}
-            className="bg-black text-green-500 border border-pink-500 px-2 py-1 rounded hover:bg-green-500 hover:text-black font-bold"
-          >
-            Enter
-          </Link>
-        </Table.Td>
-        <Table.Td>
-          {room.username === currentUsername ? (
-            <button
-              onClick={() => handleDelete(room.id)}
-              className="bg-red-500 text-white border border-white text-xs rounded-lg hover:bg-red-700"
-            >
-              <span className="inline-block transition-all duration-500 hover:rotate-180 px-2 py-1 font-bold">
-                X
-              </span>
-            </button>
-          ) : (
-            ""
-          )}
-        </Table.Td>
-      </Table.Tr>
+      <li key={room.id} className="mb-4">
+        <Link
+          href={`/rooms/${room.id}`}
+          className="text-blue-600 hover:underline font-bold"
+        >
+          {room.name}
+        </Link>
+      </li>
     ));
 
   return (
     <div className="flex flex-col justify-around items-center">
       {rooms.length > 0 ? (
-        <Table stickyHeader stickyHeaderOffset={60} striped withTableBorder>
-          <Table.Caption>-Frequency Radio Stations-</Table.Caption>
-          <Table.Thead>
-            <Table.Tr>
-              {currentUsername ? (
-                <>
-                  <Table.Th>Station Name</Table.Th>
-                  <Table.Th>Creator</Table.Th>
-                  <Table.Th>Actions</Table.Th>
-                  <Table.Th>Delete</Table.Th>
-                </>
-              ) : (
-                <>
-                  <Table.Th>Station Name</Table.Th>
-                  <Table.Th>Creator</Table.Th>
-                  <Table.Th>Actions</Table.Th>
-                </>
-              )}
-            </Table.Tr>
-          </Table.Thead>
-          <Table.Tbody>{rows}</Table.Tbody>
-        </Table>
+        <ol className="w-full px-4">{rows}</ol>
       ) : (
         <div className="text-center text-pink-500 text-2xl mt-4">
           No Stations Found
@@ -240,5 +168,4 @@ const ListAllRooms = () => {
     </div>
   );
 };
-
-export default RoomsPage;
+export default AllRoomsPage;

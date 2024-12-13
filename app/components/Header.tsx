@@ -9,7 +9,13 @@ import {
 } from "@mantine/core";
 import { useEffect, useState, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
-import { IconBrightness2, IconMoonStars, IconMenu2 } from "@tabler/icons-react";
+import {
+  IconBrightness2,
+  IconMoonStars,
+  IconMenu2,
+  IconRadio,
+  IconHome,
+} from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 import ProfileEditPage from "../profile/edit/page";
 
@@ -29,8 +35,14 @@ export default function Header() {
     useDisclosure(false);
 
   const buttons = [
-    { label: "home", onClick: () => (window.location.href = "/") },
-    { label: "rooms", onClick: () => (window.location.href = "/rooms/all") },
+    {
+      label: <IconHome />,
+      onClick: () => (window.location.href = "/"),
+    },
+    {
+      label: <IconRadio />,
+      onClick: () => (window.location.href = "/rooms/all"),
+    },
   ];
 
   const fetchUser = useCallback(async () => {
@@ -115,7 +127,7 @@ export default function Header() {
                 variant="filled"
                 color="#ec4899"
                 onClick={button.onClick}
-                className="w-20 hover:opacity-40 transition-all duration-300"
+                className="hover:opacity-40 transition-all duration-300"
               >
                 {button.label}
               </Button>
@@ -126,7 +138,7 @@ export default function Header() {
               variant="filled"
               color="#ec4899"
               onClick={openDrawer}
-              className="hover:opacity-70 transition-all duration-300"
+              className="w-[25%] hover:opacity-70 transition-all duration-300"
             >
               <IconMenu2 />
             </Button>
@@ -148,16 +160,17 @@ export default function Header() {
                   onClick={openModal}
                   className="hover:text-pink-500 mr-2 pb-1 mt-[12px]"
                 >
-                  <span className=" bg-black text-slate-100 border-2 rounded-md border-pink-500 px-2 py-1 mt-2 ">
+                  <span className=" bg-black text-slate-100 border-2 rounded-md border-pink-500 px-2 py-1 mt-2">
                     <span className=" text-green-500">@</span>
                     {user?.username}
                   </span>
                 </button>
+
                 <Button
                   variant="filled"
                   color="#ec4899"
                   onClick={toggleColorScheme}
-                  className="w-full hover:opacity-40 transition-all duration-300"
+                  className="hover:opacity-40 transition-all duration-300"
                 >
                   {isClient &&
                     (colorScheme === "dark" ? (
@@ -173,7 +186,7 @@ export default function Header() {
                     variant="filled"
                     color="#ec4899"
                     onClick={button.onClick}
-                    className="w-full hover:opacity-40 transition-all duration-300"
+                    className="hover:opacity-40 transition-all duration-300"
                   >
                     {button.label}
                   </Button>
