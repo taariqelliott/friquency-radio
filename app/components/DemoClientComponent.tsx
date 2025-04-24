@@ -56,7 +56,7 @@ export default function DemoClientComponent() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center p-4 rounded-lg bg-black border-pink-500 border shadow-lg m-2">
+    <div className="flex flex-col items-center justify-center p-4 rounded-lg shadow-lg m-2">
       <div className="text-sm text-green-500 text-center">Welcome to</div>
       <div className="text-sm text-black font-bold text-center bg-green-500 rounded p-2">
         FRIQUENCY RADIO

@@ -1,7 +1,14 @@
 import { createClient } from "@/utils/supabase/client";
 import { Input, Modal } from "@mantine/core";
 import { useForm } from "react-hook-form";
-import { useState, useRef } from "react";
+import {
+  useState,
+  useRef,
+  ChangeEvent,
+  ClipboardEvent,
+  MouseEvent,
+  KeyboardEvent,
+} from "react";
 import { useDisclosure } from "@mantine/hooks";
 import { IconPhotoPlus } from "@tabler/icons-react";
 
@@ -24,12 +31,12 @@ const ChatInput = ({
   const [opened, { open, close }] = useDisclosure(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     setImageFile(file || null);
   };
 
-  const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+  const handlePaste = (e: ClipboardEvent<HTMLInputElement>) => {
     const items = e.clipboardData.items;
     for (let i = 0; i < items.length; i++) {
       if (items[i].type.startsWith("image/")) {
@@ -41,7 +48,7 @@ const ChatInput = ({
     }
   };
 
-  const handleClearImage = (e: React.MouseEvent) => {
+  const handleClearImage = (e: MouseEvent) => {
     e.preventDefault();
     setImageFile(null);
     if (fileInputRef.current) {
@@ -49,7 +56,7 @@ const ChatInput = ({
     }
   };
 
-  const handleKeyPress = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyPress = async (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
       const formData = { message_text: e.currentTarget.value };

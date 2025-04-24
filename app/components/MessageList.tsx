@@ -41,21 +41,21 @@ const MessageList = ({
 
   const renderMessageText = (text: string) => {
     const urlRegex = /(https?:\/\/[^\s]+)/g;
-    const parts = text.split(urlRegex);
+    const messageSegments = text.split(urlRegex);
 
-    return parts.map((part, index) =>
-      urlRegex.test(part) ? (
+    return messageSegments.map((segment, index) =>
+      urlRegex.test(segment) ? (
         <a
           key={index}
-          href={part}
+          href={segment}
           target="_blank"
           rel="noopener noreferrer"
           className="text-blue-400 hover:underline"
         >
-          {part}
+          {segment}
         </a>
       ) : (
-        part
+        segment
       )
     );
   };

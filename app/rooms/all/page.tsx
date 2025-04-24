@@ -219,7 +219,7 @@ const ListAllRooms = () => {
                   <Table.Th>Station Name</Table.Th>
                   <Table.Th>Creator</Table.Th>
                   <Table.Th>Actions</Table.Th>
-                  <Table.Th>Delete</Table.Th>
+                  <Table.Th>{""}</Table.Th>
                 </>
               ) : (
                 <>
