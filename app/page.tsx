@@ -94,7 +94,9 @@ export default async function Home() {
             <button className="bg-pink-500 w-64 text-sm text-white font-bold py-3 px-8 rounded-lg border-2 border-transparent hover:bg-realGreen hover:text-white hover:border-pink-500 hover:border-2 transition-all duration-300">
               Try Quick Jam
               <br />
-              <span className="text-xs opacity-75 text-zinc-900 font-bold">No Sign Up Required</span>
+              <span className="text-xs opacity-75 text-zinc-900 font-bold">
+                No Sign Up Required
+              </span>
             </button>
           </form>
         </div>
