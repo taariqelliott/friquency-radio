@@ -69,13 +69,13 @@ export default async function Home() {
           <div className="flex gap-4 mb-4">
             <Link
               href="/login"
-              className="bg-realGreen w-32 text-center text-sm text-white font-bold py-2 px-6 rounded-full border-2 border-transparent hover:bg-pink-500 hover:text-black hover:border-realGreen hover:border-2 transition-all duration-300"
+              className="bg-realGreen w-32 text-center text-sm text-white font-bold py-2 px-6 rounded-lg border-2 border-transparent hover:bg-pink-500 hover:text-black hover:border-realGreen hover:border-2 transition-all duration-300"
             >
               Login
             </Link>
             <Link
               href="/signup"
-              className="bg-realGreen w-32 text-center text-sm text-white font-bold py-2 px-6 rounded-full border-2 border-transparent hover:bg-pink-500 hover:text-black hover:border-realGreen hover:border-2 transition-all duration-300"
+              className="bg-realGreen w-32 text-center text-sm text-white font-bold py-2 px-6 rounded-lg border-2 border-transparent hover:bg-pink-500 hover:text-black hover:border-realGreen hover:border-2 transition-all duration-300"
             >
               Sign Up
             </Link>
@@ -91,8 +91,10 @@ export default async function Home() {
               }
             }}
           >
-            <button className="bg-pink-500 w-64 text-sm text-white font-bold py-3 px-8 rounded-full border-2 border-transparent hover:bg-realGreen hover:text-white hover:border-pink-500 hover:border-2 transition-all duration-300">
-              Try Quick Jam - No Sign Up Required
+            <button className="bg-pink-500 w-64 text-sm text-white font-bold py-3 px-8 rounded-lg border-2 border-transparent hover:bg-realGreen hover:text-white hover:border-pink-500 hover:border-2 transition-all duration-300">
+              Try Quick Jam
+              <br />
+              <span className="text-xs opacity-75 text-zinc-900 font-bold">No Sign Up Required</span>
             </button>
           </form>
         </div>
