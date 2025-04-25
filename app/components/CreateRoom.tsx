@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createRoom } from "../rooms/all/actions";
 import { TextInput, Modal } from "@mantine/core";
@@ -14,7 +14,7 @@ export default function CreateRoom() {
   const router = useRouter();
   const supabase = createClient();
 
-  const handleSubmit = async (event: React.FormEvent) => {
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
     if (name.length > 26) {

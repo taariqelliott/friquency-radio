@@ -13,7 +13,7 @@ export default async function Home() {
           <div className="bg-black bg-opacity-50 p-6 rounded-lg border-2 border-realGreen shadow-xl">
             <div className="border-2 border-pink-500 rounded-lg p-4">
               <h1 className="text-3xl font-bold text-white mb-6 text-center">
-                Your Dashboard
+                Dashboard
               </h1>
 
               <div className="relative">
