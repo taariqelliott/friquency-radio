@@ -1,15 +1,38 @@
 # Friquency Radio
 
-Welcome to **Friquency Radio** – a cutting-edge platform designed to revolutionize live audio streaming and create interactive listening experiences. Whether you're a DJ looking to host live sessions or a listener eager to tune in and participate, Friquency Radio brings people together through engaging, real-time audio interactions.
+Welcome to **Friquency Radio** – a social Twitch companion platform designed to enhance your streaming experience. Watch your favorite Twitch streams together while chatting with friends in real-time. Whether you're looking to host a listening room or join one, Friquency Radio brings people together through shared experiences.
 
 ## 🚀 What is Friquency Radio?
 
-**Friquency Radio** is an interactive audio streaming application that allows DJs to broadcast live sessions to an audience in real-time. Listeners can join rooms, interact with DJs, and enjoy high-quality audio streams. With role-based experiences, Friquency Radio ensures that both DJs and audience members have a tailored and immersive experience.
+**Friquency Radio** is an interactive streaming companion that allows users to create synchronized Twitch viewing rooms. Viewers can join rooms, chat in real-time, and enjoy content together. With both registered and anonymous access options, Friquency Radio ensures everyone can participate in the community.
 
 ### Key Features
 
-- **Live Audio Streaming**: DJs can broadcast live audio with minimal latency, providing an engaging and real-time listening experience.
-- **Real-Time Interaction**: Audience members can participate in live chats and provide feedback during sessions.
-- **Role-Based Access**: Two distinct roles – DJ (room host) and Audience (regular users) – with customized features and interactions.
-- **Room Management**: DJs can create and manage rooms, allowing listeners to join and engage in the live experience.
+- **Synchronized Twitch Integration**: Watch Twitch streams together with perfect synchronization across all viewers in a room
+- **Real-Time Chat**: Engage with other viewers through a feature-rich chat system supporting:
+  - Image sharing
+  - Automatic URL detection and linking
+  - Real-time message updates
+- **Flexible Access**: Multiple ways to join:
+  - Quick anonymous access with generated usernames
+  - Full account registration for regular users
+  - Persistent room creation and management
 
+### Technology Stack
+
+- **Frontend**: Next.js with TypeScript
+- **Styling**: Tailwind CSS
+- **Backend**: Supabase for:
+  - Authentication
+  - Real-time database
+  - File storage
+
+### Future Development
+
+Currently in development:
+- Native audio streaming capabilities
+- Direct DJ broadcasting features
+- Enhanced room management tools
+- Advanced chat features
+
+Join us in creating the future of social streaming experiences!
