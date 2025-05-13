@@ -116,7 +116,7 @@ export default async function Home() {
           </div>
           <div className="text-center p-4 bg-black bg-opacity-50 rounded-lg">
             <h3 className="text-realGreen font-bold mb-2">Easy to Join</h3>
-            <p className="text-gray-300 text-sm">Start streaming in seconds</p>
+            <p className="text-gray-300 text-sm">Start chatting in seconds</p>
           </div>
         </div>
       </div>
