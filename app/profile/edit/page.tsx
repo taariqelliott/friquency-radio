@@ -88,9 +88,6 @@ export default function ProfileEditPage() {
         padding: "1rem",
       }}
     >
-      {/* <h1 className="text-green-500 bg-black border-pink-500 border rounded p-1">
-        Edit your profile
-      </h1> */}
       {user?.email && <div>Email: {user?.email}</div>}
       <div className="text-green-500 bg-black border-pink-500 border rounded p-1 px-2">
         Username:{" "}
