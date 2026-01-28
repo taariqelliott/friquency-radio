@@ -16,9 +16,9 @@ export default function SignupPage() {
   const router = useRouter();
   const { colorScheme } = useMantineColorScheme();
   const textColor = colorScheme === "dark" ? "text-black" : "text-black";
-  const bgColor = colorScheme === "dark" ? "bg-white" : "bg-gray-300";
+  const bgColor = colorScheme === "dark" ? "bg-white" : "bg-zinc-300";
   const inputTextColor =
-    colorScheme === "dark" ? "text-realGreen" : "text-black";
+    colorScheme === "dark" ? "text-blue-500" : "text-black";
 
   useEffect(() => {
     async function fetchUser() {
@@ -36,7 +36,7 @@ export default function SignupPage() {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center text-2xl text-pink-500 font-bold justify-center h-dvh">
+      <div className="flex flex-col items-center text-2xl text-blue-500 font-bold justify-center h-dvh">
         Loading...
       </div>
     );
@@ -49,7 +49,7 @@ export default function SignupPage() {
 
   return (
     <div className="flex flex-col items-center justify-center h-dvh">
-      <div className="z-10 hover:text-realGreen transition-all duration-200">
+      <div className="z-10 hover:text-blue-500 transition-all duration-200">
         <Link href={"/"}>FRIQUENCY RADIO</Link>
       </div>
       <form
@@ -57,7 +57,7 @@ export default function SignupPage() {
       >
         <div className="w-full flex flex-col items-center">
           <h1
-            className={`text-center [word-spacing:-3px] tracking-tight text-realGreen font-bold text-3xl`}
+            className={`text-center [word-spacing:-3px] tracking-tight text-blue-500 font-bold text-3xl`}
           >
             sign up
           </h1>
@@ -68,7 +68,7 @@ export default function SignupPage() {
               name="email"
               type="email"
               required
-              className={`block w-full px-4 py-2 border-2 border-gray-300 font-bold rounded-md ${inputTextColor}`}
+              className={`block w-full px-4 py-2 border-2 border-zinc-300 font-bold rounded-md ${inputTextColor}`}
             />
           </label>
           <label htmlFor="username" className={`block ${textColor}`}>
@@ -78,7 +78,7 @@ export default function SignupPage() {
               name="username"
               type="text"
               required
-              className={`block w-full px-4 py-2 border-2 border-gray-300 font-bold rounded-md ${inputTextColor}`}
+              className={`block w-full px-4 py-2 border-2 border-zinc-300 font-bold rounded-md ${inputTextColor}`}
             />
           </label>
           <label htmlFor="password" className={`block ${textColor}`}>
@@ -88,11 +88,11 @@ export default function SignupPage() {
               name="password"
               type="password"
               required
-              className={`block w-full px-4 py-2 border-2 border-gray-300 font-bold rounded-md ${inputTextColor}`}
+              className={`block w-full px-4 py-2 border-2 border-zinc-300 font-bold rounded-md ${inputTextColor}`}
             />
           </label>
           <button
-            className="bg-realGreen text-center mt-2 text-sm [word-spacing:-3px] text-white font-bold py-2 px-4 rounded border-2 border-transparent hover:bg-pink-500 hover:text-black hover:border-realGreen hover:border-2 transition-all duration-300"
+            className="bg-blue-500 text-center mt-2 text-sm [word-spacing:-3px] text-white font-bold py-2 px-4 rounded border-2 border-transparent hover:bg-blue-500 hover:text-black hover:border-blue-500 hover:border-2 transition-all duration-300"
             type="submit"
             formAction={signup}
           >
@@ -102,7 +102,7 @@ export default function SignupPage() {
         <div className="mt-4 flex flex-row items-center text-sm">
           <Link
             href="/login"
-            className="bg-realGreen w-28 text-center text-xs [word-spacing:-3px] text-white font-bold py-1 px-4 ml-2 mr-2 rounded border-2 border-transparent hover:bg-pink-500 hover:text-black hover:border-realGreen hover:border-2 transition-all duration-300"
+            className="bg-blue-500 w-28 text-center text-xs [word-spacing:-3px] text-white font-bold py-1 px-4 ml-2 mr-2 rounded border-2 border-transparent hover:bg-blue-500 hover:text-black hover:border-blue-500 hover:border-2 transition-all duration-300"
           >
             login
           </Link>
@@ -117,7 +117,7 @@ export default function SignupPage() {
                 console.error("Error during anonymous sign-in", error);
               }
             }}
-            className="bg-realGreen w-28 text-center text-xs [word-spacing:-3px] text-white font-bold py-1 px-4 ml-2 mr-2 rounded border-2 border-transparent hover:bg-pink-500 hover:text-black hover:border-realGreen hover:border-2 transition-all duration-300"
+            className="bg-blue-500 w-28 text-center text-xs [word-spacing:-3px] text-white font-bold py-1 px-4 ml-2 mr-2 rounded border-2 border-transparent hover:bg-blue-500 hover:text-black hover:border-blue-500 hover:border-2 transition-all duration-300"
           >
             quick jam
           </button>

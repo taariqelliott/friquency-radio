@@ -9,8 +9,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        realGreen: "#22c55e",
-        darkGray: "#242424",
+        darkzinc: "#242424",
       },
     },
   },

@@ -38,10 +38,10 @@ const ChatContainer = ({ id }: ChatContainerProps) => {
   }, [id]);
 
   return (
-    <div className="flex flex-col w-[97%] max-w-screen-lg h-[100%] overflow-auto border border-gray-600 rounded-lg p-3 mb-2 mt-5 mx-auto">
+    <div className="flex flex-col w-[97%] max-w-screen-lg h-[100%] overflow-auto border border-zinc-600 rounded-lg p-3 mb-2 mt-5 mx-auto">
       {loading ? (
         <div className="flex justify-center items-center h-full">
-          <div className="text-center m-5 text-pink-500 text-2xl font-bold">
+          <div className="text-center m-5 text-blue-500 text-2xl font-bold">
             loading chat...
           </div>
         </div>
@@ -53,17 +53,17 @@ const ChatContainer = ({ id }: ChatContainerProps) => {
 
           <div className="mt-auto">
             {!user ? (
-              <div className="bg-black text-center text-green-500 p-2 border border-gray-600 font-bold rounded-md">
+              <div className="bg-black text-center text-lime-500 p-2 border border-zinc-600 font-bold rounded-md">
                 <Link
                   href="/login"
-                  className="hover:underline hover:text-pink-400"
+                  className="hover:underline hover:text-blue-400"
                 >
                   login
                 </Link>
                 {" or "}
                 <Link
                   href="/signup"
-                  className="hover:underline hover:text-pink-400"
+                  className="hover:underline hover:text-blue-400"
                 >
                   sign up
                 </Link>

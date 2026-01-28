@@ -58,20 +58,20 @@ const RoomPage = async ({ params }: { params: { id: string } }) => {
           </div>
         )}
 
-        <div className="flex flex-col items-center justify-center sm:p-2 rounded-lg bg-gray-700 mx-auto p-1 mt-5">
-          <div className=" hover:text-realGreen text-white transition-all duration-200 hidden md:block">
+        <div className="flex flex-col items-center justify-center sm:p-2 rounded-lg bg-zinc-700 mx-auto p-1 mt-5">
+          <div className=" hover:text-blue-500 text-white transition-all duration-200 hidden md:block">
             <Link href="/">FRIQUENCY RADIO</Link>
           </div>
 
           <div className="text-2xl mt-1">
             📡{" "}
-            <span className="text-pink-500 hover:text-pink-600 cursor-pointer transition-all duration-200">
+            <span className="text-blue-500 hover:text-blue-600 cursor-pointer transition-all duration-200">
               {room.name}
             </span>{" "}
             📡
           </div>
 
-          <p className="text-green-500 text-sm px-2">
+          <p className="text-lime-500 text-sm px-2">
             By:{" "}
             <span className="font-bold">
               {"@" + (user?.username || "Unknown")}

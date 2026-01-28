@@ -16,7 +16,7 @@ const ShareButton = () => {
             variant="filled"
             color="black"
             onClick={handleCopyURL}
-            style={{ color: "white", border: "#ec4899 2px solid" }}
+            style={{ color: "white", border: "#2b7fff 2px solid" }}
             className="hover:opacity-65"
           >
             📋 Share
@@ -24,7 +24,9 @@ const ShareButton = () => {
         </span>
       </Popover.Target>
       <Popover.Dropdown>
-        <Text size="xs">Room URL Copied!</Text>
+        <Text size="xs" className="text-center">
+          Room URL Copied!
+        </Text>
       </Popover.Dropdown>
     </Popover>
   );

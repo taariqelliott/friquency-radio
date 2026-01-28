@@ -136,7 +136,7 @@ const ListAllRooms = () => {
   };
 
   if (loading) {
-    return <div className="text-pink-500 text-2xl font-bold">Loading...</div>;
+    return <div className="text-blue-500 text-2xl font-bold">Loading...</div>;
   }
 
   if (error) {
@@ -161,7 +161,7 @@ const ListAllRooms = () => {
       {rooms.length > 0 ? (
         <ol className="w-full px-4">{rows}</ol>
       ) : (
-        <div className="text-center text-pink-500 text-2xl mt-4">
+        <div className="text-center text-blue-500 text-2xl mt-4">
           No Stations Found
         </div>
       )}

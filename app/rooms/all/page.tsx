@@ -156,7 +156,7 @@ const ListAllRooms = () => {
   };
 
   if (loading) {
-    return <div className="text-pink-500 text-2xl font-bold">Loading...</div>;
+    return <div className="text-blue-500 text-2xl font-bold">Loading...</div>;
   }
 
   if (error) {
@@ -177,15 +177,15 @@ const ListAllRooms = () => {
         </Table.Td>
         <Table.Td>
           {room.username === currentUsername ? (
-            <span className="text-green-500 font-bold">(You) 👑</span>
+            <span className="text-lime-500 font-bold">(You) 👑</span>
           ) : (
-            <span className="text-pink-500">@{room.username}</span>
+            <span className="text-blue-500">@{room.username}</span>
           )}
         </Table.Td>
         <Table.Td>
           <Link
             href={`/rooms/${room.id}`}
-            className="bg-black text-green-500 border border-pink-500 px-2 py-1 rounded hover:bg-green-500 hover:text-black font-bold"
+            className="bg-black text-lime-500 border border-blue-500 px-2 py-1 rounded hover:bg-lime-500 hover:text-black font-bold"
           >
             Enter
           </Link>
@@ -233,7 +233,7 @@ const ListAllRooms = () => {
           <Table.Tbody>{rows}</Table.Tbody>
         </Table>
       ) : (
-        <div className="text-center text-pink-500 text-2xl mt-4">
+        <div className="text-center text-blue-500 text-2xl mt-4">
           No Stations Found
         </div>
       )}

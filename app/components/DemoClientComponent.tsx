@@ -49,7 +49,7 @@ export default function DemoClientComponent() {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center font-bold text-2xl text-pink-500 justify-center p-4">
+      <div className="flex flex-col items-center font-bold text-2xl text-blue-500 justify-center p-4">
         Loading...
       </div>
     );
@@ -57,18 +57,18 @@ export default function DemoClientComponent() {
 
   return (
     <div className="flex flex-col items-center justify-center p-4 rounded-lg shadow-lg m-2">
-      <div className="text-sm text-green-500 text-center">Welcome to</div>
-      <div className="text-sm text-black font-bold text-center bg-green-500 rounded p-2">
+      <div className="text-sm text-lime-500 text-center">Welcome to</div>
+      <div className="text-sm text-black font-bold text-center bg-lime-500 rounded p-2">
         FRIQUENCY RADIO
       </div>
       <div className="flex flex-row justify-center items-center mt-2 font-bold">
-        <span className="text-green-500">@</span>
+        <span className="text-lime-500">@</span>
         <span className="text-white"> {profile.username || "Not set"}</span>
       </div>
       {user && (
         <div className="flex flex-col justify-center items-center ">
           <Link href="/rooms/all">
-            <button className="mt-4 transition duration-200 text-green-500 text-center border border-pink-500 w-[200px] max-w-xs hover:bg-green-500 hover:text-black font-bold py-2 px-4 rounded">
+            <button className="mt-4 transition duration-200 text-lime-500 text-center border border-blue-500 w-[200px] max-w-xs hover:bg-lime-500 hover:text-black font-bold py-2 px-4 rounded">
               Join Station
             </button>
           </Link>

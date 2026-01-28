@@ -118,14 +118,14 @@ const ChatInput = ({
 
   return (
     <form
-      className="flex items-center bg-gray-800 border border-gray-600 rounded-lg shadow-md p-2"
+      className="flex items-center bg-zinc-800 border border-zinc-600 rounded-lg shadow-md p-2"
       onSubmit={handleSubmit(onSubmit)}
     >
       <label
         className={`text-white ${
           imageFile
-            ? "bg-green-500 hover:bg-green-400"
-            : "bg-black hover:bg-gray-700"
+            ? "bg-lime-500 hover:bg-lime-400"
+            : "bg-black hover:bg-zinc-700"
         } rounded-full w-[32px] h-[32px] mr-2 cursor-pointer flex items-center justify-center`}
         title="Upload Image"
       >
@@ -157,7 +157,7 @@ const ChatInput = ({
 
       <Input
         type="text"
-        className="flex-grow bg-gray-900 rounded-lg p-1 mr-2 ml-1 text-gray-200"
+        className="flex-grow bg-zinc-900 rounded-lg p-1 mr-2 ml-1 text-zinc-200"
         placeholder={
           imageFile ? `${imageFile?.name}` : "Type your message here"
         }
@@ -166,7 +166,7 @@ const ChatInput = ({
         onKeyDown={handleKeyPress}
       />
       <button
-        className="text-white bg-pink-500 hover:bg-pink-600 hover:text-black focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 transition duration-200 ease-in-out"
+        className="text-white bg-blue-500 hover:bg-blue-600 hover:text-black focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 transition duration-200 ease-in-out"
         type="submit"
         disabled={uploading}
       >

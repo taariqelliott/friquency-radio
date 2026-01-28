@@ -73,7 +73,7 @@ export default function ProfileEditPage() {
 
   if (loading) {
     return (
-      <div className="text-2xl text-center text-pink-500 font-bold">
+      <div className="text-2xl text-center text-blue-500 font-bold">
         Loading...
       </div>
     );
@@ -89,7 +89,7 @@ export default function ProfileEditPage() {
       }}
     >
       {user?.email && <div>Email: {user?.email}</div>}
-      <div className="text-green-500 bg-black border-pink-500 border rounded p-1 px-2">
+      <div className="text-lime-500 bg-black border-blue-500 border rounded p-1 px-2">
         Username:{" "}
         <span className="text-white font-bold">
           {profile.username || "No username set"}

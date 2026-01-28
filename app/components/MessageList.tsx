@@ -73,30 +73,30 @@ const MessageList = ({
           } mb-4`}
         >
           <div
-            className={`bg-black border border-gray-600 rounded-lg p-3 w-full sm:w-3/4 md:w-1/2 ${
-              message.user_id === user?.id ? "bg-gray-800" : "bg-black"
+            className={`bg-black border border-zinc-600 rounded-lg p-3 w-full sm:w-3/4 md:w-1/2 ${
+              message.user_id === user?.id ? "bg-zinc-800" : "bg-black"
             } break-words`}
           >
             <div className="flex items-center justify-between mb-2">
               <strong
                 className={`text-sm ${
                   message.user_id === user?.id
-                    ? "text-pink-400"
-                    : "text-green-600"
+                    ? "text-blue-400"
+                    : "text-lime-500"
                 }`}
               >
                 {message.user_id === user?.id ? (
-                  <span className="text-green-600">@</span>
+                  <span className="text-lime-500">@</span>
                 ) : (
-                  <span className="text-pink-400">@</span>
+                  <span className="text-blue-400">@</span>
                 )}
                 {message.username || "Unknown"}
               </strong>
               <span
                 className={`text-xs ${
                   message.user_id === user?.id
-                    ? "text-pink-400"
-                    : "text-green-600"
+                    ? "text-blue-400"
+                    : "text-lime-500"
                 }`}
               >
                 {new Date(message.created_at).toLocaleTimeString()}

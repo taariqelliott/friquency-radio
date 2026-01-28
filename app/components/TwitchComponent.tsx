@@ -125,7 +125,7 @@ export default function TwitchClientPlayer({ room }: { room: Room }) {
           <div className="flex items-center justify-center">
             <Button
               onClick={handleUpdateUsername}
-              color="green"
+              color="lime"
               className="mt-2"
             >
               Update Username
@@ -138,7 +138,7 @@ export default function TwitchClientPlayer({ room }: { room: Room }) {
             <div className="flex flex-col gap-y-2 justify-start">
               <div className="">
                 <a
-                  className="text-green-500 text-xs hover:text-black font-bold hover:bg-green-500 hover:border-pink-500 bg-black rounded p-1 border-2 border-pink-500 md:hidden"
+                  className="text-lime-500 text-xs hover:text-black font-bold hover:bg-lime-500 hover:border-blue-500 bg-black rounded p-1 border-2 border-blue-500 md:hidden"
                   href={twitchStream}
                   target="_blank"
                 >
@@ -148,7 +148,7 @@ export default function TwitchClientPlayer({ room }: { room: Room }) {
                 <h1 className="hidden font-bold md:block">
                   Now playing:{" "}
                   <a
-                    className="text-green-500 hover:text-black text-sm font-bold hover:bg-green-500 hover:border-pink-500 bg-black rounded px-2 py-1 border-2 border-pink-500"
+                    className="text-lime-500 hover:text-black text-sm font-bold hover:bg-lime-500 hover:border-blue-500 bg-black rounded px-2 py-1 border-2 border-blue-500"
                     href={twitchStream}
                     target="_blank"
                   >
@@ -162,7 +162,7 @@ export default function TwitchClientPlayer({ room }: { room: Room }) {
                   <div className="flex flex-col justify-start ">
                     <button
                       onClick={open}
-                      className="border-2 mt-1 w-12 flex justify-center items-center rounded-lg border-pink-500 p-2 bg-black text-green-500 hover:bg-green-500 hover:text-black"
+                      className="border-2 mt-1 w-12 flex justify-center items-center rounded-lg border-blue-500 p-2 bg-black text-lime-500 hover:bg-lime-500 hover:text-black"
                     >
                       <IconSettings className="" />
                     </button>
@@ -171,14 +171,14 @@ export default function TwitchClientPlayer({ room }: { room: Room }) {
 
               <button
                 onClick={togglePlayback}
-                className="play-button border-2 w-12 items-center justify-center flex rounded-lg border-pink-500 p-2 bg-black text-green-500 hover:bg-green-500 hover:text-black"
+                className="play-button border-2 w-12 items-center justify-center flex rounded-lg border-blue-500 p-2 bg-black text-lime-500 hover:bg-lime-500 hover:text-black"
               >
                 {isPlaying ? <IconVolume /> : <IconVolumeOff />}
               </button>
 
               <button
                 onClick={toggleVisibility}
-                className="border-2 rounded-lg w-12 border-pink-500 text-green-500 flex items-center justify-center p-2 bg-black hover:bg-green-500 hover:text-black"
+                className="border-2 rounded-lg w-12 border-blue-500 text-lime-500 flex items-center justify-center p-2 bg-black hover:bg-lime-500 hover:text-black"
               >
                 {isVisible ? <IconVideoOff /> : <IconVideo />}
               </button>
@@ -190,7 +190,7 @@ export default function TwitchClientPlayer({ room }: { room: Room }) {
       <div
         className={
           isVisible
-            ? "relative lg:mt-4 md:mt-2 sm:mt-0 mt-3 border-pink-500 border-2"
+            ? "relative lg:mt-4 md:mt-2 sm:mt-0 mt-3 border-blue-500 border-2"
             : "hidden"
         }
       >
