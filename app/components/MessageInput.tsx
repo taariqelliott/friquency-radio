@@ -78,7 +78,10 @@ const ChatInput = ({
       if (imageFile) {
         const { data: uploadData, error: uploadError } = await supabase.storage
           .from("chat-images")
-          .upload(`images/${Date.now()}_${imageFile.name}`, imageFile);
+          .upload(
+            `images/${imageFile.name.trim().replace(/[^\w.-]/g, "_")}`,
+            imageFile
+          );
 
         if (uploadError) {
           console.error("Error uploading image:", uploadError);
