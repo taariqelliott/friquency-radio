@@ -1,15 +1,15 @@
 "use client";
-import { useState, useEffect } from "react";
+import { createClient } from "@/utils/supabase/client";
+import { Button, Modal, TextInput } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import {
+  IconSettings,
+  IconVideo,
+  IconVideoOff,
   IconVolume,
   IconVolumeOff,
-  IconSettings,
-  IconVideoOff,
-  IconVideo,
 } from "@tabler/icons-react";
-import { createClient } from "@/utils/supabase/client";
-import { useDisclosure } from "@mantine/hooks";
-import { Modal, TextInput, Button } from "@mantine/core";
+import { useEffect, useState } from "react";
 
 interface Room {
   id: number;
@@ -138,7 +138,7 @@ export default function TwitchClientPlayer({ room }: { room: Room }) {
             <div className="flex flex-col gap-y-2 justify-start">
               <div className="">
                 <a
-                  className="text-lime-500 text-xs hover:text-black font-bold hover:bg-lime-500 hover:border-blue-500 bg-black rounded p-1 border-2 border-blue-500 md:hidden"
+                  className="text-lime-500 text-xs hover:text-black font-bold hover:bg-lime-500 hover:border-blue-600 bg-black rounded p-1 border-2 border-blue-500 md:hidden"
                   href={twitchStream}
                   target="_blank"
                 >
@@ -148,7 +148,7 @@ export default function TwitchClientPlayer({ room }: { room: Room }) {
                 <h1 className="hidden font-bold md:block">
                   Now playing:{" "}
                   <a
-                    className="text-lime-500 hover:text-black text-sm font-bold hover:bg-lime-500 hover:border-blue-500 bg-black rounded px-2 py-1 border-2 border-blue-500"
+                    className="text-lime-500 hover:text-black text-sm font-bold hover:bg-lime-500 hover:border-blue-600 bg-black rounded px-2 py-1 border-2 border-blue-500"
                     href={twitchStream}
                     target="_blank"
                   >

@@ -1,14 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
-import { User } from "@supabase/supabase-js";
-import { login } from "./actions";
 import { useMantineColorScheme } from "@mantine/core";
-import "../globals.css";
+import { User } from "@supabase/supabase-js";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { anonymousSignIn } from "../anon/actions";
+import "../globals.css";
+import { login } from "./actions";
 
 export default function LoginPage() {
   const [user, setUser] = useState<User | null>(null);
@@ -82,7 +82,7 @@ export default function LoginPage() {
             />
           </label>
           <button
-            className="bg-blue-500 text-center mt-2 text-sm [word-spacing:-3px] text-white font-bold py-2 px-4 rounded border-2 border-transparent hover:bg-blue-500 hover:text-black hover:border-blue-500 hover:border-2 transition-all duration-300"
+            className="bg-blue-500 text-center mt-2 text-sm [word-spacing:-3px] text-white font-bold py-2 px-4 rounded border-2 border-transparent hover:bg-blue-600 hover:text-black hover:border-blue-600 hover:border-2 transition-all duration-300"
             type="submit"
             formAction={login}
           >
@@ -92,7 +92,7 @@ export default function LoginPage() {
         <div className="mt-4 flex flex-row items-center text-sm">
           <Link
             href="/signup"
-            className="bg-blue-500 w-28 text-center text-xs [word-spacing:-3px] text-white font-bold py-1 px-4 ml-2 mr-2 rounded border-2 border-transparent hover:bg-blue-500 hover:text-black hover:border-blue-500 hover:border-2 transition-all duration-300"
+            className="bg-blue-500 w-28 text-center text-xs [word-spacing:-3px] text-white font-bold py-1 px-4 ml-2 mr-2 rounded border-2 border-transparent hover:bg-blue-600 hover:text-black hover:border-blue-600 hover:border-2 transition-all duration-300"
           >
             signup
           </Link>
@@ -107,7 +107,7 @@ export default function LoginPage() {
                 console.error("Error during anonymous sign-in", error);
               }
             }}
-            className="bg-blue-500 w-28 text-center text-xs [word-spacing:-3px] text-white font-bold py-1 px-4 ml-2 mr-2 rounded border-2 border-transparent hover:bg-blue-500 hover:text-black hover:border-blue-500 hover:border-2 transition-all duration-300"
+            className="bg-blue-500 w-28 text-center text-xs [word-spacing:-3px] text-white font-bold py-1 px-4 ml-2 mr-2 rounded border-2 border-transparent hover:bg-blue-600 hover:text-black hover:border-blue-600 hover:border-2 transition-all duration-300"
           >
             quick jam
           </button>

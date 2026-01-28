@@ -2,8 +2,8 @@
 
 import { createClient } from "@/utils/supabase/client";
 import { User } from "@supabase/supabase-js";
-import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import CreateRoom from "./CreateRoom";
 
 type Profile = {

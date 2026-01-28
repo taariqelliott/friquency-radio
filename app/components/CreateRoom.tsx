@@ -1,11 +1,11 @@
 "use client";
 
-import { FormEvent, useState } from "react";
-import { useRouter } from "next/navigation";
-import { createRoom } from "../rooms/all/actions";
-import { TextInput, Modal } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
 import { createClient } from "@/utils/supabase/client";
+import { Modal, TextInput } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import { useRouter } from "next/navigation";
+import { FormEvent, useState } from "react";
+import { createRoom } from "../rooms/all/actions";
 
 export default function CreateRoom() {
   const [opened, { open, close }] = useDisclosure(false);

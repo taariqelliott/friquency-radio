@@ -1,16 +1,16 @@
 import { createClient } from "@/utils/supabase/client";
 import { Input, Modal } from "@mantine/core";
-import { useForm } from "react-hook-form";
-import {
-  useState,
-  useRef,
-  ChangeEvent,
-  ClipboardEvent,
-  MouseEvent,
-  KeyboardEvent,
-} from "react";
 import { useDisclosure } from "@mantine/hooks";
 import { IconPhotoPlus } from "@tabler/icons-react";
+import {
+  ChangeEvent,
+  ClipboardEvent,
+  KeyboardEvent,
+  MouseEvent,
+  useRef,
+  useState,
+} from "react";
+import { useForm } from "react-hook-form";
 
 interface ChatInputForm {
   message_text: string;

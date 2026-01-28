@@ -1,11 +1,11 @@
 "use client";
 
-import { createClient } from "@/utils/supabase/client";
-import Link from "next/link";
-import { useState, useEffect } from "react";
-import { PostgrestError, User } from "@supabase/supabase-js";
 import CreateRoom from "@/app/components/CreateRoom";
+import { createClient } from "@/utils/supabase/client";
 import { Table } from "@mantine/core";
+import { PostgrestError, User } from "@supabase/supabase-js";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 import { DeleteRoom } from "./DeleteRoom";
 
 interface Room {
@@ -211,7 +211,7 @@ const ListAllRooms = () => {
     <div className="flex flex-col justify-around items-center">
       {rooms.length > 0 ? (
         <Table stickyHeader stickyHeaderOffset={60} striped withTableBorder>
-          <Table.Caption>-Frequency Radio Stations-</Table.Caption>
+          <Table.Caption>-Friquency Radio Stations-</Table.Caption>
           <Table.Thead>
             <Table.Tr>
               {currentUsername ? (

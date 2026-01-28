@@ -1,7 +1,7 @@
-import { handleLogout, handleDeleteAccount, fetchUser } from "./actions";
-import DemoClientComponent from "./components/DemoClientComponent";
 import Link from "next/link";
+import { fetchUser, handleDeleteAccount, handleLogout } from "./actions";
 import { anonymousSignIn } from "./anon/actions";
+import DemoClientComponent from "./components/DemoClientComponent";
 
 export default async function Home() {
   const user = await fetchUser();
@@ -24,7 +24,7 @@ export default async function Home() {
                 {user.user.is_anonymous ? (
                   <form action={handleDeleteAccount}>
                     <button
-                      className="bg-blue-500 text-white font-bold py-3 px-8 rounded-full border-2 border-transparent hover:bg-blue-500 hover:text-white hover:border-blue-500 transition-all duration-300"
+                      className="bg-blue-500 text-white font-bold py-3 px-8 rounded-full border-2 border-transparent hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all duration-300"
                       type="submit"
                     >
                       End Session
@@ -33,7 +33,7 @@ export default async function Home() {
                 ) : (
                   <form action={handleLogout}>
                     <button
-                      className="bg-blue-500 text-white font-bold py-3 px-8 rounded-full border-2 border-transparent hover:bg-blue-500 hover:text-white hover:border-blue-500 transition-all duration-300"
+                      className="bg-blue-500 text-white font-bold py-3 px-8 rounded-full border-2 border-transparent hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all duration-300"
                       type="submit"
                     >
                       Logout
@@ -69,13 +69,13 @@ export default async function Home() {
           <div className="flex gap-4 mb-4">
             <Link
               href="/login"
-              className="bg-blue-500 w-32 text-center text-sm text-white font-bold py-2 px-6 rounded-lg border-2 border-transparent hover:bg-blue-500 hover:text-black hover:border-blue-500 hover:border-2 transition-all duration-300"
+              className="bg-blue-500 w-32 text-center text-sm text-white font-bold py-2 px-6 rounded-lg border-2 border-transparent hover:bg-blue-600 hover:text-black hover:border-blue-600 hover:border-2 transition-all duration-300"
             >
               Login
             </Link>
             <Link
               href="/signup"
-              className="bg-blue-500 w-32 text-center text-sm text-white font-bold py-2 px-6 rounded-lg border-2 border-transparent hover:bg-blue-500 hover:text-black hover:border-blue-500 hover:border-2 transition-all duration-300"
+              className="bg-blue-500 w-32 text-center text-sm text-white font-bold py-2 px-6 rounded-lg border-2 border-transparent hover:bg-blue-600 hover:text-black hover:border-blue-600 hover:border-2 transition-all duration-300"
             >
               Sign Up
             </Link>
@@ -91,7 +91,7 @@ export default async function Home() {
               }
             }}
           >
-            <button className="bg-blue-500 w-64 text-sm text-white font-bold py-3 px-8 rounded-lg border-2 border-transparent hover:bg-blue-500 hover:text-white hover:border-blue-500 hover:border-2 transition-all duration-300">
+            <button className="bg-blue-500 w-64 text-sm text-white font-bold py-3 px-8 rounded-lg border-2 border-transparent hover:bg-blue-600 hover:text-white hover:border-blue-600 hover:border-2 transition-all duration-300">
               Try Quick Jam
               <br />
               <span className="text-xs opacity-75 text-zinc-900 font-bold">

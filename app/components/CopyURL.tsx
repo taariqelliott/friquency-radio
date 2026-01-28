@@ -1,6 +1,6 @@
 "use client";
 
-import { Popover, Text, Button } from "@mantine/core";
+import { Button, Popover, Text } from "@mantine/core";
 
 const ShareButton = () => {
   const handleCopyURL = () => {

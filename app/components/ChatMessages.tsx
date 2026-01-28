@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
+import { useEffect, useState } from "react";
 import MessageList from "./MessageList";
 
 interface Message {

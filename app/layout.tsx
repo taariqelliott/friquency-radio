@@ -1,12 +1,12 @@
-import type { Metadata } from "next";
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
-import "./globals.css";
-import { Roboto_Mono } from "next/font/google";
-import Header from "./components/Header";
+import type { Metadata } from "next";
+import { JetBrains_Mono } from "next/font/google";
 import { Suspense } from "react";
+import Header from "./components/Header";
+import "./globals.css";
 
-const roboto = Roboto_Mono({
+const roboto = JetBrains_Mono({
   weight: "400",
   subsets: ["latin"],
   display: "swap",

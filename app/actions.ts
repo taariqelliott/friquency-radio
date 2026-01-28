@@ -1,9 +1,9 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
-import { logout } from "./logout/actions";
-import { deleteAccount } from "./delete/actions";
 import { createClient } from "@/utils/supabase/server";
+import { revalidatePath } from "next/cache";
+import { deleteAccount } from "./delete/actions";
+import { logout } from "./logout/actions";
 
 export async function fetchUser() {
   const supabase = createClient();

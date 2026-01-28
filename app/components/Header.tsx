@@ -1,22 +1,22 @@
 "use client";
 import { createClient } from "@/utils/supabase/client";
 import {
-  useMantineColorScheme,
   Button,
+  Drawer,
   MantineProvider,
   Modal,
-  Drawer,
+  useMantineColorScheme,
 } from "@mantine/core";
-import { useEffect, useState, useCallback } from "react";
-import { useSearchParams } from "next/navigation";
+import { useDisclosure } from "@mantine/hooks";
 import {
   IconBrightness2,
-  IconMoonStars,
-  IconMenu2,
-  IconRadio,
   IconHome,
+  IconMenu2,
+  IconMoonStars,
+  IconRadio,
 } from "@tabler/icons-react";
-import { useDisclosure } from "@mantine/hooks";
+import { useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 import ProfileEditPage from "../profile/edit/page";
 
 interface User {

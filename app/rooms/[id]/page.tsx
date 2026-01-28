@@ -1,11 +1,9 @@
-import { createClient } from "@/utils/supabase/server";
-import { notFound } from "next/navigation";
-import CopyURL from "@/app/components/CopyURL";
-import Link from "next/link";
 import ChatContainer from "@/app/components/ChatContainer";
+import CopyURL from "@/app/components/CopyURL";
+import { createClient } from "@/utils/supabase/server";
+import Link from "next/link";
+import { notFound } from "next/navigation";
 import TwitchClientPlayer from "../../components/TwitchComponent";
-import RoomsPage from "../all/page";
-import AllRoomsPage from "@/app/components/AllRoomsList";
 
 const RoomPage = async ({ params }: { params: { id: string } }) => {
   const { id } = params;
