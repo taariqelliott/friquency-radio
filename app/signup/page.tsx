@@ -16,7 +16,7 @@ export default function SignupPage() {
   const router = useRouter();
   const { colorScheme } = useMantineColorScheme();
   const textColor = colorScheme === "dark" ? "text-black" : "text-black";
-  const bgColor = colorScheme === "dark" ? "bg-white" : "bg-zinc-300";
+  const bgColor = colorScheme === "dark" ? "bg-white" : "bg-stone-300";
   const inputTextColor =
     colorScheme === "dark" ? "text-blue-500" : "text-black";
 
@@ -68,7 +68,7 @@ export default function SignupPage() {
               name="email"
               type="email"
               required
-              className={`block w-full px-4 py-2 border-2 border-zinc-300 font-bold rounded-md ${inputTextColor}`}
+              className={`block w-full px-4 py-2 border-2 border-stone-300 font-bold rounded-md ${inputTextColor}`}
             />
           </label>
           <label htmlFor="username" className={`block ${textColor}`}>
@@ -78,7 +78,7 @@ export default function SignupPage() {
               name="username"
               type="text"
               required
-              className={`block w-full px-4 py-2 border-2 border-zinc-300 font-bold rounded-md ${inputTextColor}`}
+              className={`block w-full px-4 py-2 border-2 border-stone-300 font-bold rounded-md ${inputTextColor}`}
             />
           </label>
           <label htmlFor="password" className={`block ${textColor}`}>
@@ -88,7 +88,7 @@ export default function SignupPage() {
               name="password"
               type="password"
               required
-              className={`block w-full px-4 py-2 border-2 border-zinc-300 font-bold rounded-md ${inputTextColor}`}
+              className={`block w-full px-4 py-2 border-2 border-stone-300 font-bold rounded-md ${inputTextColor}`}
             />
           </label>
           <button

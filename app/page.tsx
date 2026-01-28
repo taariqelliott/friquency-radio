@@ -8,7 +8,7 @@ export default async function Home() {
 
   if (user) {
     return (
-      <main className="flex flex-col items-center justify-center min-h-dvh p-8 bg-gradient-to-b from-black to-zinc-900">
+      <main className="flex flex-col items-center justify-center min-h-dvh p-8 bg-gradient-to-b from-black to-stone-900">
         <div className="max-w-4xl w-full space-y-8">
           <div className="bg-black bg-opacity-50 p-6 rounded-lg border-2 border-blue-500 shadow-xl">
             <div className="border-2 border-blue-500 rounded-lg p-4">
@@ -48,7 +48,7 @@ export default async function Home() {
     );
   }
   return (
-    <main className="flex flex-col items-center justify-center min-h-dvh p-8 bg-gradient-to-b from-black to-zinc-900">
+    <main className="flex flex-col items-center justify-center min-h-dvh p-8 bg-gradient-to-b from-black to-stone-900">
       <div className="max-w-3xl text-center space-y-6">
         <h1 className="text-5xl font-bold mb-4 pb-3 text-center bg-black border-2 border-x-blue-500 border-y-blue-500 rounded-lg p-4 text-white">
           Friquency Radio
@@ -58,7 +58,7 @@ export default async function Home() {
           <h2 className="text-2xl text-white font-semibold">
             Watch Together, Chat Together
           </h2>
-          <p className="text-zinc-300 text-lg max-w-2xl mx-auto">
+          <p className="text-stone-300 text-lg max-w-2xl mx-auto">
             Your social Twitch companion - Watch your favorite streamers while
             chatting with friends in real-time. Create or join listening rooms
             and experience content together.
@@ -94,7 +94,7 @@ export default async function Home() {
             <button className="bg-blue-500 w-64 text-sm text-white font-bold py-3 px-8 rounded-lg border-2 border-transparent hover:bg-blue-600 hover:text-white hover:border-blue-600 hover:border-2 transition-all duration-300">
               Try Quick Jam
               <br />
-              <span className="text-xs opacity-75 text-zinc-900 font-bold">
+              <span className="text-xs opacity-75 text-stone-900 font-bold">
                 No Sign Up Required
               </span>
             </button>
@@ -104,19 +104,19 @@ export default async function Home() {
         <div className="grid grid-cols-3 gap-6 mt-12">
           <div className="text-center p-4 bg-black bg-opacity-50 rounded-lg">
             <h3 className="text-blue-500 font-bold mb-2">Watch Together</h3>
-            <p className="text-zinc-300 text-sm">
+            <p className="text-stone-300 text-sm">
               Synchronize Twitch streams with friends
             </p>
           </div>
           <div className="text-center p-4 bg-black bg-opacity-50 rounded-lg">
             <h3 className="text-blue-500 font-bold mb-2">Real-time Chat</h3>
-            <p className="text-zinc-300 text-sm">
+            <p className="text-stone-300 text-sm">
               Connect with others while watching
             </p>
           </div>
           <div className="text-center p-4 bg-black bg-opacity-50 rounded-lg">
             <h3 className="text-blue-500 font-bold mb-2">Easy to Join</h3>
-            <p className="text-zinc-300 text-sm">Start chatting in seconds</p>
+            <p className="text-stone-300 text-sm">Start chatting in seconds</p>
           </div>
         </div>
       </div>

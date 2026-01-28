@@ -27,7 +27,6 @@ const ChatInput = ({
   const { register, handleSubmit, reset } = useForm<ChatInputForm>();
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
-  const [messageSendError, setMessageSendError] = useState(false);
   const [opened, { open, close }] = useDisclosure(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -66,7 +65,6 @@ const ChatInput = ({
 
   const onSubmit = async (data: ChatInputForm) => {
     if (data.message_text.trim() === "" && !imageFile) {
-      setMessageSendError(true);
       open();
       return;
     }
@@ -122,14 +120,14 @@ const ChatInput = ({
 
   return (
     <form
-      className="flex items-center bg-zinc-800 border border-zinc-600 rounded-lg shadow-md p-2"
+      className="flex items-center bg-stone-800 border border-stone-600 rounded-lg shadow-md p-2"
       onSubmit={handleSubmit(onSubmit)}
     >
       <label
         className={`text-white ${
           imageFile
             ? "bg-lime-500 hover:bg-lime-400"
-            : "bg-black hover:bg-zinc-700"
+            : "bg-black hover:bg-stone-700"
         } rounded-full w-[32px] h-[32px] mr-2 cursor-pointer flex items-center justify-center`}
         title="Upload Image"
       >
@@ -161,7 +159,7 @@ const ChatInput = ({
 
       <Input
         type="text"
-        className="flex-grow bg-zinc-900 rounded-lg p-1 mr-2 ml-1 text-zinc-200"
+        className="flex-grow bg-stone-900 rounded-lg p-1 mr-2 ml-1 text-stone-200"
         placeholder={
           imageFile ? `${imageFile?.name}` : "Type your message here"
         }

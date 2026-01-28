@@ -159,7 +159,7 @@ export default function Header() {
                   onClick={openModal}
                   className="hover:text-blue-500 mr-2 pb-1 mt-[12px]"
                 >
-                  <span className=" bg-black text-slate-100 border-2 rounded-md border-blue-500 px-2 py-1 mt-2">
+                  <span className=" bg-black text-stone-100 border-2 rounded-md border-blue-500 px-2 py-1 mt-2">
                     <span className=" text-lime-500">@</span>
                     {user?.username}
                   </span>

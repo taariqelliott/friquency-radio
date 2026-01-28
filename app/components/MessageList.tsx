@@ -73,8 +73,8 @@ const MessageList = ({
           } mb-4`}
         >
           <div
-            className={`bg-black border border-zinc-600 rounded-lg p-3 w-full sm:w-3/4 md:w-1/2 ${
-              message.user_id === user?.id ? "bg-zinc-800" : "bg-black"
+            className={`bg-black border border-stone-600 rounded-lg p-3 w-full sm:w-3/4 md:w-1/2 ${
+              message.user_id === user?.id ? "bg-stone-800" : "bg-black"
             } break-words`}
           >
             <div className="flex items-center justify-between mb-2">

@@ -56,7 +56,7 @@ const RoomPage = async ({ params }: { params: { id: string } }) => {
           </div>
         )}
 
-        <div className="flex flex-col items-center justify-center sm:p-2 rounded-lg bg-zinc-700 mx-auto p-1 mt-5">
+        <div className="flex flex-col items-center justify-center sm:p-2 rounded-lg bg-stone-700 mx-auto p-1 mt-5">
           <div className=" hover:text-blue-500 text-white transition-all duration-200 hidden md:block">
             <Link href="/">FRIQUENCY RADIO</Link>
           </div>
