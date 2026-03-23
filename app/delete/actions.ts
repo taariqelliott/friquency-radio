@@ -1,20 +1,11 @@
 "use server";
 
-import { createClient } from "@/utils/supabase/server";
+import { createAdminClient } from "@/utils/supabase/admin";
 
 export async function deleteAccount(userId: string) {
-  const supabase = createClient();
+  const adminSupabase = createAdminClient();
 
-  // Delete user from Supabase Auth
-  const { data: authData } = await supabase.auth.getUser();
-
-  const { data: profileData } = await supabase
-    .from("users")
-    .select("username")
-    .eq("id", authData.user?.id)
-    .single();
-
-  const { error: authError } = await supabase.auth.admin.deleteUser(userId);
+  const { error: authError } = await adminSupabase.auth.admin.deleteUser(userId);
 
   if (authError) {
     console.error("Error deleting user from auth:", authError);
@@ -22,7 +13,7 @@ export async function deleteAccount(userId: string) {
   }
 
   // Delete user from the 'users' table
-  const { error: dbError } = await supabase
+  const { error: dbError } = await adminSupabase
     .from("users")
     .delete()
     .eq("id", userId);

@@ -13,6 +13,7 @@ interface Room {
   name: string;
   created_by: string;
   username: string;
+  audio_path?: string | null;
 }
 
 const supabase = createClient();
@@ -91,6 +92,7 @@ const ListAllRooms = () => {
         id,
         name,
         created_by,
+        audio_path,
         users:created_by (username)
       `);
 
@@ -101,6 +103,7 @@ const ListAllRooms = () => {
           id: room.id,
           name: room.name,
           created_by: room.created_by,
+          audio_path: room.audio_path,
           username: room.users.username,
         }));
         setRooms(roomsWithCreators);
@@ -183,6 +186,13 @@ const ListAllRooms = () => {
           )}
         </Table.Td>
         <Table.Td>
+          {room.audio_path ? (
+            <span className="text-lime-500 font-bold">Track Ready</span>
+          ) : (
+            <span className="text-stone-400">No Audio</span>
+          )}
+        </Table.Td>
+        <Table.Td>
           <Link
             href={`/rooms/${room.id}`}
             className="bg-black text-lime-500 border border-blue-500 px-2 py-1 rounded hover:bg-lime-500 hover:text-black font-bold"
@@ -190,20 +200,22 @@ const ListAllRooms = () => {
             Enter
           </Link>
         </Table.Td>
-        <Table.Td>
-          {room.username === currentUsername ? (
-            <button
-              onClick={() => handleDelete(room.id)}
-              className="bg-red-500 text-white border border-white text-xs rounded-lg hover:bg-red-700"
-            >
-              <span className="inline-block transition-all duration-500 hover:rotate-180 px-2 py-1 font-bold">
-                X
-              </span>
-            </button>
-          ) : (
-            ""
-          )}
-        </Table.Td>
+        {currentUsername && (
+          <Table.Td>
+            {room.username === currentUsername ? (
+              <button
+                onClick={() => handleDelete(room.id)}
+                className="bg-red-500 text-white border border-white text-xs rounded-lg hover:bg-red-700"
+              >
+                <span className="inline-block transition-all duration-500 hover:rotate-180 px-2 py-1 font-bold">
+                  X
+                </span>
+              </button>
+            ) : (
+              ""
+            )}
+          </Table.Td>
+        )}
       </Table.Tr>
     ));
 
@@ -218,6 +230,7 @@ const ListAllRooms = () => {
                 <>
                   <Table.Th>Station Name</Table.Th>
                   <Table.Th>Creator</Table.Th>
+                  <Table.Th>Audio</Table.Th>
                   <Table.Th>Actions</Table.Th>
                   <Table.Th>{""}</Table.Th>
                 </>
@@ -225,6 +238,7 @@ const ListAllRooms = () => {
                 <>
                   <Table.Th>Station Name</Table.Th>
                   <Table.Th>Creator</Table.Th>
+                  <Table.Th>Audio</Table.Th>
                   <Table.Th>Actions</Table.Th>
                 </>
               )}

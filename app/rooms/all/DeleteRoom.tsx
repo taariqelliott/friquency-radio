@@ -15,7 +15,7 @@ export const DeleteRoom = async (roomId: string): Promise<boolean> => {
 
     const { data: roomCheck, error: roomCheckError } = await supabase
       .from("rooms")
-      .select("created_by")
+      .select("created_by, audio_path")
       .eq("id", roomId)
       .eq("created_by", user.id)
       .single();
@@ -23,6 +23,17 @@ export const DeleteRoom = async (roomId: string): Promise<boolean> => {
     if (roomCheckError || !roomCheck) {
       console.error("Room not found or not owned by user", roomCheckError);
       return false;
+    }
+
+    if (roomCheck.audio_path) {
+      const { error: storageError } = await supabase.storage
+        .from("room-audio")
+        .remove([roomCheck.audio_path]);
+
+      if (storageError) {
+        console.error("Error deleting room audio:", storageError.message);
+        return false;
+      }
     }
 
     const { error } = await supabase.from("rooms").delete().eq("id", roomId);

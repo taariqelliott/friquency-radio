@@ -1,9 +1,11 @@
 "use server";
 
+import { createAdminClient } from "@/utils/supabase/admin";
 import { createClient } from "@/utils/supabase/server";
 
 export async function createRoom(formData: FormData) {
   const supabase = createClient();
+  const adminSupabase = createAdminClient();
   const name = formData.get("name") as string;
   const { data: user, error: userError } = await supabase.auth.getUser();
 
@@ -15,7 +17,7 @@ export async function createRoom(formData: FormData) {
   const userId = user.user.id;
 
   try {
-    const { data, error } = await supabase
+    const { data, error } = await adminSupabase
       .from("rooms")
       .insert({
         name: name,

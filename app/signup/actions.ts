@@ -1,5 +1,6 @@
 "use server";
 
+import { createAdminClient } from "@/utils/supabase/admin";
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -23,6 +24,7 @@ async function addUserToTable(
 
 export async function signup(formData: FormData) {
   const supabase = createClient();
+  const adminSupabase = createAdminClient();
 
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
@@ -36,7 +38,7 @@ export async function signup(formData: FormData) {
   if (error) {
     redirect("/error");
   } else if (authData.user?.id) {
-    await addUserToTable(supabase, authData.user.id, email, username);
+    await addUserToTable(adminSupabase, authData.user.id, email, username);
     revalidatePath("/");
     redirect("/");
   }

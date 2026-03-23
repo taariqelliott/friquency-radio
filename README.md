@@ -1,14 +1,16 @@
 # Friquency Radio
 
-Welcome to **Friquency Radio** – a social Twitch companion platform designed to enhance your streaming experience. Watch your favorite Twitch streams together while chatting with friends in real-time. Whether you're looking to host a listening room or join one, Friquency Radio brings people together through shared experiences.
+Welcome to **Friquency Radio** – a social listening platform built around public rooms, creator-uploaded audio, and real-time chat. Whether you're hosting a room or dropping into one, Friquency Radio brings people together around shared tracks and conversation.
 
 ## 🚀 What is Friquency Radio?
 
-**Friquency Radio** is an interactive streaming companion that allows users to create synchronized Twitch viewing rooms. Viewers can join rooms, chat in real-time, and enjoy content together. With both registered and anonymous access options, Friquency Radio ensures everyone can participate in the community.
+**Friquency Radio** is an interactive listening app where room creators upload audio files to their stations and listeners control playback locally in their own browser. Viewers can join public rooms, chat in real-time, and listen without needing synchronized playback.
 
 ### Key Features
 
-- **Synchronized Twitch Integration**: Watch Twitch streams together with perfect synchronization across all viewers in a room
+- **Public Listening Rooms**: Create rooms that anyone can visit with a shared link
+- **Creator Audio Uploads**: Attach a track directly to a room using Supabase Storage
+- **Local Playback Controls**: Every listener gets their own play, pause, seek, and volume controls
 - **Real-Time Chat**: Engage with other viewers through a feature-rich chat system supporting:
   - Image sharing
   - Automatic URL detection and linking
@@ -30,9 +32,8 @@ Welcome to **Friquency Radio** – a social Twitch companion platform designed t
 ### Future Development
 
 Currently in development:
-- Native audio streaming capabilities
 - Direct DJ broadcasting features
 - Enhanced room management tools
 - Advanced chat features
 
-Join us in creating the future of social streaming experiences!
+Join us in creating the future of social listening experiences!
