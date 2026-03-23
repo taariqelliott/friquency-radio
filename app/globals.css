@@ -1,3 +1,177 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    --app-accent: #2b7fff;
+    --app-accent-strong: #1f5ee0;
+    --app-success: #84cc16;
+    --app-danger: #ef4444;
+    --app-shadow: 0 32px 80px -42px rgba(15, 23, 42, 0.45);
+  }
+
+  [data-mantine-color-scheme="dark"] {
+    --app-bg: #090d16;
+    --app-surface: rgba(12, 18, 31, 0.82);
+    --app-surface-strong: rgba(17, 24, 39, 0.92);
+    --app-surface-soft: rgba(23, 33, 52, 0.72);
+    --app-border: rgba(148, 163, 184, 0.18);
+    --app-border-strong: rgba(43, 127, 255, 0.34);
+    --app-text-muted: #a5b0c3;
+    --app-text-soft: #738095;
+    --app-glow: rgba(43, 127, 255, 0.16);
+  }
+
+  [data-mantine-color-scheme="light"] {
+    --app-bg: #edf2ff;
+    --app-surface: rgba(255, 255, 255, 0.82);
+    --app-surface-strong: rgba(255, 255, 255, 0.94);
+    --app-surface-soft: rgba(238, 244, 255, 0.92);
+    --app-border: rgba(71, 85, 105, 0.12);
+    --app-border-strong: rgba(43, 127, 255, 0.22);
+    --app-text-muted: #526072;
+    --app-text-soft: #768498;
+    --app-glow: rgba(43, 127, 255, 0.1);
+  }
+
+  html,
+  body {
+    min-height: 100%;
+  }
+
+  body {
+    background:
+      radial-gradient(circle at top, var(--app-glow), transparent 30%),
+      linear-gradient(180deg, transparent, rgba(15, 23, 42, 0.04)),
+      var(--app-bg);
+    color: var(--mantine-color-text);
+  }
+
+  a,
+  button,
+  input,
+  textarea {
+    transition:
+      color 160ms ease,
+      background-color 160ms ease,
+      border-color 160ms ease,
+      box-shadow 160ms ease,
+      transform 160ms ease,
+      opacity 160ms ease;
+  }
+}
+
+@layer components {
+  .app-page {
+    @apply min-h-dvh px-4 py-20 md:px-8;
+  }
+
+  .app-page-center {
+    @apply flex flex-col items-center justify-center;
+  }
+
+  .app-shell {
+    @apply mx-auto w-full max-w-6xl;
+  }
+
+  .app-shell-narrow {
+    @apply mx-auto w-full max-w-3xl;
+  }
+
+  .app-panel {
+    @apply rounded-[28px] border p-6 shadow-xl backdrop-blur-xl;
+    background: var(--app-surface);
+    border-color: var(--app-border-strong);
+    box-shadow: var(--app-shadow);
+  }
+
+  .app-panel-soft {
+    @apply rounded-2xl border p-5;
+    background: var(--app-surface-strong);
+    border-color: var(--app-border);
+  }
+
+  .app-card {
+    @apply rounded-2xl border p-4;
+    background: var(--app-surface-soft);
+    border-color: var(--app-border);
+  }
+
+  .app-kicker {
+    @apply text-[11px] font-semibold uppercase tracking-[0.3em];
+    color: var(--app-text-soft);
+  }
+
+  .app-copy {
+    color: var(--app-text-muted);
+  }
+
+  .app-muted {
+    color: var(--app-text-soft);
+  }
+
+  .app-divider {
+    border-color: var(--app-border);
+  }
+
+  .app-pill {
+    @apply inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold;
+    background: var(--app-surface-strong);
+    border-color: var(--app-border);
+  }
+
+  .app-action-primary {
+    @apply inline-flex items-center justify-center rounded-xl px-4 py-2.5 font-semibold;
+    border: 1px solid transparent;
+    background: var(--app-accent);
+    color: #fff;
+    box-shadow: 0 18px 30px -24px rgba(43, 127, 255, 0.85);
+  }
+
+  .app-action-primary:hover {
+    background: var(--app-accent-strong);
+    transform: translateY(-1px);
+  }
+
+  .app-action-secondary {
+    @apply inline-flex items-center justify-center rounded-xl px-4 py-2.5 font-semibold;
+    border: 1px solid var(--app-border-strong);
+    background: var(--app-surface-strong);
+    color: var(--mantine-color-text);
+  }
+
+  .app-action-secondary:hover {
+    background: var(--app-surface-soft);
+    transform: translateY(-1px);
+  }
+
+  .app-action-danger {
+    @apply inline-flex items-center justify-center rounded-xl px-4 py-2.5 font-semibold;
+    border: 1px solid rgba(239, 68, 68, 0.28);
+    background: rgba(127, 29, 29, 0.12);
+    color: var(--app-danger);
+  }
+
+  .app-action-danger:hover {
+    background: rgba(239, 68, 68, 0.14);
+    transform: translateY(-1px);
+  }
+
+  .app-input {
+    @apply w-full rounded-xl border px-4 py-3;
+    background: var(--app-surface-strong);
+    border-color: var(--app-border);
+    color: var(--mantine-color-text);
+  }
+
+  .app-input::placeholder {
+    color: var(--app-text-soft);
+  }
+
+  .app-input:focus {
+    outline: none;
+    border-color: rgba(43, 127, 255, 0.55);
+    box-shadow: 0 0 0 3px rgba(43, 127, 255, 0.12);
+  }
+}

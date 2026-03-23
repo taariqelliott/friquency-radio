@@ -1,24 +1,17 @@
 "use client";
 
 import { createClient } from "@/utils/supabase/client";
-import { useMantineColorScheme } from "@mantine/core";
 import { User } from "@supabase/supabase-js";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { anonymousSignIn } from "../anon/actions";
-import "../globals.css";
 import { signup } from "./actions";
 
 export default function SignupPage() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
-  const { colorScheme } = useMantineColorScheme();
-  const textColor = colorScheme === "dark" ? "text-black" : "text-black";
-  const bgColor = colorScheme === "dark" ? "bg-white" : "bg-stone-300";
-  const inputTextColor =
-    colorScheme === "dark" ? "text-blue-500" : "text-black";
 
   useEffect(() => {
     async function fetchUser() {
@@ -36,9 +29,11 @@ export default function SignupPage() {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center text-2xl text-blue-500 font-bold justify-center h-dvh">
-        Loading...
-      </div>
+      <main className="app-page app-page-center">
+        <div className="app-panel text-center text-2xl font-bold text-blue-500">
+          Loading...
+        </div>
+      </main>
     );
   }
 
@@ -48,81 +43,85 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center h-dvh">
-      <div className="z-10 hover:text-blue-500 transition-all duration-200">
-        <Link href={"/"}>FRIQUENCY RADIO</Link>
-      </div>
-      <form
-        className={`relative ${bgColor} p-4 rounded-lg shadow-lg w-96 flex flex-col items-center`}
-      >
-        <div className="w-full flex flex-col items-center">
-          <h1
-            className={`text-center [word-spacing:-3px] tracking-tight text-blue-500 font-bold text-3xl`}
-          >
-            sign up
-          </h1>
-          <label htmlFor="email" className={`block ${textColor}`}>
-            Email:
+    <main className="app-page app-page-center">
+      <div className="app-shell-narrow">
+        <form className="app-panel mx-auto flex w-full max-w-md flex-col gap-5">
+          <div className="space-y-2 text-center">
+            <Link
+              href={"/"}
+              className="app-kicker inline-block hover:text-blue-500"
+            >
+              Friquency Radio
+            </Link>
+            <h1 className="text-3xl font-bold tracking-tight">Sign Up</h1>
+            <p className="app-copy text-sm">
+              Set up a profile to launch stations and keep your username.
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            <label htmlFor="email" className="block text-sm font-medium">
+              Email
+            </label>
             <input
               id="email"
               name="email"
               type="email"
               required
-              className={`block w-full px-4 py-2 border-2 border-stone-300 font-bold rounded-md ${inputTextColor}`}
+              className="app-input"
             />
-          </label>
-          <label htmlFor="username" className={`block ${textColor}`}>
-            Username:
+            <label htmlFor="username" className="block text-sm font-medium">
+              Username
+            </label>
             <input
               id="username"
               name="username"
               type="text"
               required
-              className={`block w-full px-4 py-2 border-2 border-stone-300 font-bold rounded-md ${inputTextColor}`}
+              className="app-input"
             />
-          </label>
-          <label htmlFor="password" className={`block ${textColor}`}>
-            Password:
+            <label htmlFor="password" className="block text-sm font-medium">
+              Password
+            </label>
             <input
               id="password"
               name="password"
               type="password"
               required
-              className={`block w-full px-4 py-2 border-2 border-stone-300 font-bold rounded-md ${inputTextColor}`}
+              className="app-input"
             />
-          </label>
+          </div>
+
           <button
-            className="bg-blue-500 text-center mt-2 text-sm [word-spacing:-3px] text-white font-bold py-2 px-4 rounded border-2 border-transparent hover:bg-blue-600 hover:text-black hover:border-blue-600 hover:border-2 transition-all duration-300"
+            className="app-action-primary w-full"
             type="submit"
             formAction={signup}
           >
-            sign up
+            Sign Up
           </button>
-        </div>
-        <div className="mt-4 flex flex-row items-center text-sm">
-          <Link
-            href="/login"
-            className="bg-blue-500 w-28 text-center text-xs [word-spacing:-3px] text-white font-bold py-1 px-4 ml-2 mr-2 rounded border-2 border-transparent hover:bg-blue-600 hover:text-black hover:border-blue-600 hover:border-2 transition-all duration-300"
-          >
-            login
-          </Link>
-          <button
-            onClick={async (event) => {
-              event.preventDefault();
-              try {
-                await anonymousSignIn();
-                router.push("/");
-                window.location.reload();
-              } catch (error) {
-                console.error("Error during anonymous sign-in", error);
-              }
-            }}
-            className="bg-blue-500 w-28 text-center text-xs [word-spacing:-3px] text-white font-bold py-1 px-4 ml-2 mr-2 rounded border-2 border-transparent hover:bg-blue-600 hover:text-black hover:border-blue-600 hover:border-2 transition-all duration-300"
-          >
-            quick jam
-          </button>
-        </div>
-      </form>
-    </div>
+
+          <div className="flex flex-col items-center gap-3 pt-1 text-sm md:flex-row md:justify-center">
+            <Link href="/login" className="app-action-secondary w-full md:w-32">
+              Login
+            </Link>
+            <button
+              onClick={async (event) => {
+                event.preventDefault();
+                try {
+                  await anonymousSignIn();
+                  router.push("/");
+                  window.location.reload();
+                } catch (error) {
+                  console.error("Error during anonymous sign-in", error);
+                }
+              }}
+              className="app-action-secondary w-full md:w-32"
+            >
+              Quick Jam
+            </button>
+          </div>
+        </form>
+      </div>
+    </main>
   );
 }

@@ -12,13 +12,7 @@ const ShareButton = () => {
     <Popover width={200} position="bottom" withArrow shadow="md">
       <Popover.Target>
         <span>
-          <Button
-            variant="filled"
-            color="black"
-            onClick={handleCopyURL}
-            style={{ color: "white", border: "#2b7fff 2px solid" }}
-            className="hover:opacity-65"
-          >
+          <Button variant="light" color="blue" onClick={handleCopyURL} radius="xl">
             📋 Share
           </Button>
         </span>

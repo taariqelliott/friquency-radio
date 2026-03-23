@@ -1,9 +1,7 @@
 "use client";
 import { createClient } from "@/utils/supabase/client";
 import {
-  Button,
   Drawer,
-  MantineProvider,
   Modal,
   useMantineColorScheme,
 } from "@mantine/core";
@@ -36,11 +34,13 @@ export default function Header() {
 
   const buttons = [
     {
-      label: <IconHome />,
+      icon: <IconHome />,
+      label: "Home",
       onClick: () => (window.location.href = "/"),
     },
     {
-      label: <IconRadio />,
+      icon: <IconRadio />,
+      label: "Stations",
       onClick: () => (window.location.href = "/rooms/all"),
     },
   ];
@@ -82,36 +82,33 @@ export default function Header() {
   };
 
   return (
-    <MantineProvider defaultColorScheme="dark">
-      <div className="absolute z-10 text-white right-2 mt-2">
-        <div className="flex flex-row items-start">
+    <>
+      <Modal
+        opened={modalOpened}
+        centered
+        onClose={closeModal}
+        title="Edit your profile"
+      >
+        <ProfileEditPage />
+      </Modal>
+
+      <div className="fixed right-3 top-3 z-20">
+        <div className="flex items-start gap-2">
           {user && (
-            <div>
-              <Modal
-                opened={modalOpened}
-                centered
-                onClose={closeModal}
-                title="Edit your profile"
-              >
-                <ProfileEditPage />
-              </Modal>
-              <button
-                onClick={openModal}
-                className="hover:text-blue-500 mr-2 mt-[2px]"
-              >
-                <span className="text-sm bg-black border-2 hidden md:flex rounded-md border-blue-500 px-2 py-1">
-                  <span className=" text-lime-500">@</span>
-                  {user.username}
-                </span>
-              </button>
-            </div>
+            <button
+              onClick={openModal}
+              className="app-pill hidden md:inline-flex"
+            >
+              <span className="text-lime-500">@</span>
+              {user.username}
+            </button>
           )}
-          <div className="hidden md:flex flex-col gap-1">
-            <Button
-              variant="filled"
-              color="#2b7fff"
+
+          <div className="app-panel-soft hidden items-center gap-2 p-2 md:flex">
+            <button
               onClick={toggleColorScheme}
-              className="w-20 hover:opacity-40 transition-all duration-300"
+              className="app-action-secondary h-11 w-11 px-0"
+              aria-label="Toggle color scheme"
             >
               {isClient &&
                 (colorScheme === "dark" ? (
@@ -119,28 +116,27 @@ export default function Header() {
                 ) : (
                   <IconMoonStars stroke={2} />
                 ))}
-            </Button>
+            </button>
             {buttons.map((button, index) => (
-              <Button
+              <button
                 key={index}
-                variant="filled"
-                color="#2b7fff"
                 onClick={button.onClick}
-                className="hover:opacity-40 transition-all duration-300"
+                className="app-action-secondary h-11 w-11 px-0"
+                aria-label={button.label}
               >
-                {button.label}
-              </Button>
+                {button.icon}
+              </button>
             ))}
           </div>
+
           <div className="md:hidden">
-            <Button
-              variant="filled"
-              color="#2b7fff"
+            <button
               onClick={openDrawer}
-              className="w-[25%] hover:opacity-70 transition-all duration-300"
+              className="app-action-secondary h-11 w-11 px-0"
+              aria-label="Open navigation"
             >
               <IconMenu2 />
-            </Button>
+            </button>
             <Drawer
               opened={drawerOpened}
               onClose={closeDrawer}
@@ -151,25 +147,20 @@ export default function Header() {
                 timingFunction: "linear",
               }}
               padding="md"
-              size="50%"
+              size="75%"
               position="top"
             >
-              <div className="flex flex-col gap-2">
-                <button
-                  onClick={openModal}
-                  className="hover:text-blue-500 mr-2 pb-1 mt-[12px]"
-                >
-                  <span className=" bg-black text-stone-100 border-2 rounded-md border-blue-500 px-2 py-1 mt-2">
-                    <span className=" text-lime-500">@</span>
-                    {user?.username}
-                  </span>
-                </button>
+              <div className="flex flex-col gap-3">
+                {user && (
+                  <button onClick={openModal} className="app-pill self-start">
+                    <span className="text-lime-500">@</span>
+                    {user.username}
+                  </button>
+                )}
 
-                <Button
-                  variant="filled"
-                  color="#2b7fff"
+                <button
                   onClick={toggleColorScheme}
-                  className="hover:opacity-40 transition-all duration-300"
+                  className="app-action-secondary w-full"
                 >
                   {isClient &&
                     (colorScheme === "dark" ? (
@@ -177,24 +168,23 @@ export default function Header() {
                     ) : (
                       <IconMoonStars stroke={2} />
                     ))}
-                </Button>
+                </button>
 
                 {buttons.map((button, index) => (
-                  <Button
+                  <button
                     key={index}
-                    variant="filled"
-                    color="#2b7fff"
                     onClick={button.onClick}
-                    className="hover:opacity-40 transition-all duration-300"
+                    className="app-action-secondary w-full gap-2"
                   >
-                    {button.label}
-                  </Button>
+                    {button.icon}
+                    <span>{button.label}</span>
+                  </button>
                 ))}
               </div>
             </Drawer>
           </div>
         </div>
       </div>
-    </MantineProvider>
+    </>
   );
 }

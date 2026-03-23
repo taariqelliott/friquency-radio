@@ -231,26 +231,26 @@ export default function RoomAudioPlayer({
   };
 
   return (
-    <section className="w-[97%] max-w-screen-lg mt-6 rounded-xl border border-stone-600 bg-stone-800/80 p-4">
+    <section className="app-panel w-full">
       <div className="flex flex-col gap-4">
-        <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
-          <div>
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+          <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2 text-blue-400">
               <IconMusic size={18} />
-              <span className="text-sm uppercase tracking-[0.2em]">
+              <span className="app-kicker !text-blue-400">
                 Station Audio
               </span>
             </div>
-            <h2 className="mt-1 text-xl font-bold text-white">
+            <h2 className="mt-2 text-2xl font-bold">
               {audioTitle || "No audio uploaded yet"}
             </h2>
-            <p className="text-sm text-stone-300">
+            <p className="app-copy mt-2 text-sm">
               {audioPath
                 ? "Playback is local to your browser. Everyone controls their own player."
                 : "This station is public, but the creator still needs to upload a track."}
             </p>
             {audioPath && (
-              <p className="mt-1 text-xs text-stone-400">
+              <p className="app-muted mt-1 text-xs">
                 {audioMimeType || "audio file"}
                 {audioSizeBytes ? ` • ${formatFileSize(audioSizeBytes)}` : ""}
               </p>
@@ -258,7 +258,7 @@ export default function RoomAudioPlayer({
           </div>
 
           {isRoomOwner && (
-            <div className="flex flex-col gap-2 md:items-end">
+            <div className="flex shrink-0 flex-col gap-2 lg:items-end">
               <input
                 ref={fileInputRef}
                 type="file"
@@ -269,7 +269,7 @@ export default function RoomAudioPlayer({
               />
               <button
                 type="button"
-                className="flex items-center justify-center gap-2 rounded-lg border border-blue-500 bg-black px-4 py-2 font-bold text-lime-500 transition-all duration-200 hover:bg-lime-500 hover:text-black disabled:cursor-not-allowed disabled:opacity-60"
+                className="app-action-primary flex w-44 whitespace-nowrap items-center justify-center gap-2 disabled:cursor-not-allowed disabled:opacity-60"
                 onClick={() => fileInputRef.current?.click()}
                 disabled={isBusy}
               >
@@ -279,7 +279,7 @@ export default function RoomAudioPlayer({
               {audioPath && (
                 <button
                   type="button"
-                  className="flex items-center justify-center gap-2 rounded-lg border border-red-500 bg-black px-4 py-2 font-bold text-red-400 transition-all duration-200 hover:bg-red-500 hover:text-white disabled:cursor-not-allowed disabled:opacity-60"
+                  className="app-action-danger flex w-44 whitespace-nowrap items-center justify-center gap-2 disabled:cursor-not-allowed disabled:opacity-60"
                   onClick={handleDeleteAudio}
                   disabled={isBusy}
                 >
@@ -287,7 +287,7 @@ export default function RoomAudioPlayer({
                   Remove Audio
                 </button>
               )}
-              <p className="text-right text-xs text-stone-400">
+              <p className="app-muted text-right text-xs">
                 MP3, M4A, WAV
                 <br />
                 Max 50MB
@@ -307,7 +307,7 @@ export default function RoomAudioPlayer({
             Your browser does not support the audio element.
           </audio>
         ) : (
-          <div className="rounded-lg border border-dashed border-stone-500 bg-black/30 px-4 py-6 text-center text-stone-400">
+          <div className="app-card border-dashed px-4 py-6 text-center app-copy">
             {isRoomOwner
               ? `Upload a track for ${room.name} to make this station playable.`
               : `${room.name} does not have audio yet.`}
@@ -319,7 +319,7 @@ export default function RoomAudioPlayer({
             {statusMessage && <p className="text-lime-400">{statusMessage}</p>}
             {errorMessage && <p className="text-red-400">{errorMessage}</p>}
             {isRoomOwner && !errorMessage && (
-              <p className="text-stone-400">
+              <p className="app-muted">
                 Uploads are public. Anyone can listen once a file is attached to this room.
               </p>
             )}

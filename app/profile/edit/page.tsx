@@ -80,18 +80,11 @@ export default function ProfileEditPage() {
   }
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        padding: "1rem",
-      }}
-    >
-      {user?.email && <div>Email: {user?.email}</div>}
-      <div className="text-lime-500 bg-black border-blue-500 border rounded p-1 px-2">
+    <div className="flex flex-col items-center gap-4 p-2 text-center">
+      {user?.email && <div className="app-copy text-sm">Email: {user?.email}</div>}
+      <div className="app-pill text-lime-500">
         Username:{" "}
-        <span className="text-white font-bold">
+        <span className="font-bold text-white">
           {profile.username || "No username set"}
         </span>
       </div>
@@ -101,18 +94,13 @@ export default function ProfileEditPage() {
           placeholder="Enter new username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          style={{
-            margin: "1rem 0",
-            padding: "0.5rem",
-            fontSize: "1rem",
-            textAlign: "center",
-          }}
+          className="app-input text-center"
         />
       </form>
       <Button
         variant="outline"
         color="#22c55e"
-        style={{ padding: "0.5rem 1rem" }}
+        radius="xl"
         onClick={updateUsername}
       >
         Update Username

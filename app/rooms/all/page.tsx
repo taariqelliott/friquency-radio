@@ -39,7 +39,6 @@ const fetchCurrentUser = async () => {
 };
 
 const RoomsPage = () => {
-  const [scale, setScale] = useState(1);
   const [user, setUser] = useState<null | User>(null);
 
   useEffect(() => {
@@ -50,29 +49,23 @@ const RoomsPage = () => {
     fetchUser();
   }, []);
 
-  useEffect(() => {
-    const handleResize = () => {
-      const width = window.innerWidth;
-      if (width < 640) setScale(0.8);
-      else if (width < 768) setScale(0.95);
-      else setScale(1);
-    };
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
   return (
-    <main
-      className="flex flex-col items-center justify-center h-dvh gap-2"
-      style={{ transform: `scale(${scale})` }}
-    >
-      {user && <CreateRoom />}
-      <ListAllRooms />
+    <main className="min-h-dvh px-4 pb-6 pt-24 md:px-8">
+      <div className="app-shell flex min-h-[calc(100dvh-7.5rem)] flex-col gap-4">
+        <section className="app-panel flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+          <div className="space-y-2">
+            <div className="app-kicker">Directory</div>
+            <h1 className="text-4xl font-bold tracking-tight">All Stations</h1>
+            <p className="app-copy max-w-2xl">
+              Browse public rooms, jump into the chat, and see which stations
+              already have audio loaded.
+            </p>
+          </div>
+          {user && <CreateRoom />}
+        </section>
+
+        <ListAllRooms />
+      </div>
     </main>
   );
 };
@@ -85,16 +78,20 @@ const ListAllRooms = () => {
 
   useEffect(() => {
     const fetchRoomsAndCurrentUser = async () => {
-      const username = await fetchCurrentUser();
+      const [username, roomsResponse] = await Promise.all([
+        fetchCurrentUser(),
+        supabase.from("rooms").select(`
+          id,
+          name,
+          created_by,
+          audio_path,
+          users:created_by (username)
+        `),
+      ]);
+
       setCurrentUsername(username);
 
-      const { data, error } = await supabase.from("rooms").select(`
-        id,
-        name,
-        created_by,
-        audio_path,
-        users:created_by (username)
-      `);
+      const { data, error } = roomsResponse;
 
       if (error) {
         setError(error);
@@ -159,57 +156,59 @@ const ListAllRooms = () => {
   };
 
   if (loading) {
-    return <div className="text-blue-500 text-2xl font-bold">Loading...</div>;
+    return (
+      <div className="app-panel text-center text-2xl font-bold text-blue-500">
+        Loading...
+      </div>
+    );
   }
 
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return <div className="app-panel text-center">Error: {error.message}</div>;
   }
 
   const rows = rooms
     .sort((a, b) => a.name.localeCompare(b.name))
     .map((room) => (
       <Table.Tr key={room.id}>
-        <Table.Td>
+        <Table.Td className="min-w-[320px] align-top">
           <Link
             href={`/rooms/${room.id}`}
-            className="text-blue-600 hover:underline font-bold"
+            className="block whitespace-normal break-words py-1 text-base font-bold text-blue-600 hover:underline"
           >
             {room.name}
           </Link>
         </Table.Td>
-        <Table.Td>
+        <Table.Td className="align-top py-3">
           {room.username === currentUsername ? (
             <span className="text-lime-500 font-bold">(You) 👑</span>
           ) : (
             <span className="text-blue-500">@{room.username}</span>
           )}
         </Table.Td>
-        <Table.Td>
+        <Table.Td className="align-top py-3">
           {room.audio_path ? (
             <span className="text-lime-500 font-bold">Track Ready</span>
           ) : (
             <span className="text-stone-400">No Audio</span>
           )}
         </Table.Td>
-        <Table.Td>
+        <Table.Td className="align-top py-3">
           <Link
             href={`/rooms/${room.id}`}
-            className="bg-black text-lime-500 border border-blue-500 px-2 py-1 rounded hover:bg-lime-500 hover:text-black font-bold"
+            className="app-action-secondary px-3 py-2 text-sm"
           >
             Enter
           </Link>
         </Table.Td>
         {currentUsername && (
-          <Table.Td>
+          <Table.Td className="align-top py-3">
             {room.username === currentUsername ? (
               <button
                 onClick={() => handleDelete(room.id)}
-                className="bg-red-500 text-white border border-white text-xs rounded-lg hover:bg-red-700"
+                className="app-action-danger px-3 py-2 text-xs"
               >
-                <span className="inline-block transition-all duration-500 hover:rotate-180 px-2 py-1 font-bold">
-                  X
-                </span>
+                Delete
               </button>
             ) : (
               ""
@@ -220,34 +219,40 @@ const ListAllRooms = () => {
     ));
 
   return (
-    <div className="flex flex-col justify-around items-center">
+    <div className="app-panel flex-1 min-h-0">
       {rooms.length > 0 ? (
-        <Table stickyHeader stickyHeaderOffset={60} striped withTableBorder>
-          <Table.Caption>-Friquency Radio Stations-</Table.Caption>
-          <Table.Thead>
-            <Table.Tr>
-              {currentUsername ? (
-                <>
-                  <Table.Th>Station Name</Table.Th>
-                  <Table.Th>Creator</Table.Th>
-                  <Table.Th>Audio</Table.Th>
-                  <Table.Th>Actions</Table.Th>
-                  <Table.Th>{""}</Table.Th>
-                </>
-              ) : (
-                <>
-                  <Table.Th>Station Name</Table.Th>
-                  <Table.Th>Creator</Table.Th>
-                  <Table.Th>Audio</Table.Th>
-                  <Table.Th>Actions</Table.Th>
-                </>
-              )}
-            </Table.Tr>
-          </Table.Thead>
-          <Table.Tbody>{rows}</Table.Tbody>
-        </Table>
+        <div className="h-full overflow-auto rounded-2xl border app-divider">
+          <Table
+            striped
+            withTableBorder
+            className="min-w-[920px]"
+          >
+            <Table.Caption>-Friquency Radio Stations-</Table.Caption>
+            <Table.Thead>
+              <Table.Tr>
+                {currentUsername ? (
+                  <>
+                    <Table.Th className="min-w-[320px]">Station Name</Table.Th>
+                    <Table.Th>Creator</Table.Th>
+                    <Table.Th>Audio</Table.Th>
+                    <Table.Th>Actions</Table.Th>
+                    <Table.Th>{""}</Table.Th>
+                  </>
+                ) : (
+                  <>
+                    <Table.Th className="min-w-[320px]">Station Name</Table.Th>
+                    <Table.Th>Creator</Table.Th>
+                    <Table.Th>Audio</Table.Th>
+                    <Table.Th>Actions</Table.Th>
+                  </>
+                )}
+              </Table.Tr>
+            </Table.Thead>
+            <Table.Tbody>{rows}</Table.Tbody>
+          </Table>
+        </div>
       ) : (
-        <div className="text-center text-blue-500 text-2xl mt-4">
+        <div className="text-center text-2xl font-bold text-blue-500">
           No Stations Found
         </div>
       )}
