@@ -57,8 +57,7 @@ const RoomsPage = () => {
             <div className="app-kicker">Directory</div>
             <h1 className="text-4xl font-bold tracking-tight">All Stations</h1>
             <p className="app-copy max-w-2xl">
-              Browse public rooms, jump into the chat, and see which stations
-              already have audio loaded.
+              Browse public rooms, jump into the chat, and jam out to some tunes!
             </p>
           </div>
           {user && <CreateRoom />}
