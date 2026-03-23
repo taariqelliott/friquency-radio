@@ -8,39 +8,31 @@ export default async function Home() {
 
   if (user) {
     return (
-      <main className="flex flex-col items-center justify-center min-h-dvh p-8 bg-gradient-to-b from-black to-stone-900">
-        <div className="max-w-4xl w-full space-y-8">
-          <div className="bg-black bg-opacity-50 p-6 rounded-lg border-2 border-blue-500 shadow-xl">
-            <div className="border-2 border-blue-500 rounded-lg p-4">
-              <h1 className="text-3xl font-bold text-white mb-6 text-center">
-                Dashboard
-              </h1>
+      <main className="app-page app-page-center">
+        <div className="app-shell-narrow">
+          <div className="app-panel">
+            <div className="mb-5 text-center">
+              <div className="app-kicker">Dashboard</div>
+            </div>
 
-              <div className="relative">
-                <DemoClientComponent />
-              </div>
+            <div className="relative">
+              <DemoClientComponent />
+            </div>
 
-              <div className="mt-6 flex justify-center">
-                {user.user.is_anonymous ? (
-                  <form action={handleDeleteAccount}>
-                    <button
-                      className="bg-blue-500 text-white font-bold py-3 px-8 rounded-full border-2 border-transparent hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all duration-300"
-                      type="submit"
-                    >
-                      End Session
-                    </button>
-                  </form>
-                ) : (
-                  <form action={handleLogout}>
-                    <button
-                      className="bg-blue-500 text-white font-bold py-3 px-8 rounded-full border-2 border-transparent hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all duration-300"
-                      type="submit"
-                    >
-                      Logout
-                    </button>
-                  </form>
-                )}
-              </div>
+            <div className="mt-6 flex justify-center">
+              {user.user.is_anonymous ? (
+                <form action={handleDeleteAccount}>
+                  <button className="app-action-secondary" type="submit">
+                    End Session
+                  </button>
+                </form>
+              ) : (
+                <form action={handleLogout}>
+                  <button className="app-action-secondary" type="submit">
+                    Logout
+                  </button>
+                </form>
+              )}
             </div>
           </div>
         </div>
@@ -48,77 +40,80 @@ export default async function Home() {
     );
   }
   return (
-    <main className="flex flex-col items-center justify-center min-h-dvh p-8 bg-gradient-to-b from-black to-stone-900">
-      <div className="max-w-3xl text-center space-y-6">
-        <h1 className="text-5xl font-bold mb-4 pb-3 text-center bg-black border-2 border-x-blue-500 border-y-blue-500 rounded-lg p-4 text-white">
-          Friquency Radio
-        </h1>
+    <main className="app-page app-page-center">
+      <div className="app-shell-narrow space-y-6 text-center">
+        <div className="app-panel">
+          <div className="app-kicker mb-3">Public Listening Rooms</div>
+          <h1 className="mb-4 text-center text-5xl font-bold tracking-tight">
+            Friquency Radio
+          </h1>
 
-        <div className="space-y-4 mb-8">
-          <h2 className="text-2xl text-white font-semibold">
-            Drop Tracks, Chat Together
-          </h2>
-          <p className="text-stone-300 text-lg max-w-2xl mx-auto">
-            Create public listening rooms, upload a track to your station, and
-            let every listener control playback locally while the room stays
-            connected through chat.
-          </p>
-        </div>
+          <div className="mb-8 space-y-4">
+            <h2 className="text-2xl font-semibold text-lime-500">
+              Drop Tracks, Chat Together
+            </h2>
+            <p className="app-copy mx-auto max-w-2xl text-lg">
+              Create public listening rooms, upload a track to your station,
+              and let every listener control playback locally while the room
+              stays connected through chat.
+            </p>
+          </div>
 
-        <div className="flex flex-col items-center space-y-4">
-          <div className="flex gap-4 mb-4">
-            <Link
-              href="/login"
-              className="bg-blue-500 w-32 text-center text-sm text-white font-bold py-2 px-6 rounded-lg border-2 border-transparent hover:bg-blue-600 hover:text-black hover:border-blue-600 hover:border-2 transition-all duration-300"
+          <div className="flex flex-col items-center space-y-4">
+            <div className="mb-4 flex gap-4">
+              <Link
+                href="/login"
+                className="app-action-secondary w-32 text-sm"
+              >
+                Login
+              </Link>
+              <Link
+                href="/signup"
+                className="app-action-primary w-32 text-sm"
+              >
+                Sign Up
+              </Link>
+            </div>
+
+            <form
+              action={async () => {
+                "use server";
+                try {
+                  await anonymousSignIn();
+                } catch (error) {
+                  console.error("Error during anonymous sign-in.", error);
+                }
+              }}
             >
-              Login
-            </Link>
-            <Link
-              href="/signup"
-              className="bg-blue-500 w-32 text-center text-sm text-white font-bold py-2 px-6 rounded-lg border-2 border-transparent hover:bg-blue-600 hover:text-black hover:border-blue-600 hover:border-2 transition-all duration-300"
-            >
-              Sign Up
-            </Link>
+              <button className="app-action-secondary w-64 text-sm">
+                Try Quick Jam
+                <br />
+                <span className="app-muted text-xs font-bold">
+                  No Sign Up Required
+                </span>
+              </button>
+            </form>
           </div>
 
-          <form
-            action={async () => {
-              "use server";
-              try {
-                await anonymousSignIn();
-              } catch (error) {
-                console.error("Error during anonymous sign-in.", error);
-              }
-            }}
-          >
-            <button className="bg-blue-500 w-64 text-sm text-white font-bold py-3 px-8 rounded-lg border-2 border-transparent hover:bg-blue-600 hover:text-white hover:border-blue-600 hover:border-2 transition-all duration-300">
-              Try Quick Jam
-              <br />
-              <span className="text-xs opacity-75 text-stone-900 font-bold">
-                No Sign Up Required
-              </span>
-            </button>
-          </form>
-        </div>
-
-        <div className="grid grid-cols-3 gap-6 mt-12">
-          <div className="text-center p-4 bg-black bg-opacity-50 rounded-lg">
-            <h3 className="text-blue-500 font-bold mb-2">Public Rooms</h3>
-            <p className="text-stone-300 text-sm">
-              Share a station link and let anyone drop in
-            </p>
-          </div>
-          <div className="text-center p-4 bg-black bg-opacity-50 rounded-lg">
-            <h3 className="text-blue-500 font-bold mb-2">Uploaded Audio</h3>
-            <p className="text-stone-300 text-sm">
-              Room creators can attach their own tracks
-            </p>
-          </div>
-          <div className="text-center p-4 bg-black bg-opacity-50 rounded-lg">
-            <h3 className="text-blue-500 font-bold mb-2">Listener Control</h3>
-            <p className="text-stone-300 text-sm">
-              Everyone gets their own play, pause, and seek controls
-            </p>
+          <div className="mt-12 grid grid-cols-1 gap-4 md:grid-cols-3">
+            <div className="app-card text-center">
+              <h3 className="mb-2 font-bold text-blue-500">Public Rooms</h3>
+              <p className="app-copy text-sm">
+                Share a station link and let anyone drop in
+              </p>
+            </div>
+            <div className="app-card text-center">
+              <h3 className="mb-2 font-bold text-blue-500">Uploaded Audio</h3>
+              <p className="app-copy text-sm">
+                Room creators can attach their own tracks
+              </p>
+            </div>
+            <div className="app-card text-center">
+              <h3 className="mb-2 font-bold text-blue-500">Listener Control</h3>
+              <p className="app-copy text-sm">
+                Everyone gets their own play, pause, and seek controls
+              </p>
+            </div>
           </div>
         </div>
       </div>

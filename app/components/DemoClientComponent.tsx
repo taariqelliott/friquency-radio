@@ -56,19 +56,19 @@ export default function DemoClientComponent() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center p-4 rounded-lg shadow-lg m-2">
-      <div className="text-sm text-lime-500 text-center">Welcome to</div>
-      <div className="text-sm text-black font-bold text-center bg-lime-500 rounded p-2">
+    <div className="flex flex-col items-center justify-center gap-3 py-2 text-center">
+      <div className="app-kicker">Welcome To</div>
+      <div className="app-pill bg-lime-500 text-black border-transparent">
         FRIQUENCY RADIO
       </div>
-      <div className="flex flex-row justify-center items-center mt-2 font-bold">
+      <div className="flex flex-row items-center justify-center font-bold">
         <span className="text-lime-500">@</span>
-        <span className="text-white"> {profile.username || "Not set"}</span>
+        <span> {profile.username || "Not set"}</span>
       </div>
       {user && (
-        <div className="flex flex-col justify-center items-center ">
+        <div className="flex flex-col items-center justify-center gap-3">
           <Link href="/rooms/all">
-            <button className="mt-4 transition duration-200 text-lime-500 text-center border border-blue-500 w-[200px] max-w-xs hover:bg-lime-500 hover:text-black font-bold py-2 px-4 rounded">
+            <button className="app-action-primary mt-2 w-[200px] max-w-xs">
               Join Station
             </button>
           </Link>

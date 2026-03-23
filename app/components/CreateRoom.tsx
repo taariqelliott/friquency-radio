@@ -60,7 +60,7 @@ export default function CreateRoom() {
     <div>
       <button
         onClick={open}
-        className="mt-4 transition duration-200 text-lime-500 text-center bg-black border border-blue-500 w-[200px] max-w-xs hover:bg-lime-500 hover:text-black font-bold py-2 px-4 rounded"
+        className="app-action-secondary mt-4 w-[200px] max-w-xs"
       >
         Create Station
       </button>
@@ -79,7 +79,7 @@ export default function CreateRoom() {
           </label>
           <button
             type="submit"
-            className="mt-4 text-lime-500 text-center border border-lime-500 w-full max-w-xs hover:bg-lime-500 hover:text-white font-bold py-2 px-4 rounded"
+            className="app-action-primary mt-4 w-full max-w-xs"
           >
             Create Station
           </button>

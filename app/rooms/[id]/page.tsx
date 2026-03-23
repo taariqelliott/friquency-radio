@@ -39,44 +39,38 @@ const RoomPage = async ({ params }: { params: { id: string } }) => {
   }
 
   return (
-    <main className="flex flex-col items-center justify-start h-dvh pt-6">
-      <div className="lg:scale-110 md:scale-100 sm:scale-90 scale-90">
-        {user?.username && isRoomOwner && (
-          <div className="flex justify-center w-full">
-            <h3 className="text-white bg-red-600 p-1 m-1 text-sm rounded-lg border-2 border-black">
-              {"Room Owner"}
-            </h3>
-          </div>
-        )}
-
-        <div className="flex flex-col items-center justify-center sm:p-2 rounded-lg bg-stone-700 mx-auto p-1 mt-5">
-          <div className=" hover:text-blue-500 text-white transition-all duration-200 hidden md:block">
-            <Link href="/">FRIQUENCY RADIO</Link>
+    <main className="app-page">
+      <div className="app-shell space-y-6">
+        <section className="app-panel flex flex-col items-center gap-4 text-center">
+          <div className="app-kicker">
+            {isRoomOwner ? "Your Station" : "Public Station"}
           </div>
 
-          <div className="text-2xl mt-1">
-            📡{" "}
-            <span className="text-blue-500 hover:text-blue-600 cursor-pointer transition-all duration-200">
+          <div className="space-y-2">
+            <div className="hidden transition-all duration-200 hover:text-blue-500 md:block">
+              <Link href="/">FRIQUENCY RADIO</Link>
+            </div>
+            <h1 className="text-4xl font-bold tracking-tight text-blue-500">
               {room.name}
-            </span>{" "}
-            📡
+            </h1>
+            <p className="text-sm font-semibold text-lime-500">
+              {"@" + (user?.username || "Unknown")}
+            </p>
           </div>
 
-          <p className="text-lime-500 text-sm px-2">
-            By:{" "}
-            <span className="font-bold">
-              {"@" + (user?.username || "Unknown")}
-            </span>
-          </p>
-
-          <div className="p-1 pb-2 hover:opacity-75 ">
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            {user?.username && isRoomOwner && (
+              <span className="app-pill border-red-500/30 bg-red-500/10 text-red-400">
+                Room Owner
+              </span>
+            )}
             <CopyURL />
           </div>
-        </div>
-      </div>
+        </section>
 
-      <RoomAudioPlayer room={room} isRoomOwner={isRoomOwner} />
-      <ChatContainer id={id} />
+        <RoomAudioPlayer room={room} isRoomOwner={isRoomOwner} />
+        <ChatContainer id={id} />
+      </div>
     </main>
   );
 };

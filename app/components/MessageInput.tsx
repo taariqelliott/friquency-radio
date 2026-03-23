@@ -1,5 +1,5 @@
 import { createClient } from "@/utils/supabase/client";
-import { Input, Modal } from "@mantine/core";
+import { Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconPhotoPlus } from "@tabler/icons-react";
 import {
@@ -120,15 +120,15 @@ const ChatInput = ({
 
   return (
     <form
-      className="flex items-center bg-stone-800 border border-stone-600 rounded-lg shadow-md p-2"
+      className="app-card flex items-center gap-2 p-2"
       onSubmit={handleSubmit(onSubmit)}
     >
       <label
-        className={`text-white ${
+        className={`flex h-10 w-10 cursor-pointer items-center justify-center rounded-full ${
           imageFile
-            ? "bg-lime-500 hover:bg-lime-400"
-            : "bg-black hover:bg-stone-700"
-        } rounded-full w-[32px] h-[32px] mr-2 cursor-pointer flex items-center justify-center`}
+            ? "bg-lime-500 text-black hover:bg-lime-400"
+            : "app-action-secondary px-0"
+        }`}
         title="Upload Image"
       >
         <input
@@ -145,21 +145,21 @@ const ChatInput = ({
         <div className="flex relative items-center justify-center">
           <img
             src={URL.createObjectURL(imageFile)}
-            className="h-11 w-11 object-cover rounded mr-2"
+            className="mr-2 h-11 w-11 rounded-xl object-cover"
             alt=""
           />
           <button
             onClick={handleClearImage}
-            className="absolute top-0 right-0 bg-black text-white transition-all duration-200 hover:bg-red-600 rounded-full w-5 h-5 flex items-center justify-center"
+            className="absolute right-0 top-0 flex h-5 w-5 items-center justify-center rounded-full bg-black text-white hover:bg-red-600"
           >
             &times;
           </button>
         </div>
       )}
 
-      <Input
+      <input
         type="text"
-        className="flex-grow bg-stone-900 rounded-lg p-1 mr-2 ml-1 text-stone-200"
+        className="app-input flex-grow"
         placeholder={
           imageFile ? `${imageFile?.name}` : "Type your message here"
         }
@@ -168,7 +168,7 @@ const ChatInput = ({
         onKeyDown={handleKeyPress}
       />
       <button
-        className="text-white bg-blue-500 hover:bg-blue-600 hover:text-black focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 transition duration-200 ease-in-out"
+        className="app-action-primary text-sm"
         type="submit"
         disabled={uploading}
       >

@@ -38,7 +38,14 @@ const ChatContainer = ({ id }: ChatContainerProps) => {
   }, [id]);
 
   return (
-    <div className="flex flex-col w-[97%] max-w-screen-lg h-[100%] overflow-auto border border-stone-600 rounded-lg p-3 mb-2 mt-5 mx-auto">
+    <section className="app-panel flex h-full w-full flex-col overflow-auto">
+      <div className="mb-4 flex items-center justify-between">
+        <div>
+          <div className="app-kicker">Live Chat</div>
+          <h2 className="text-xl font-semibold">Room Conversation</h2>
+        </div>
+      </div>
+
       {loading ? (
         <div className="flex justify-center items-center h-full">
           <div className="text-center m-5 text-blue-500 text-2xl font-bold">
@@ -53,7 +60,7 @@ const ChatContainer = ({ id }: ChatContainerProps) => {
 
           <div className="mt-auto">
             {!user ? (
-              <div className="bg-black text-center text-lime-500 p-2 border border-stone-600 font-bold rounded-md">
+              <div className="app-card text-center font-bold text-lime-500">
                 <Link
                   href="/login"
                   className="hover:underline hover:text-blue-400"
@@ -75,7 +82,7 @@ const ChatContainer = ({ id }: ChatContainerProps) => {
           </div>
         </>
       )}
-    </div>
+    </section>
   );
 };
 

@@ -73,9 +73,9 @@ const MessageList = ({
           } mb-4`}
         >
           <div
-            className={`bg-black border border-stone-600 rounded-lg p-3 w-full sm:w-3/4 md:w-1/2 ${
-              message.user_id === user?.id ? "bg-stone-800" : "bg-black"
-            } break-words`}
+            className={`app-card w-full break-words sm:w-3/4 md:w-1/2 ${
+              message.user_id === user?.id ? "border-blue-500/25 bg-blue-500/5" : ""
+            }`}
           >
             <div className="flex items-center justify-between mb-2">
               <strong
@@ -103,7 +103,7 @@ const MessageList = ({
               </span>
             </div>
 
-            <div className="text-sm text-white">
+            <div className="text-sm">
               {renderMessageText(message.message_text)}
             </div>
 

@@ -24,13 +24,23 @@ export default async function ProfilePage() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center h-dvh">
-      {(authData.user?.is_anonymous && (
-        <p>Hello {profileData?.username}</p>
-      )) || <div>Hello {authData.user.email}</div>}
-      <p>Username: {profileData?.username || "No username set"}</p>
-      <p>ID: {authData.user.id}</p>
-      <p>Created at: {authData.user.created_at}</p>
-    </div>
+    <main className="app-page app-page-center">
+      <div className="app-shell-narrow">
+        <section className="app-panel space-y-3 text-center">
+          <div className="app-kicker">Profile</div>
+          <h1 className="text-3xl font-bold tracking-tight">
+            {(authData.user?.is_anonymous && `Hello ${profileData?.username}`) ||
+              `Hello ${authData.user.email}`}
+          </h1>
+          <p className="app-copy">
+            Username: {profileData?.username || "No username set"}
+          </p>
+          <p className="app-muted text-sm">ID: {authData.user.id}</p>
+          <p className="app-muted text-sm">
+            Created at: {authData.user.created_at}
+          </p>
+        </section>
+      </div>
+    </main>
   );
 }
