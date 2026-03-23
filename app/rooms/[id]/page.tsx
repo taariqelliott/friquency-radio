@@ -1,9 +1,9 @@
 import ChatContainer from "@/app/components/ChatContainer";
 import CopyURL from "@/app/components/CopyURL";
+import RoomAudioPlayer from "@/app/components/RoomAudioPlayer";
 import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import TwitchClientPlayer from "../../components/TwitchComponent";
 
 const RoomPage = async ({ params }: { params: { id: string } }) => {
   const { id } = params;
@@ -12,7 +12,9 @@ const RoomPage = async ({ params }: { params: { id: string } }) => {
   // Fetch room data
   const { data: room, error: roomError } = await supabase
     .from("rooms")
-    .select("id, name, created_by")
+    .select(
+      "id, name, created_by, audio_path, audio_title, audio_mime_type, audio_size_bytes"
+    )
     .eq("id", id)
     .single();
 
@@ -22,34 +24,25 @@ const RoomPage = async ({ params }: { params: { id: string } }) => {
 
   // Fetch current user data
   const { data: currentUserResponse } = await supabase.auth.getUser();
-  const currentUsername = currentUserResponse?.user?.id ?? null;
-
-  // Fetch current user's username if logged in
-  const { data: currentUser } = currentUsername
-    ? await supabase
-        .from("users")
-        .select("username")
-        .eq("id", currentUsername)
-        .single()
-    : { data: null };
+  const currentUserId = currentUserResponse?.user?.id ?? null;
+  const isRoomOwner = currentUserId === room.created_by;
 
   // Fetch room owner's username
   const { data: user, error: userError } = await supabase
     .from("users")
     .select("username")
     .eq("id", room.created_by)
-    .single();
+    .maybeSingle();
 
   if (userError) {
     console.error("Error fetching user:", userError);
-    notFound();
   }
 
   return (
     <main className="flex flex-col items-center justify-start h-dvh pt-6">
       <div className="lg:scale-110 md:scale-100 sm:scale-90 scale-90">
-        {user?.username && currentUser?.username === user.username && (
-          <div className="flex justify-center opacity-0 w-full">
+        {user?.username && isRoomOwner && (
+          <div className="flex justify-center w-full">
             <h3 className="text-white bg-red-600 p-1 m-1 text-sm rounded-lg border-2 border-black">
               {"Room Owner"}
             </h3>
@@ -82,7 +75,7 @@ const RoomPage = async ({ params }: { params: { id: string } }) => {
         </div>
       </div>
 
-      <TwitchClientPlayer room={room} />
+      <RoomAudioPlayer room={room} isRoomOwner={isRoomOwner} />
       <ChatContainer id={id} />
     </main>
   );

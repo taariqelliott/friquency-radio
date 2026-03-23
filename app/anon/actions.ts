@@ -1,4 +1,5 @@
 "use server";
+import { createAdminClient } from "@/utils/supabase/admin";
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -19,13 +20,14 @@ async function addUserToTable(supabase: any, userId: string) {
 
 export async function anonymousSignIn() {
   const supabase = createClient();
+  const adminSupabase = createAdminClient();
   const { data: authData, error } = await supabase.auth.signInAnonymously();
 
   if (error) {
     redirect("/error");
   } else if (authData.user?.id) {
     try {
-      await addUserToTable(supabase, authData.user.id);
+      await addUserToTable(adminSupabase, authData.user.id);
       revalidatePath("/");
       redirect("/");
     } catch (error) {

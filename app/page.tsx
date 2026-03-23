@@ -56,12 +56,12 @@ export default async function Home() {
 
         <div className="space-y-4 mb-8">
           <h2 className="text-2xl text-white font-semibold">
-            Watch Together, Chat Together
+            Drop Tracks, Chat Together
           </h2>
           <p className="text-stone-300 text-lg max-w-2xl mx-auto">
-            Your social Twitch companion - Watch your favorite streamers while
-            chatting with friends in real-time. Create or join listening rooms
-            and experience content together.
+            Create public listening rooms, upload a track to your station, and
+            let every listener control playback locally while the room stays
+            connected through chat.
           </p>
         </div>
 
@@ -103,20 +103,22 @@ export default async function Home() {
 
         <div className="grid grid-cols-3 gap-6 mt-12">
           <div className="text-center p-4 bg-black bg-opacity-50 rounded-lg">
-            <h3 className="text-blue-500 font-bold mb-2">Watch Together</h3>
+            <h3 className="text-blue-500 font-bold mb-2">Public Rooms</h3>
             <p className="text-stone-300 text-sm">
-              Synchronize Twitch streams with friends
+              Share a station link and let anyone drop in
             </p>
           </div>
           <div className="text-center p-4 bg-black bg-opacity-50 rounded-lg">
-            <h3 className="text-blue-500 font-bold mb-2">Real-time Chat</h3>
+            <h3 className="text-blue-500 font-bold mb-2">Uploaded Audio</h3>
             <p className="text-stone-300 text-sm">
-              Connect with others while watching
+              Room creators can attach their own tracks
             </p>
           </div>
           <div className="text-center p-4 bg-black bg-opacity-50 rounded-lg">
-            <h3 className="text-blue-500 font-bold mb-2">Easy to Join</h3>
-            <p className="text-stone-300 text-sm">Start chatting in seconds</p>
+            <h3 className="text-blue-500 font-bold mb-2">Listener Control</h3>
+            <p className="text-stone-300 text-sm">
+              Everyone gets their own play, pause, and seek controls
+            </p>
           </div>
         </div>
       </div>
