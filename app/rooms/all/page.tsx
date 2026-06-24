@@ -2,7 +2,6 @@
 
 import CreateRoom from "@/app/components/CreateRoom";
 import { createClient } from "@/utils/supabase/client";
-import { Table } from "@mantine/core";
 import { PostgrestError, User } from "@supabase/supabase-js";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -20,58 +19,33 @@ const supabase = createClient();
 const fetchCurrentUser = async () => {
   const { data: currentUserResponse } = await supabase.auth.getUser();
   const currentUserId = currentUserResponse?.user?.id ?? null;
-
   if (!currentUserId) return null;
-
   const { data: currentUser, error } = await supabase
     .from("users")
     .select("username")
     .eq("id", currentUserId)
     .single();
-
-  if (error) {
-    console.error("Error fetching current user:", error.message);
-    return null;
-  }
-
+  if (error) return null;
   return currentUser?.username || null;
 };
 
 const RoomsPage = () => {
-  const [scale, setScale] = useState(1);
   const [user, setUser] = useState<null | User>(null);
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const { data } = await supabase.auth.getUser();
-      setUser(data.user);
-    };
-    fetchUser();
-  }, []);
-
-  useEffect(() => {
-    const handleResize = () => {
-      const width = window.innerWidth;
-      if (width < 640) setScale(0.8);
-      else if (width < 768) setScale(0.95);
-      else setScale(1);
-    };
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
+    supabase.auth.getUser().then(({ data }) => setUser(data.user));
   }, []);
 
   return (
-    <main
-      className="flex flex-col items-center justify-center h-dvh gap-2"
-      style={{ transform: `scale(${scale})` }}
-    >
-      {user && <CreateRoom />}
-      <ListAllRooms />
+    <main className="min-h-dvh p-8">
+      <div className="max-w-2xl mx-auto flex flex-col gap-6">
+        <div>
+          <p className="font-mono text-xs text-muted-foreground uppercase tracking-wider mb-1">Browse</p>
+          <h1 className="font-display text-5xl text-foreground">Stations</h1>
+        </div>
+        {user && <CreateRoom />}
+        <ListAllRooms />
+      </div>
     </main>
   );
 };
@@ -83,33 +57,33 @@ const ListAllRooms = () => {
   const [error, setError] = useState<PostgrestError | null>(null);
 
   useEffect(() => {
-    const fetchRoomsAndCurrentUser = async () => {
+    const init = async () => {
       const username = await fetchCurrentUser();
       setCurrentUsername(username);
 
       const { data, error } = await supabase.from("rooms").select(`
-        id,
-        name,
-        created_by,
+        id, name, created_by,
         users:created_by (username)
       `);
 
       if (error) {
         setError(error);
       } else {
-        const roomsWithCreators = data.map((room: any) => ({
-          id: room.id,
-          name: room.name,
-          created_by: room.created_by,
-          username: room.users.username,
-        }));
-        setRooms(roomsWithCreators);
+        setRooms(
+          data
+            .map((room: any) => ({
+              id: room.id,
+              name: room.name,
+              created_by: room.created_by,
+              username: room.users.username,
+            }))
+            .sort((a: Room, b: Room) => a.name.localeCompare(b.name))
+        );
       }
-
       setLoading(false);
     };
 
-    fetchRoomsAndCurrentUser();
+    init();
 
     const channel = supabase
       .channel("public:rooms")
@@ -117,126 +91,84 @@ const ListAllRooms = () => {
         "postgres_changes",
         { event: "INSERT", schema: "public", table: "rooms" },
         (payload: { new: Room }) => {
-          console.log("New room created:", payload.new);
-          setRooms((prevRooms) => [...prevRooms, payload.new]);
+          setRooms((prev) =>
+            [...prev, payload.new].sort((a, b) => a.name.localeCompare(b.name))
+          );
         }
       )
       .on(
         "postgres_changes",
         { event: "DELETE", schema: "public", table: "rooms" },
         (payload: { old: any }) => {
-          console.log("Room deleted:", payload.old);
-          setRooms((prevRooms) =>
-            prevRooms.filter((room) => room.id !== payload.old.id)
-          );
+          setRooms((prev) => prev.filter((r) => r.id !== payload.old.id));
         }
       )
-      .subscribe((status, err) => {
-        if (status === "SUBSCRIBED") {
-          console.log("Realtime channel subscribed");
-        }
-        if (err) {
-          console.error("Realtime subscription error:", err);
-        }
-      });
+      .subscribe();
 
-    return () => {
-      supabase.removeChannel(channel);
-    };
+    return () => { supabase.removeChannel(channel); };
   }, []);
 
   const handleDelete = async (roomId: string) => {
     const isDeleted = await DeleteRoom(roomId);
-
     if (isDeleted) {
-      setRooms((prevRooms) => prevRooms.filter((room) => room.id !== roomId));
-    } else {
-      alert("Failed to delete the room. Please try again.");
+      setRooms((prev) => prev.filter((r) => r.id !== roomId));
     }
   };
 
   if (loading) {
-    return <div className="text-blue-500 text-2xl font-bold">Loading...</div>;
+    return (
+      <div className="font-mono text-sm text-muted-foreground">Loading stations...</div>
+    );
   }
 
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return <div className="text-destructive text-sm">{error.message}</div>;
   }
 
-  const rows = rooms
-    .sort((a, b) => a.name.localeCompare(b.name))
-    .map((room) => (
-      <Table.Tr key={room.id}>
-        <Table.Td>
-          <Link
-            href={`/rooms/${room.id}`}
-            className="text-blue-600 hover:underline font-bold"
-          >
-            {room.name}
-          </Link>
-        </Table.Td>
-        <Table.Td>
-          {room.username === currentUsername ? (
-            <span className="text-lime-500 font-bold">(You) 👑</span>
-          ) : (
-            <span className="text-blue-500">@{room.username}</span>
-          )}
-        </Table.Td>
-        <Table.Td>
-          <Link
-            href={`/rooms/${room.id}`}
-            className="bg-black text-lime-500 border border-blue-500 px-2 py-1 rounded hover:bg-lime-500 hover:text-black font-bold"
-          >
-            Enter
-          </Link>
-        </Table.Td>
-        <Table.Td>
-          {room.username === currentUsername ? (
-            <button
-              onClick={() => handleDelete(room.id)}
-              className="bg-red-500 text-white border border-white text-xs rounded-lg hover:bg-red-700"
-            >
-              <span className="inline-block transition-all duration-500 hover:rotate-180 px-2 py-1 font-bold">
-                X
-              </span>
-            </button>
-          ) : (
-            ""
-          )}
-        </Table.Td>
-      </Table.Tr>
-    ));
+  if (rooms.length === 0) {
+    return (
+      <div className="font-mono text-sm text-muted-foreground">
+        No stations yet. Create the first one.
+      </div>
+    );
+  }
 
   return (
-    <div className="flex flex-col justify-around items-center">
-      {rooms.length > 0 ? (
-        <Table stickyHeader stickyHeaderOffset={60} striped withTableBorder>
-          <Table.Caption>-Friquency Radio Stations-</Table.Caption>
-          <Table.Thead>
-            <Table.Tr>
-              {currentUsername ? (
-                <>
-                  <Table.Th>Station Name</Table.Th>
-                  <Table.Th>Creator</Table.Th>
-                  <Table.Th>Actions</Table.Th>
-                  <Table.Th>{""}</Table.Th>
-                </>
+    <div className="flex flex-col gap-3">
+      {rooms.map((room, i) => (
+        <div
+          key={room.id}
+          className="app-card flex items-center justify-between gap-4 animate-in fade-in slide-in-from-top-2 duration-300"
+          style={{ animationDelay: `${i * 30}ms` }}
+        >
+          <div className="min-w-0">
+            <h2 className="font-display text-2xl truncate text-foreground">{room.name}</h2>
+            <p className="font-mono text-xs text-muted-foreground">
+              {room.username === currentUsername ? (
+                <span className="text-primary">@{room.username} (you)</span>
               ) : (
-                <>
-                  <Table.Th>Station Name</Table.Th>
-                  <Table.Th>Creator</Table.Th>
-                  <Table.Th>Actions</Table.Th>
-                </>
+                <span>@{room.username}</span>
               )}
-            </Table.Tr>
-          </Table.Thead>
-          <Table.Tbody>{rows}</Table.Tbody>
-        </Table>
-      ) : (
-        <div className="text-center text-blue-500 text-2xl mt-4">
-          No Stations Found
+            </p>
+          </div>
+          <div className="flex shrink-0 items-center gap-2">
+            <Link
+              href={`/rooms/${room.id}`}
+              className="app-action-primary text-sm px-4 py-1.5"
+            >
+              Enter
+            </Link>
+            {room.username === currentUsername && (
+              <button
+                onClick={() => handleDelete(room.id)}
+                className="app-action-danger text-sm px-3 py-1.5"
+              >
+                Delete
+              </button>
+            )}
+          </div>
         </div>
-      )}
+      ))}
     </div>
   );
 };
