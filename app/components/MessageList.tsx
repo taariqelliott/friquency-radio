@@ -61,52 +61,26 @@ const MessageList = ({
   };
 
   return (
-    <ul
-      className="flex flex-col overflow-y-auto w-full"
-      style={{ maxHeight: "calc(100vh - 200px)" }}
-    >
+    <ul className="flex flex-col gap-3 w-full">
       {messages.map((message) => (
-        <li
-          key={message.message_id}
-          className={`flex ${
-            message.user_id === user?.id ? "justify-end" : "justify-start"
-          } mb-4`}
-        >
+        <li key={message.message_id} className="animate-in slide-in-from-bottom-2 duration-150">
           <div
-            className={`bg-black border border-stone-600 rounded-lg p-3 w-full sm:w-3/4 md:w-1/2 ${
-              message.user_id === user?.id ? "bg-stone-800" : "bg-black"
-            } break-words`}
+            className={`app-card w-full break-words ${
+              message.user_id === user?.id
+                ? "border-l-2 border-primary/25 bg-primary/5"
+                : ""
+            }`}
           >
             <div className="flex items-center justify-between mb-2">
-              <strong
-                className={`text-sm ${
-                  message.user_id === user?.id
-                    ? "text-blue-400"
-                    : "text-lime-500"
-                }`}
-              >
-                {message.user_id === user?.id ? (
-                  <span className="text-lime-500">@</span>
-                ) : (
-                  <span className="text-blue-400">@</span>
-                )}
+              <strong className="font-mono text-sm text-primary">
+                <span className="text-muted-foreground">@</span>
                 {message.username || "Unknown"}
               </strong>
-              <span
-                className={`text-xs ${
-                  message.user_id === user?.id
-                    ? "text-blue-400"
-                    : "text-lime-500"
-                }`}
-              >
+              <span className="font-mono text-xs text-muted-foreground">
                 {new Date(message.created_at).toLocaleTimeString()}
               </span>
             </div>
-
-            <div className="text-sm text-white">
-              {renderMessageText(message.message_text)}
-            </div>
-
+            <div className="text-sm">{renderMessageText(message.message_text)}</div>
             {message.image_url && (
               <img
                 src={message.image_url}
@@ -114,11 +88,9 @@ const MessageList = ({
                 className="mt-2 max-w-full rounded"
                 onLoad={() => handleImageLoad(message.message_id)}
                 onError={() => handleImageLoad(message.message_id)}
-                onLoadStart={() => {
-                  setLoadingImages((prev) =>
-                    new Set(prev).add(message.message_id)
-                  );
-                }}
+                onLoadStart={() =>
+                  setLoadingImages((prev) => new Set(prev).add(message.message_id))
+                }
               />
             )}
           </div>
