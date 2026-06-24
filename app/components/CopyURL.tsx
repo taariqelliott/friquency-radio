@@ -1,34 +1,26 @@
 "use client";
 
-import { Button, Popover, Text } from "@mantine/core";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
 const ShareButton = () => {
+  const [copied, setCopied] = useState(false);
+
   const handleCopyURL = () => {
     const url = window.location.href;
     navigator.clipboard.writeText(url);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   return (
-    <Popover width={200} position="bottom" withArrow shadow="md">
-      <Popover.Target>
-        <span>
-          <Button
-            variant="filled"
-            color="black"
-            onClick={handleCopyURL}
-            style={{ color: "white", border: "#2b7fff 2px solid" }}
-            className="hover:opacity-65"
-          >
-            📋 Share
-          </Button>
-        </span>
-      </Popover.Target>
-      <Popover.Dropdown>
-        <Text size="xs" className="text-center">
-          Room URL Copied!
-        </Text>
-      </Popover.Dropdown>
-    </Popover>
+    <Button
+      variant="outline"
+      onClick={handleCopyURL}
+      className="border-blue-500 text-white hover:opacity-65"
+    >
+      📋 {copied ? "Copied!" : "Share"}
+    </Button>
   );
 };
 

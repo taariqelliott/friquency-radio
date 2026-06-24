@@ -1,6 +1,4 @@
 import { ThemeProvider } from "next-themes";
-import { ColorSchemeScript, MantineProvider } from "@mantine/core";
-import "@mantine/core/styles.css";
 import type { Metadata } from "next";
 import { Alexandria, JetBrains_Mono, VT323 } from "next/font/google";
 import { Suspense } from "react";
@@ -52,17 +50,12 @@ export default function RootLayout({
       className={cn(alexandria.variable, jetbrainsMono.variable, vt323.variable)}
       suppressHydrationWarning
     >
-      <head>
-        <ColorSchemeScript />
-      </head>
       <body className="bg-background text-foreground font-sans antialiased">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
-          <MantineProvider defaultColorScheme="dark">
-            <Suspense fallback={null}>
-              <ConditionalHeader />
-              {children}
-            </Suspense>
-          </MantineProvider>
+          <Suspense fallback={null}>
+            <ConditionalHeader />
+            {children}
+          </Suspense>
         </ThemeProvider>
       </body>
     </html>

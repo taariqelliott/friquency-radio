@@ -1,7 +1,7 @@
 "use client";
 
 import { createClient } from "@/utils/supabase/client";
-import { Button } from "@mantine/core";
+import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 
 type Profile = {
@@ -111,8 +111,7 @@ export default function ProfileEditPage() {
       </form>
       <Button
         variant="outline"
-        color="#22c55e"
-        style={{ padding: "0.5rem 1rem" }}
+        style={{ padding: "0.5rem 1rem", borderColor: "#22c55e", color: "#22c55e" }}
         onClick={updateUsername}
       >
         Update Username
