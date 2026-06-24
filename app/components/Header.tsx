@@ -1,20 +1,16 @@
 "use client";
+
 import { createClient } from "@/utils/supabase/client";
-import {
-  Button,
-  Drawer,
-  MantineProvider,
-  Modal,
-  useMantineColorScheme,
-} from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
+import { Button } from "@/components/ui/button";
 import {
   IconBrightness2,
   IconHome,
   IconMenu2,
   IconMoonStars,
   IconRadio,
+  IconX,
 } from "@tabler/icons-react";
+import { useTheme } from "next-themes";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import ProfileEditPage from "../profile/edit/page";
@@ -24,32 +20,17 @@ interface User {
 }
 
 export default function Header() {
-  const { colorScheme, setColorScheme } = useMantineColorScheme();
+  const { theme, setTheme } = useTheme();
   const [user, setUser] = useState<User | null>(null);
   const [isClient, setIsClient] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const [supabase] = useState(() => createClient());
   const searchParams = useSearchParams();
-  const [modalOpened, { open: openModal, close: closeModal }] =
-    useDisclosure(false);
-  const [drawerOpened, { open: openDrawer, close: closeDrawer }] =
-    useDisclosure(false);
-
-  const buttons = [
-    {
-      label: <IconHome />,
-      onClick: () => (window.location.href = "/"),
-    },
-    {
-      label: <IconRadio />,
-      onClick: () => (window.location.href = "/rooms/all"),
-    },
-  ];
 
   const fetchUser = useCallback(async () => {
     try {
-      const {
-        data: { user: authUser },
-      } = await supabase.auth.getUser();
+      const { data: { user: authUser } } = await supabase.auth.getUser();
       if (authUser) {
         const { data: profile, error } = await supabase
           .from("users")
@@ -61,140 +42,131 @@ export default function Header() {
       } else {
         setUser(null);
       }
-    } catch (error) {
-      console.error("Error fetching user:", error);
+    } catch {
       setUser(null);
     }
   }, [supabase]);
 
-  const searchDependency = searchParams.get("auth");
+  useEffect(() => { fetchUser(); }, [fetchUser, searchParams.get("auth")]);
+  useEffect(() => { setIsClient(true); }, []);
 
-  useEffect(() => {
-    fetchUser();
-  }, [fetchUser, searchDependency]);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  const toggleColorScheme = () => {
-    setColorScheme(colorScheme === "dark" ? "light" : "dark");
-  };
+  const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
 
   return (
-    <MantineProvider defaultColorScheme="dark">
-      <div className="absolute z-10 text-white right-2 mt-2">
-        <div className="flex flex-row items-start">
+    <>
+      <div className="fixed right-3 top-3 z-20">
+        <div className="flex items-start gap-2">
           {user && (
-            <div>
-              <Modal
-                opened={modalOpened}
-                centered
-                onClose={closeModal}
-                title="Edit your profile"
-              >
-                <ProfileEditPage />
-              </Modal>
-              <button
-                onClick={openModal}
-                className="hover:text-blue-500 mr-2 mt-[2px]"
-              >
-                <span className="text-sm bg-black border-2 hidden md:flex rounded-md border-blue-500 px-2 py-1">
-                  <span className=" text-lime-500">@</span>
-                  {user.username}
-                </span>
-              </button>
-            </div>
-          )}
-          <div className="hidden md:flex flex-col gap-1">
-            <Button
-              variant="filled"
-              color="#2b7fff"
-              onClick={toggleColorScheme}
-              className="w-20 hover:opacity-40 transition-all duration-300"
+            <button
+              onClick={() => setModalOpen(true)}
+              className="app-pill hidden md:inline-flex"
             >
-              {isClient &&
-                (colorScheme === "dark" ? (
-                  <IconBrightness2 stroke={2} />
-                ) : (
-                  <IconMoonStars stroke={2} />
-                ))}
+              <span className="text-primary">@</span>
+              {user.username}
+            </button>
+          )}
+
+          <div className="app-panel-soft hidden items-center gap-2 p-2 md:flex">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleTheme}
+              aria-label="Toggle color scheme"
+            >
+              {isClient && (theme === "dark" ? (
+                <IconBrightness2 size={20} />
+              ) : (
+                <IconMoonStars size={20} />
+              ))}
             </Button>
-            {buttons.map((button, index) => (
-              <Button
-                key={index}
-                variant="filled"
-                color="#2b7fff"
-                onClick={button.onClick}
-                className="hover:opacity-40 transition-all duration-300"
-              >
-                {button.label}
-              </Button>
-            ))}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => (window.location.href = "/")}
+              aria-label="Home"
+            >
+              <IconHome size={20} />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => (window.location.href = "/rooms/all")}
+              aria-label="Stations"
+            >
+              <IconRadio size={20} />
+            </Button>
           </div>
+
           <div className="md:hidden">
             <Button
-              variant="filled"
-              color="#2b7fff"
-              onClick={openDrawer}
-              className="w-[25%] hover:opacity-70 transition-all duration-300"
+              variant="ghost"
+              size="icon"
+              onClick={() => setDrawerOpen(true)}
+              aria-label="Open navigation"
             >
-              <IconMenu2 />
+              <IconMenu2 size={20} />
             </Button>
-            <Drawer
-              opened={drawerOpened}
-              onClose={closeDrawer}
-              title="Friquency Radio"
-              transitionProps={{
-                transition: "rotate-left",
-                duration: 150,
-                timingFunction: "linear",
-              }}
-              padding="md"
-              size="50%"
-              position="top"
-            >
-              <div className="flex flex-col gap-2">
-                <button
-                  onClick={openModal}
-                  className="hover:text-blue-500 mr-2 pb-1 mt-[12px]"
-                >
-                  <span className=" bg-black text-stone-100 border-2 rounded-md border-blue-500 px-2 py-1 mt-2">
-                    <span className=" text-lime-500">@</span>
-                    {user?.username}
-                  </span>
-                </button>
-
-                <Button
-                  variant="filled"
-                  color="#2b7fff"
-                  onClick={toggleColorScheme}
-                  className="hover:opacity-40 transition-all duration-300"
-                >
-                  {isClient &&
-                    (colorScheme === "dark" ? (
-                      <IconBrightness2 stroke={2} />
-                    ) : (
-                      <IconMoonStars stroke={2} />
-                    ))}
-                </Button>
-
-                {buttons.map((button, index) => (
-                  <Button
-                    key={index}
-                    variant="filled"
-                    color="#2b7fff"
-                    onClick={button.onClick}
-                    className="hover:opacity-40 transition-all duration-300"
-                  >
-                    {button.label}
-                  </Button>
-                ))}
-              </div>
-            </Drawer>
           </div>
         </div>
       </div>
-    </MantineProvider>
+
+      {/* Mobile drawer */}
+      {drawerOpen && (
+        <div className="fixed inset-0 z-50 md:hidden">
+          <div
+            className="absolute inset-0 bg-black/50"
+            onClick={() => setDrawerOpen(false)}
+          />
+          <div className="absolute right-0 top-0 h-full w-64 bg-background border-l border-border p-4 flex flex-col gap-3">
+            <div className="flex justify-between items-center mb-2">
+              <span className="font-display text-xl text-primary">FRIQUENCY</span>
+              <Button variant="ghost" size="icon" onClick={() => setDrawerOpen(false)}>
+                <IconX size={18} />
+              </Button>
+            </div>
+            {user && (
+              <button
+                onClick={() => { setModalOpen(true); setDrawerOpen(false); }}
+                className="app-pill justify-start"
+              >
+                <span className="text-primary">@</span>{user.username}
+              </button>
+            )}
+            <Button variant="ghost" onClick={toggleTheme} className="justify-start gap-2">
+              {isClient && (theme === "dark" ? <IconBrightness2 size={18} /> : <IconMoonStars size={18} />)}
+              Toggle theme
+            </Button>
+            <Button variant="ghost" onClick={() => { window.location.href = "/"; setDrawerOpen(false); }} className="justify-start gap-2">
+              <IconHome size={18} /> Home
+            </Button>
+            <Button variant="ghost" onClick={() => { window.location.href = "/rooms/all"; setDrawerOpen(false); }} className="justify-start gap-2">
+              <IconRadio size={18} /> Stations
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {/* Profile edit modal */}
+      {modalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div
+            className="absolute inset-0 bg-black/60"
+            onClick={() => setModalOpen(false)}
+          />
+          <div className="relative bg-card border border-border rounded-lg p-6 w-full max-w-sm mx-4">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="absolute right-2 top-2"
+              onClick={() => setModalOpen(false)}
+            >
+              <IconX size={16} />
+            </Button>
+            <h2 className="font-semibold mb-4">Edit profile</h2>
+            <ProfileEditPage />
+          </div>
+        </div>
+      )}
+    </>
   );
 }
