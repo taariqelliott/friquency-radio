@@ -49,7 +49,7 @@ const RoomPage = async ({ params }: { params: { id: string } }) => {
         currentUsername={currentUser?.username ?? null}
         isOwner={isOwner}
       />
-      <main className="flex flex-1 flex-col overflow-hidden">
+      <main className="flex flex-1 flex-col min-h-0 overflow-hidden">
         <PlayerCard room={room} isOwner={isOwner} />
         <ChatContainer id={id} />
       </main>

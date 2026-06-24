@@ -37,9 +37,7 @@ const ChatMessages = ({
           .select("*, users(username)")
           .eq("room_id", room_id);
 
-        if (error) {
-          throw error;
-        }
+        if (error) throw error;
 
         const messagesWithUsernames =
           messagesData?.map((message: any) => ({
@@ -74,9 +72,7 @@ const ChatMessages = ({
                 .eq("id", payload.new.user_id)
                 .single();
 
-              if (error) {
-                throw error;
-              }
+              if (error) throw error;
 
               const newMessage = {
                 ...payload.new,
@@ -113,9 +109,9 @@ const ChatMessages = ({
   }
 
   return (
-    <main className="flex flex-col-reverse items-center  h-full">
+    <div className="flex flex-col flex-1 min-h-0 h-full">
       <MessageList messages={messages} user={user} />
-    </main>
+    </div>
   );
 };
 

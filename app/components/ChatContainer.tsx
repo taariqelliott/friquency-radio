@@ -31,28 +31,42 @@ const ChatContainer = ({ id }: { id: string }) => {
   }, [id]);
 
   return (
-    <div className="flex flex-1 flex-col overflow-hidden p-4 gap-3">
-      <div>
-        <p className="font-mono text-xs text-muted-foreground uppercase tracking-wider">Live Chat</p>
+    <div className="flex flex-col min-h-0 flex-1 overflow-hidden p-4 gap-3">
+      <div className="shrink-0">
+        <p className="font-mono text-xs text-muted-foreground uppercase tracking-wider">
+          Live Chat
+        </p>
         <h2 className="text-lg font-semibold">Room Conversation</h2>
       </div>
 
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
         {loading ? (
           <div className="flex h-full items-center justify-center">
-            <span className="font-mono text-sm text-muted-foreground">Loading chat...</span>
+            <span className="font-mono text-sm text-muted-foreground">
+              Loading chat...
+            </span>
           </div>
         ) : (
           <ChatMessages user={user} room_id={id} />
         )}
       </div>
 
-      <div className="mt-auto">
+      <div className="shrink-0">
         {!loading && !user ? (
           <div className="app-card text-center text-sm">
-            <Link href="/login" className="text-foreground dark:text-primary hover:underline">Login</Link>
+            <Link
+              href="/login"
+              className="text-foreground dark:text-primary hover:underline"
+            >
+              Login
+            </Link>
             {" or "}
-            <Link href="/signup" className="text-foreground dark:text-primary hover:underline">Sign up</Link>
+            <Link
+              href="/signup"
+              className="text-foreground dark:text-primary hover:underline"
+            >
+              Sign up
+            </Link>
             {" to chat"}
           </div>
         ) : user ? (

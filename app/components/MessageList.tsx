@@ -22,20 +22,20 @@ const MessageList = ({
   messages: Message[];
   user: User | null;
 }) => {
-  const endOfMessagesRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const [loadingImages, setLoadingImages] = useState(new Set<string>());
 
   useEffect(() => {
-    if (loadingImages.size === 0) {
-      endOfMessagesRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (loadingImages.size === 0 && scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages, loadingImages]);
 
   const handleImageLoad = (messageId: string) => {
     setLoadingImages((prev) => {
-      const updatedLoadingImages = new Set(prev);
-      updatedLoadingImages.delete(messageId);
-      return updatedLoadingImages;
+      const updated = new Set(prev);
+      updated.delete(messageId);
+      return updated;
     });
   };
 
@@ -63,8 +63,13 @@ const MessageList = ({
   };
 
   return (
-    <div className="flex flex-col flex-1 min-h-0 overflow-y-auto w-full">
-      <ul className="flex flex-col justify-end gap-2 w-full p-3 min-h-full">
+    <div
+      ref={scrollRef}
+      className="flex flex-col overflow-y-auto w-full h-full"
+    >
+      {/* pushes messages to the bottom when list is short */}
+      <div className="flex-1" />
+      <ul className="flex flex-col gap-2 w-full p-3">
         {messages.map((message) => {
           const isOwn = message.user_id === user?.id;
           return (
@@ -113,7 +118,6 @@ const MessageList = ({
             </li>
           );
         })}
-        <div ref={endOfMessagesRef} />
       </ul>
     </div>
   );
