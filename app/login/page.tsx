@@ -1,34 +1,25 @@
 "use client";
 
 import { createClient } from "@/utils/supabase/client";
-import { useMantineColorScheme } from "@mantine/core";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { User } from "@supabase/supabase-js";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { anonymousSignIn } from "../anon/actions";
-import "../globals.css";
 import { login } from "./actions";
 
 export default function LoginPage() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
-  const { colorScheme } = useMantineColorScheme();
-  const textColor = colorScheme === "dark" ? "text-black" : "text-black";
-  const bgColor = colorScheme === "dark" ? "bg-white" : "bg-stone-300";
-  const inputTextColor =
-    colorScheme === "dark" ? "text-blue-500" : "text-black";
 
   useEffect(() => {
     async function fetchUser() {
       const supabase = createClient();
-      const { data, error } = await supabase.auth.getUser();
-      if (error) {
-        console.log("Error fetching user", error);
-      } else {
-        setUser(data.user);
-      }
+      const { data } = await supabase.auth.getUser();
+      setUser(data.user);
       setLoading(false);
     }
     fetchUser();
@@ -36,8 +27,8 @@ export default function LoginPage() {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center font-bold text-2xl text-blue-500 justify-center h-dvh">
-        Loading...
+      <div className="flex items-center justify-center h-dvh">
+        <span className="font-mono text-sm text-muted-foreground">Loading...</span>
       </div>
     );
   }
@@ -48,71 +39,59 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center h-dvh">
-      <div className="z-10 hover:text-blue-500 transition-all duration-200">
-        <Link href={"/"}>FRIQUENCY RADIO</Link>
-      </div>
-      <form
-        className={`relative ${bgColor} p-4 rounded-lg shadow-lg w-96 flex flex-col items-center`}
+    <div className="flex flex-col items-center justify-center h-dvh gap-4 animate-in fade-in duration-300">
+      <Link
+        href="/"
+        className="font-display text-2xl text-foreground hover:text-primary transition-colors"
       >
-        <div className="w-full flex flex-col items-center">
-          <h1
-            className={`text-center [word-spacing:-3px] tracking-tight text-blue-500 font-bold text-3xl`}
-          >
-            login
-          </h1>
-          <label htmlFor="email" className={`block ${textColor}`}>
-            email:
-            <input
-              id="email"
-              name="email"
-              type="email"
-              required
-              className={`block w-full px-4 py-2 border-2 border-stone-300 font-bold rounded-md ${inputTextColor}`}
-            />
-          </label>
-          <label htmlFor="password" className={`block ${textColor}`}>
-            password:
-            <input
-              id="password"
-              name="password"
-              type="password"
-              required
-              className={`block w-full px-4 py-2 border-2 border-stone-300 font-bold rounded-md ${inputTextColor}`}
-            />
-          </label>
-          <button
-            className="bg-blue-500 text-center mt-2 text-sm [word-spacing:-3px] text-white font-bold py-2 px-4 rounded border-2 border-transparent hover:bg-blue-600 hover:text-black hover:border-blue-600 hover:border-2 transition-all duration-300"
-            type="submit"
-            formAction={login}
-          >
-            login
-          </button>
-        </div>
-        <div className="mt-4 flex flex-row items-center text-sm">
-          <Link
-            href="/signup"
-            className="bg-blue-500 w-28 text-center text-xs [word-spacing:-3px] text-white font-bold py-1 px-4 ml-2 mr-2 rounded border-2 border-transparent hover:bg-blue-600 hover:text-black hover:border-blue-600 hover:border-2 transition-all duration-300"
-          >
-            signup
-          </Link>
-          <button
-            onClick={async (event) => {
-              event.preventDefault();
-              try {
-                await anonymousSignIn();
-                router.push("/");
-                window.location.reload();
-              } catch (error) {
-                console.error("Error during anonymous sign-in", error);
-              }
-            }}
-            className="bg-blue-500 w-28 text-center text-xs [word-spacing:-3px] text-white font-bold py-1 px-4 ml-2 mr-2 rounded border-2 border-transparent hover:bg-blue-600 hover:text-black hover:border-blue-600 hover:border-2 transition-all duration-300"
-          >
-            quick jam
-          </button>
-        </div>
-      </form>
+        FRIQUENCY RADIO
+      </Link>
+
+      <Card className="w-full max-w-sm">
+        <CardContent className="p-6 flex flex-col gap-4">
+          <h1 className="font-display text-3xl text-primary text-center">LOGIN</h1>
+
+          <form className="flex flex-col gap-3">
+            <div className="flex flex-col gap-1">
+              <label htmlFor="email" className="text-sm font-medium">Email</label>
+              <Input id="email" name="email" type="email" required />
+            </div>
+            <div className="flex flex-col gap-1">
+              <label htmlFor="password" className="text-sm font-medium">Password</label>
+              <Input id="password" name="password" type="password" required />
+            </div>
+            <button
+              type="submit"
+              formAction={login}
+              className="app-action-primary w-full py-2 text-sm font-semibold mt-1"
+            >
+              Login
+            </button>
+          </form>
+
+          <div className="flex gap-2">
+            <Link
+              href="/signup"
+              className="app-action-secondary flex-1 py-2 text-xs font-semibold text-center"
+            >
+              Sign Up
+            </Link>
+            <button
+              onClick={async (e) => {
+                e.preventDefault();
+                try {
+                  await anonymousSignIn();
+                  router.push("/");
+                  window.location.reload();
+                } catch { /* handled */ }
+              }}
+              className="app-action-secondary flex-1 py-2 text-xs font-semibold"
+            >
+              Quick Jam
+            </button>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
