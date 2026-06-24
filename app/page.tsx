@@ -2,123 +2,111 @@ import Link from "next/link";
 import { fetchUser, handleDeleteAccount, handleLogout } from "./actions";
 import { anonymousSignIn } from "./anon/actions";
 import DemoClientComponent from "./components/DemoClientComponent";
+import { Card, CardContent } from "@/components/ui/card";
 
 export default async function Home() {
   const user = await fetchUser();
 
   if (user) {
     return (
-      <main className="flex flex-col items-center justify-center min-h-dvh p-8 bg-gradient-to-b from-black to-stone-900">
-        <div className="max-w-4xl w-full space-y-8">
-          <div className="bg-black bg-opacity-50 p-6 rounded-lg border-2 border-blue-500 shadow-xl">
-            <div className="border-2 border-blue-500 rounded-lg p-4">
-              <h1 className="text-3xl font-bold text-white mb-6 text-center">
-                Dashboard
-              </h1>
-
-              <div className="relative">
-                <DemoClientComponent />
-              </div>
-
-              <div className="mt-6 flex justify-center">
-                {user.user.is_anonymous ? (
-                  <form action={handleDeleteAccount}>
-                    <button
-                      className="bg-blue-500 text-white font-bold py-3 px-8 rounded-full border-2 border-transparent hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all duration-300"
-                      type="submit"
-                    >
-                      End Session
-                    </button>
-                  </form>
-                ) : (
-                  <form action={handleLogout}>
-                    <button
-                      className="bg-blue-500 text-white font-bold py-3 px-8 rounded-full border-2 border-transparent hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all duration-300"
-                      type="submit"
-                    >
-                      Logout
-                    </button>
-                  </form>
-                )}
-              </div>
+      <main className="flex flex-col items-center justify-center min-h-dvh p-8">
+        <Card className="w-full max-w-md">
+          <CardContent className="p-8 flex flex-col items-center gap-6">
+            <h1 className="font-display text-4xl text-primary">Dashboard</h1>
+            <DemoClientComponent />
+            <div className="w-full flex justify-center">
+              {user.user.is_anonymous ? (
+                <form action={handleDeleteAccount}>
+                  <button
+                    type="submit"
+                    className="app-action-danger px-6 py-2 text-sm font-semibold"
+                  >
+                    End Session
+                  </button>
+                </form>
+              ) : (
+                <form action={handleLogout}>
+                  <button
+                    type="submit"
+                    className="app-action-secondary px-6 py-2 text-sm font-semibold"
+                  >
+                    Logout
+                  </button>
+                </form>
+              )}
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       </main>
     );
   }
+
   return (
-    <main className="flex flex-col items-center justify-center min-h-dvh p-8 bg-gradient-to-b from-black to-stone-900">
-      <div className="max-w-3xl text-center space-y-6">
-        <h1 className="text-5xl font-bold mb-4 pb-3 text-center bg-black border-2 border-x-blue-500 border-y-blue-500 rounded-lg p-4 text-white">
-          Friquency Radio
+    <main className="flex flex-col items-center justify-center min-h-dvh px-6 py-16 gap-16">
+      <div className="flex flex-col items-center gap-6 text-center animate-in fade-in duration-700">
+        <h1 className="font-display text-6xl md:text-8xl text-foreground leading-none tracking-tight">
+          FRIQUENCY RADIO
         </h1>
+        <p className="text-lg text-muted-foreground max-w-md">
+          Your station. Your sound. Live.
+        </p>
 
-        <div className="space-y-4 mb-8">
-          <h2 className="text-2xl text-white font-semibold">
-            Watch Together, Chat Together
-          </h2>
-          <p className="text-stone-300 text-lg max-w-2xl mx-auto">
-            Your social Twitch companion - Watch your favorite streamers while
-            chatting with friends in real-time. Create or join listening rooms
-            and experience content together.
-          </p>
-        </div>
-
-        <div className="flex flex-col items-center space-y-4">
-          <div className="flex gap-4 mb-4">
-            <Link
-              href="/login"
-              className="bg-blue-500 w-32 text-center text-sm text-white font-bold py-2 px-6 rounded-lg border-2 border-transparent hover:bg-blue-600 hover:text-black hover:border-blue-600 hover:border-2 transition-all duration-300"
-            >
-              Login
-            </Link>
-            <Link
-              href="/signup"
-              className="bg-blue-500 w-32 text-center text-sm text-white font-bold py-2 px-6 rounded-lg border-2 border-transparent hover:bg-blue-600 hover:text-black hover:border-blue-600 hover:border-2 transition-all duration-300"
-            >
-              Sign Up
-            </Link>
-          </div>
-
+        <div className="flex flex-wrap items-center justify-center gap-3 mt-2">
+          <Link
+            href="/login"
+            className="app-action-primary px-6 py-2 text-sm font-semibold"
+          >
+            Login
+          </Link>
+          <Link
+            href="/signup"
+            className="app-action-secondary px-6 py-2 text-sm font-semibold"
+          >
+            Sign Up
+          </Link>
           <form
             action={async () => {
               "use server";
-              try {
-                await anonymousSignIn();
-              } catch (error) {
-                console.error("Error during anonymous sign-in.", error);
-              }
+              try { await anonymousSignIn(); } catch { /* handled */ }
             }}
           >
-            <button className="bg-blue-500 w-64 text-sm text-white font-bold py-3 px-8 rounded-lg border-2 border-transparent hover:bg-blue-600 hover:text-white hover:border-blue-600 hover:border-2 transition-all duration-300">
-              Try Quick Jam
-              <br />
-              <span className="text-xs opacity-75 text-stone-900 font-bold">
-                No Sign Up Required
-              </span>
+            <button
+              type="submit"
+              className="flex flex-col items-center app-action-secondary px-6 py-2 text-sm font-semibold"
+            >
+              Quick Jam
+              <span className="text-xs text-muted-foreground font-normal">No sign up required</span>
             </button>
           </form>
         </div>
+      </div>
 
-        <div className="grid grid-cols-3 gap-6 mt-12">
-          <div className="text-center p-4 bg-black bg-opacity-50 rounded-lg">
-            <h3 className="text-blue-500 font-bold mb-2">Watch Together</h3>
-            <p className="text-stone-300 text-sm">
-              Synchronize Twitch streams with friends
-            </p>
-          </div>
-          <div className="text-center p-4 bg-black bg-opacity-50 rounded-lg">
-            <h3 className="text-blue-500 font-bold mb-2">Real-time Chat</h3>
-            <p className="text-stone-300 text-sm">
-              Connect with others while watching
-            </p>
-          </div>
-          <div className="text-center p-4 bg-black bg-opacity-50 rounded-lg">
-            <h3 className="text-blue-500 font-bold mb-2">Easy to Join</h3>
-            <p className="text-stone-300 text-sm">Start chatting in seconds</p>
-          </div>
-        </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-4xl">
+        {[
+          {
+            title: "Listen Together",
+            body: "Create a station, upload audio, and share the link. Everyone hears the same track.",
+          },
+          {
+            title: "Live Chat",
+            body: "Real-time conversation alongside the music. React, discuss, vibe together.",
+          },
+          {
+            title: "Quick Jam",
+            body: "No account needed — jump in as a guest and start listening in seconds.",
+          },
+        ].map((card, i) => (
+          <Card
+            key={card.title}
+            className="animate-in fade-in slide-in-from-bottom-4 duration-500 hover:-translate-y-1 hover:border-primary/40 transition-all"
+            style={{ animationDelay: `${i * 80}ms` }}
+          >
+            <CardContent className="p-6">
+              <h3 className="font-display text-2xl text-primary mb-2">{card.title}</h3>
+              <p className="text-sm text-muted-foreground">{card.body}</p>
+            </CardContent>
+          </Card>
+        ))}
       </div>
     </main>
   );
