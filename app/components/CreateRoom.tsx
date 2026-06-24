@@ -1,42 +1,36 @@
 "use client";
 
 import { createClient } from "@/utils/supabase/client";
-import { Modal, TextInput } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 import { createRoom } from "../rooms/all/actions";
 
 export default function CreateRoom() {
-  const [opened, { open, close }] = useDisclosure(false);
+  const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
-  const [twitchUsername, setTwitchUsername] = useState("");
+  const [error, setError] = useState("");
   const router = useRouter();
   const supabase = createClient();
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
+    setError("");
 
+    if (name.trim().length < 3) {
+      setError("Name must be at least 3 characters.");
+      return;
+    }
     if (name.length > 26) {
-      alert("Name is too long!");
-      setName("");
-      return;
-    }
-
-    if (name.trim().length === 0) {
-      alert("Name cannot be empty!");
-      setName("");
-      return;
-    }
-
-    if (name.length < 3) {
-      alert("Name is too short!");
-      setName("");
-      return;
-    }
-
-    if (!name) {
-      alert("Room name is required!");
+      setError("Name must be 26 characters or fewer.");
       return;
     }
 
@@ -46,74 +40,51 @@ export default function CreateRoom() {
     try {
       const result = await createRoom(formData);
       if ("roomId" in result) {
-        const {
-          data: { user },
-        } = await supabase.auth.getUser();
-        if (user) {
-          const { error } = await supabase
-            .from("users")
-            .update({ twitchUsername })
-            .eq("id", user.id);
-
-          if (error) {
-            console.error("Error updating Twitch username:", error);
-            alert(`Failed to update Twitch username: ${error.message}`);
-          } else {
-            router.push(`/rooms/${result.roomId}`);
-          }
-        } else {
-          alert("User not authenticated");
-        }
+        setOpen(false);
+        setName("");
+        router.push(`/rooms/${result.roomId}`);
       } else if ("error" in result) {
-        console.error("Error creating room:", result.error);
-        alert(`Failed to create room: ${result.error}`);
+        setError(result.error);
       }
-    } catch (error) {
-      console.error("Error creating room:", error);
-      alert("An unexpected error occurred while creating the room.");
+    } catch {
+      setError("An unexpected error occurred.");
     }
   };
 
   return (
-    <div>
-      <button
-        onClick={open}
-        className="mt-4 transition duration-200 text-lime-500 text-center bg-black border border-blue-500 w-[200px] max-w-xs hover:bg-lime-500 hover:text-black font-bold py-2 px-4 rounded"
-      >
+    <>
+      <Button onClick={() => setOpen(true)} variant="outline" className="mt-4">
         Create Station
-      </button>
-      <Modal opened={opened} onClose={close} title="Create Room" centered>
-        <form onSubmit={handleSubmit} className="flex flex-col items-center ">
-          <label htmlFor="name" className="block w-full mb-2">
-            Station name:
-            <TextInput
-              id="name"
-              name="name"
-              type="text"
-              required
-              value={name}
-              onChange={(event) => setName(event.target.value)}
-            />
-          </label>
-          <label htmlFor="twitchUsername" className="block w-full mb-2">
-            Twitch Username:
-            <TextInput
-              id="twitchUsername"
-              name="twitchUsername"
-              type="text"
-              required
-              value={twitchUsername}
-              onChange={(event) => setTwitchUsername(event.target.value)}
-            />
-          </label>
-          <button
-            type="submit"
-            className="mt-4 text-lime-500 text-center border border-lime-500 w-full max-w-xs hover:bg-lime-500 hover:text-white font-bold py-2 px-4 rounded"
-          >
-            Create Station
-          </button>
-        </form>
-      </Modal>
-    </div>
+      </Button>
+
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Create a Station</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <div className="flex flex-col gap-1">
+              <label htmlFor="station-name" className="text-sm font-medium">
+                Station name
+              </label>
+              <Input
+                id="station-name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="e.g. Late Night Jazz"
+                required
+              />
+              {error && <p className="text-xs text-destructive">{error}</p>}
+            </div>
+            <DialogFooter>
+              <Button type="button" variant="ghost" onClick={() => setOpen(false)}>
+                Cancel
+              </Button>
+              <Button type="submit">Create Station</Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
