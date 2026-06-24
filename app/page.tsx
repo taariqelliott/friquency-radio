@@ -1,8 +1,8 @@
+import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
 import { fetchUser, handleDeleteAccount, handleLogout } from "./actions";
 import { anonymousSignIn } from "./anon/actions";
 import DemoClientComponent from "./components/DemoClientComponent";
-import { Card, CardContent } from "@/components/ui/card";
 
 export default async function Home() {
   const user = await fetchUser();
@@ -12,9 +12,13 @@ export default async function Home() {
       <main className="flex items-center justify-center min-h-dvh p-8">
         <Card className="w-full max-w-sm bg-foreground text-background border-0">
           <CardContent className="p-8 flex flex-col gap-6">
-            <div>
-              <p className="font-mono text-xs uppercase tracking-wider mb-1 text-background/50">Welcome back</p>
-              <h1 className="font-display text-4xl text-background">FRIQUENCY RADIO</h1>
+            <div className="flex justify-center flex-col w-full">
+              <p className="font-mono text-xs uppercase tracking-wider mb-1 text-background/50 flex justify-center">
+                Welcome to
+              </p>
+              <h1 className="font-display text-4xl text-background flex justify-center">
+                FRIQUENCY RADIO
+              </h1>
             </div>
 
             <DemoClientComponent />
@@ -22,13 +26,19 @@ export default async function Home() {
             <div className="border-t border-background/20 pt-4">
               {user.user.is_anonymous ? (
                 <form action={handleDeleteAccount}>
-                  <button type="submit" className="w-full py-2 text-sm font-semibold rounded-md bg-destructive text-destructive-foreground hover:opacity-90 transition-opacity">
+                  <button
+                    type="submit"
+                    className="w-full py-2 text-sm font-semibold rounded-md bg-destructive text-destructive-foreground hover:opacity-90 transition-opacity"
+                  >
                     End Session
                   </button>
                 </form>
               ) : (
                 <form action={handleLogout}>
-                  <button type="submit" className="w-full py-2 text-sm font-semibold rounded-md border border-background/30 text-background hover:bg-background/10 transition-colors">
+                  <button
+                    type="submit"
+                    className="w-full py-2 text-sm font-semibold rounded-md border border-background/30 text-background hover:bg-background/10 transition-colors"
+                  >
                     Logout
                   </button>
                 </form>
@@ -66,7 +76,11 @@ export default async function Home() {
           <form
             action={async () => {
               "use server";
-              try { await anonymousSignIn(); } catch { /* handled */ }
+              try {
+                await anonymousSignIn();
+              } catch {
+                /* handled */
+              }
             }}
           >
             <button
@@ -74,7 +88,9 @@ export default async function Home() {
               className="flex flex-col items-center app-action-secondary px-6 py-2 text-sm font-semibold"
             >
               Quick Jam
-              <span className="text-xs text-muted-foreground font-normal">No sign up required</span>
+              <span className="text-xs text-muted-foreground font-normal">
+                No sign up required
+              </span>
             </button>
           </form>
         </div>
@@ -101,7 +117,9 @@ export default async function Home() {
             style={{ animationDelay: `${i * 80}ms` }}
           >
             <CardContent className="p-6">
-              <h3 className="font-display text-2xl text-foreground dark:text-primary mb-2">{card.title}</h3>
+              <h3 className="font-display text-2xl text-foreground dark:text-primary mb-2">
+                {card.title}
+              </h3>
               <p className="text-sm text-muted-foreground">{card.body}</p>
             </CardContent>
           </Card>

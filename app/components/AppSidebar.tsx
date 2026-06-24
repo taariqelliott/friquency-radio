@@ -1,24 +1,22 @@
 "use client";
 
-import { createClient } from "@/utils/supabase/client";
+import { handleLogout } from "@/app/actions";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { createClient } from "@/utils/supabase/client";
 import {
-  Sheet,
-  SheetContent,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import {
+  IconBrightness2,
   IconHome,
-  IconMenu2,
-  IconRadio,
   IconLogout,
+  IconMenu2,
+  IconMoonStars,
+  IconRadio,
 } from "@tabler/icons-react";
+import { useTheme } from "next-themes";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { handleLogout } from "@/app/actions";
 
 interface Room {
   id: string;
@@ -31,18 +29,17 @@ interface AppSidebarProps {
   isOwner: boolean;
 }
 
-function SidebarContent({
-  roomId,
-  currentUsername,
-  isOwner,
-}: AppSidebarProps) {
+function SidebarContent({ roomId, currentUsername, isOwner }: AppSidebarProps) {
   const [rooms, setRooms] = useState<Room[]>([]);
+  const { theme, setTheme } = useTheme();
   const supabase = createClient();
-  const router = useRouter();
 
   useEffect(() => {
     const fetchRooms = async () => {
-      const { data } = await supabase.from("rooms").select("id, name").order("name");
+      const { data } = await supabase
+        .from("rooms")
+        .select("id, name")
+        .order("name");
       if (data) setRooms(data);
     };
 
@@ -70,8 +67,12 @@ function SidebarContent({
       )
       .subscribe();
 
-    return () => { supabase.removeChannel(channel); };
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [supabase]);
+
+  const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
 
   return (
     <div className="flex h-full flex-col gap-4 p-4">
@@ -83,18 +84,46 @@ function SidebarContent({
       </Link>
 
       <div className="flex flex-col gap-1">
-        <Link href="/" className={buttonVariants({ variant: "ghost", className: "justify-start gap-2" })}>
+        <Link
+          href="/"
+          className={buttonVariants({
+            variant: "ghost",
+            className: "justify-start gap-2",
+          })}
+        >
           <IconHome size={16} /> Home
         </Link>
-        <Link href="/rooms/all" className={buttonVariants({ variant: "ghost", className: "justify-start gap-2" })}>
+        <Link
+          href="/rooms/all"
+          className={buttonVariants({
+            variant: "ghost",
+            className: "justify-start gap-2",
+          })}
+        >
           <IconRadio size={16} /> Stations
         </Link>
+        <div
+          onClick={toggleTheme}
+          className={buttonVariants({
+            variant: "ghost",
+            className: "justify-start gap-2 cursor-pointer",
+          })}
+        >
+          {theme === "dark" ? (
+            <IconBrightness2 size={20} />
+          ) : (
+            <IconMoonStars size={20} />
+          )}
+          <p>Theme</p>
+        </div>
       </div>
 
       <Separator />
 
       <div className="flex flex-col gap-1">
-        <p className="text-xs font-mono text-muted-foreground px-2 uppercase tracking-wider">Stations</p>
+        <p className="text-xs font-mono text-muted-foreground px-2 uppercase tracking-wider">
+          Stations
+        </p>
         <ScrollArea className="flex-1 max-h-[calc(100vh-280px)]">
           <div className="flex flex-col gap-1 pr-2">
             {rooms.map((room) => (
@@ -119,13 +148,21 @@ function SidebarContent({
         {currentUsername && (
           <div className="flex items-center justify-between">
             <span className="font-mono text-sm text-muted-foreground truncate">
-              <span className="text-foreground dark:text-primary">@</span>{currentUsername}
+              <span className="text-foreground dark:text-primary">@</span>
+              {currentUsername}
               {isOwner && (
-                <span className="ml-1 text-xs text-foreground dark:text-primary">(owner)</span>
+                <span className="ml-1 text-xs text-foreground dark:text-primary">
+                  (owner)
+                </span>
               )}
             </span>
             <form action={handleLogout}>
-              <Button variant="ghost" size="icon" type="submit" aria-label="Logout">
+              <Button
+                variant="ghost"
+                size="icon"
+                type="submit"
+                aria-label="Logout"
+              >
                 <IconLogout size={16} />
               </Button>
             </form>
@@ -149,7 +186,11 @@ export default function AppSidebar(props: AppSidebarProps) {
         <Sheet>
           <SheetTrigger
             render={
-              <Button variant="ghost" size="icon" aria-label="Open navigation" />
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label="Open navigation"
+              />
             }
           >
             <IconMenu2 size={20} />

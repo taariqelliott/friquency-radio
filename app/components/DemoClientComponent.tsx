@@ -56,14 +56,18 @@ export default function DemoClientComponent() {
   }
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 w-full">
       <div className="flex items-center gap-2 text-sm">
-        <span className="font-mono text-background/50">signed in as</span>
-        <span className="font-mono font-semibold text-background">@{profile.username || "not set"}</span>
+        <span className="font-mono font-semibold text-background flex justify-center w-full">
+          @{profile.username || "not set"}
+        </span>
       </div>
       {user && (
         <>
-          <Link href="/rooms/all" className="py-2 text-sm font-semibold text-center rounded-md bg-background text-foreground hover:opacity-90 transition-opacity">
+          <Link
+            href="/rooms/all"
+            className="py-2 text-sm font-semibold text-center rounded-md bg-background text-foreground hover:opacity-90 transition-opacity"
+          >
             Browse Stations
           </Link>
           <CreateRoom />

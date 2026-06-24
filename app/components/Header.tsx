@@ -1,7 +1,15 @@
 "use client";
 
-import { createClient } from "@/utils/supabase/client";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { createClient } from "@/utils/supabase/client";
 import {
   IconBrightness2,
   IconHome,
@@ -13,7 +21,6 @@ import {
 import { useTheme } from "next-themes";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
-import ProfileEditPage from "../profile/edit/page";
 
 interface User {
   username: string;
@@ -25,12 +32,16 @@ export default function Header() {
   const [isClient, setIsClient] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [newUsername, setNewUsername] = useState("");
+  const [updating, setUpdating] = useState(false);
   const [supabase] = useState(() => createClient());
   const searchParams = useSearchParams();
 
   const fetchUser = useCallback(async () => {
     try {
-      const { data: { user: authUser } } = await supabase.auth.getUser();
+      const {
+        data: { user: authUser },
+      } = await supabase.auth.getUser();
       if (authUser) {
         const { data: profile, error } = await supabase
           .from("users")
@@ -47,37 +58,58 @@ export default function Header() {
     }
   }, [supabase]);
 
-  useEffect(() => { fetchUser(); }, [fetchUser, searchParams.get("auth")]);
-  useEffect(() => { setIsClient(true); }, []);
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser, searchParams.get("auth")]);
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
+
+  const updateUsername = async () => {
+    if (!newUsername) return;
+    setUpdating(true);
+    const {
+      data: { user: authUser },
+    } = await supabase.auth.getUser();
+    if (authUser) {
+      const { error } = await supabase
+        .from("users")
+        .update({ username: newUsername })
+        .eq("id", authUser.id);
+      if (!error) {
+        setUser({ username: newUsername });
+        setNewUsername("");
+        setModalOpen(false);
+      }
+    }
+    setUpdating(false);
+  };
 
   return (
     <>
       <div className="fixed right-3 top-3 z-20">
-        <div className="flex items-start gap-2">
-          {user && (
-            <button
-              onClick={() => setModalOpen(true)}
-              className="app-pill hidden md:inline-flex"
-            >
-              <span className="text-foreground dark:text-primary">@</span>
-              {user.username}
-            </button>
-          )}
-
+        <div className="flex items-center gap-2">
           <div className="app-panel-soft hidden items-center gap-2 p-2 md:flex">
+            {user && (
+              <button onClick={() => setModalOpen(true)} className="app-pill">
+                <span className="text-foreground dark:text-primary">@</span>
+                {user.username}
+              </button>
+            )}
             <Button
               variant="ghost"
               size="icon"
               onClick={toggleTheme}
               aria-label="Toggle color scheme"
             >
-              {isClient && (theme === "dark" ? (
-                <IconBrightness2 size={20} />
-              ) : (
-                <IconMoonStars size={20} />
-              ))}
+              {isClient &&
+                (theme === "dark" ? (
+                  <IconBrightness2 size={20} />
+                ) : (
+                  <IconMoonStars size={20} />
+                ))}
             </Button>
             <Button
               variant="ghost"
@@ -119,54 +151,103 @@ export default function Header() {
           />
           <div className="absolute right-0 top-0 h-full w-64 bg-background border-l border-border p-4 flex flex-col gap-3">
             <div className="flex justify-between items-center mb-2">
-              <span className="font-display text-xl text-foreground dark:text-primary">FRIQUENCY</span>
-              <Button variant="ghost" size="icon" onClick={() => setDrawerOpen(false)}>
+              <span className="font-display text-xl text-foreground dark:text-primary">
+                FRIQUENCY
+              </span>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setDrawerOpen(false)}
+              >
                 <IconX size={18} />
               </Button>
             </div>
             {user && (
               <button
-                onClick={() => { setModalOpen(true); setDrawerOpen(false); }}
+                onClick={() => {
+                  setModalOpen(true);
+                  setDrawerOpen(false);
+                }}
                 className="app-pill justify-start"
               >
-                <span className="text-foreground dark:text-primary">@</span>{user.username}
+                <span className="text-foreground dark:text-primary">@</span>
+                {user.username}
               </button>
             )}
-            <Button variant="ghost" onClick={toggleTheme} className="justify-start gap-2">
-              {isClient && (theme === "dark" ? <IconBrightness2 size={18} /> : <IconMoonStars size={18} />)}
+            <Button
+              variant="ghost"
+              onClick={toggleTheme}
+              className="justify-start gap-2"
+            >
+              {isClient &&
+                (theme === "dark" ? (
+                  <IconBrightness2 size={18} />
+                ) : (
+                  <IconMoonStars size={18} />
+                ))}
               Toggle theme
             </Button>
-            <Button variant="ghost" onClick={() => { window.location.href = "/"; setDrawerOpen(false); }} className="justify-start gap-2">
+            <Button
+              variant="ghost"
+              onClick={() => {
+                window.location.href = "/";
+                setDrawerOpen(false);
+              }}
+              className="justify-start gap-2"
+            >
               <IconHome size={18} /> Home
             </Button>
-            <Button variant="ghost" onClick={() => { window.location.href = "/rooms/all"; setDrawerOpen(false); }} className="justify-start gap-2">
+            <Button
+              variant="ghost"
+              onClick={() => {
+                window.location.href = "/rooms/all";
+                setDrawerOpen(false);
+              }}
+              className="justify-start gap-2"
+            >
               <IconRadio size={18} /> Stations
             </Button>
           </div>
         </div>
       )}
 
-      {/* Profile edit modal */}
-      {modalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <div
-            className="absolute inset-0 bg-black/60"
-            onClick={() => setModalOpen(false)}
-          />
-          <div className="relative bg-card border border-border rounded-lg p-6 w-full max-w-sm mx-4">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute right-2 top-2"
-              onClick={() => setModalOpen(false)}
-            >
-              <IconX size={16} />
-            </Button>
-            <h2 className="font-semibold mb-4">Edit profile</h2>
-            <ProfileEditPage />
+      <Dialog open={modalOpen} onOpenChange={setModalOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Edit Profile</DialogTitle>
+          </DialogHeader>
+          <div className="flex flex-col gap-1">
+            <span className="font-mono text-xs text-muted-foreground">
+              Current username
+            </span>
+            <span className="font-mono text-sm font-bold truncate text-foreground dark:text-primary">
+              @{user?.username || "not set"}
+            </span>
           </div>
-        </div>
-      )}
+          <Input
+            placeholder="New username"
+            value={newUsername}
+            onChange={(e) => setNewUsername(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && updateUsername()}
+            autoFocus
+          />
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setModalOpen(false)}
+              disabled={updating}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={updateUsername}
+              disabled={updating || !newUsername}
+            >
+              Update
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
