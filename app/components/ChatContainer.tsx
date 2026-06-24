@@ -50,9 +50,9 @@ const ChatContainer = ({ id }: { id: string }) => {
       <div className="mt-auto">
         {!loading && !user ? (
           <div className="app-card text-center text-sm">
-            <Link href="/login" className="text-primary hover:underline">Login</Link>
+            <Link href="/login" className="text-foreground dark:text-primary hover:underline">Login</Link>
             {" or "}
-            <Link href="/signup" className="text-primary hover:underline">Sign up</Link>
+            <Link href="/signup" className="text-foreground dark:text-primary hover:underline">Sign up</Link>
             {" to chat"}
           </div>
         ) : user ? (

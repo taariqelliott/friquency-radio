@@ -145,7 +145,7 @@ const ListAllRooms = () => {
             <h2 className="font-display text-2xl truncate text-foreground">{room.name}</h2>
             <p className="font-mono text-xs text-muted-foreground">
               {room.username === currentUsername ? (
-                <span className="text-primary">@{room.username} (you)</span>
+                <span className="text-foreground dark:text-primary">@{room.username} (you)</span>
               ) : (
                 <span>@{room.username}</span>
               )}

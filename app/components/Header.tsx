@@ -61,7 +61,7 @@ export default function Header() {
               onClick={() => setModalOpen(true)}
               className="app-pill hidden md:inline-flex"
             >
-              <span className="text-primary">@</span>
+              <span className="text-foreground dark:text-primary">@</span>
               {user.username}
             </button>
           )}
@@ -119,7 +119,7 @@ export default function Header() {
           />
           <div className="absolute right-0 top-0 h-full w-64 bg-background border-l border-border p-4 flex flex-col gap-3">
             <div className="flex justify-between items-center mb-2">
-              <span className="font-display text-xl text-primary">FRIQUENCY</span>
+              <span className="font-display text-xl text-foreground dark:text-primary">FRIQUENCY</span>
               <Button variant="ghost" size="icon" onClick={() => setDrawerOpen(false)}>
                 <IconX size={18} />
               </Button>
@@ -129,7 +129,7 @@ export default function Header() {
                 onClick={() => { setModalOpen(true); setDrawerOpen(false); }}
                 className="app-pill justify-start"
               >
-                <span className="text-primary">@</span>{user.username}
+                <span className="text-foreground dark:text-primary">@</span>{user.username}
               </button>
             )}
             <Button variant="ghost" onClick={toggleTheme} className="justify-start gap-2">

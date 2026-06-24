@@ -53,7 +53,11 @@ export default function CreateRoom() {
 
   return (
     <>
-      <Button onClick={() => setOpen(true)} variant="outline" className="mt-4">
+      <Button
+        onClick={() => setOpen(true)}
+        variant="outline"
+        className="mt-4 border-border text-foreground hover:bg-accent hover:text-accent-foreground"
+      >
         Create Station
       </Button>
 
@@ -77,7 +81,11 @@ export default function CreateRoom() {
               {error && <p className="text-xs text-destructive">{error}</p>}
             </div>
             <DialogFooter>
-              <Button type="button" variant="ghost" onClick={() => setOpen(false)}>
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={() => setOpen(false)}
+              >
                 Cancel
               </Button>
               <Button type="submit">Create Station</Button>

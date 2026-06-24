@@ -49,7 +49,7 @@ export default function SignupPage() {
 
       <Card className="w-full max-w-sm">
         <CardContent className="p-6 flex flex-col gap-4">
-          <h1 className="font-display text-3xl text-primary text-center">SIGN UP</h1>
+          <h1 className="font-display text-3xl text-foreground dark:text-primary text-center">SIGN UP</h1>
 
           <form className="flex flex-col gap-3">
             <div className="flex flex-col gap-1">

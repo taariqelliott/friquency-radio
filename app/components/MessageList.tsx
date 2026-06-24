@@ -43,61 +43,79 @@ const MessageList = ({
     const urlRegex = /(https?:\/\/[^\s]+)/g;
     const messageSegments = text.split(urlRegex);
 
-    return messageSegments.map((segment, index) =>
-      urlRegex.test(segment) ? (
-        <a
-          key={index}
-          href={segment}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-400 hover:underline"
-        >
-          {segment}
-        </a>
-      ) : (
-        segment
-      )
-    );
+    return messageSegments.map((segment, index) => {
+      const isUrl = /^https?:\/\/[^\s]+$/.test(segment);
+      if (isUrl) {
+        return (
+          <a
+            key={index}
+            href={segment}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline opacity-80 hover:opacity-100"
+          >
+            {segment}
+          </a>
+        );
+      }
+      return <span key={index}>{segment}</span>;
+    });
   };
 
   return (
-    <ul className="flex flex-col gap-3 w-full">
-      {messages.map((message) => (
-        <li key={message.message_id} className="animate-in slide-in-from-bottom-2 duration-150">
-          <div
-            className={`app-card w-full break-words ${
-              message.user_id === user?.id
-                ? "border-l-2 border-primary/25 bg-primary/5"
-                : ""
-            }`}
-          >
-            <div className="flex items-center justify-between mb-2">
-              <strong className="font-mono text-sm text-primary">
-                <span className="text-muted-foreground">@</span>
-                {message.username || "Unknown"}
-              </strong>
-              <span className="font-mono text-xs text-muted-foreground">
-                {new Date(message.created_at).toLocaleTimeString()}
+    <div className="flex flex-col flex-1 min-h-0 overflow-y-auto w-full">
+      <ul className="flex flex-col justify-end gap-2 w-full p-3 min-h-full">
+        {messages.map((message) => {
+          const isOwn = message.user_id === user?.id;
+          return (
+            <li
+              key={message.message_id}
+              className={`flex flex-col animate-in slide-in-from-bottom-2 duration-150 ${
+                isOwn ? "items-end" : "items-start"
+              }`}
+            >
+              <span
+                className={`text-xs text-muted-foreground mb-1 px-1 ${
+                  isOwn ? "text-right" : "text-left"
+                }`}
+              >
+                {isOwn ? "You" : `@${message.username || "Unknown"}`}
               </span>
-            </div>
-            <div className="text-sm">{renderMessageText(message.message_text)}</div>
-            {message.image_url && (
-              <img
-                src={message.image_url}
-                alt="Uploaded"
-                className="mt-2 max-w-full rounded"
-                onLoad={() => handleImageLoad(message.message_id)}
-                onError={() => handleImageLoad(message.message_id)}
-                onLoadStart={() =>
-                  setLoadingImages((prev) => new Set(prev).add(message.message_id))
-                }
-              />
-            )}
-          </div>
-        </li>
-      ))}
-      <div ref={endOfMessagesRef} />
-    </ul>
+              <div
+                className={`max-w-[75%] rounded-2xl px-4 py-2.5 text-sm break-words ${
+                  isOwn
+                    ? "bg-primary text-primary-foreground rounded-br-sm"
+                    : "bg-card text-card-foreground border border-border rounded-bl-sm"
+                }`}
+              >
+                <div>{renderMessageText(message.message_text)}</div>
+                {message.image_url && (
+                  <img
+                    src={message.image_url}
+                    alt="Uploaded"
+                    className="mt-2 max-h-48 max-w-full rounded-xl object-contain"
+                    onLoad={() => handleImageLoad(message.message_id)}
+                    onError={() => handleImageLoad(message.message_id)}
+                    onLoadStart={() =>
+                      setLoadingImages((prev) =>
+                        new Set(prev).add(message.message_id)
+                      )
+                    }
+                  />
+                )}
+              </div>
+              <span className="text-xs text-muted-foreground mt-1 px-1">
+                {new Date(message.created_at).toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </span>
+            </li>
+          );
+        })}
+        <div ref={endOfMessagesRef} />
+      </ul>
+    </div>
   );
 };
 

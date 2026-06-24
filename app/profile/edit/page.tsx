@@ -2,6 +2,8 @@
 
 import { createClient } from "@/utils/supabase/client";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent } from "@/components/ui/card";
 import { useEffect, useState } from "react";
 
 type Profile = {
@@ -18,19 +20,14 @@ export default function ProfileEditPage() {
     const supabase = createClient();
 
     async function getUserData() {
-      const { data: authData, error: authError } =
-        await supabase.auth.getUser();
+      const { data: authData, error: authError } = await supabase.auth.getUser();
       if (authError || !authData?.user) {
-        console.log("No user logged in");
         setLoading(false);
         return;
       }
 
       const userId = authData.user.id;
-      setUser({
-        id: userId,
-        email: authData.user.email!,
-      });
+      setUser({ id: userId, email: authData.user.email! });
 
       const { data: profileData, error: profileError } = await supabase
         .from("users")
@@ -38,11 +35,7 @@ export default function ProfileEditPage() {
         .eq("id", userId)
         .single();
 
-      if (profileError) {
-        console.error("Error fetching profile:", profileError.message);
-      } else {
-        setProfile(profileData || { username: null });
-      }
+      if (!profileError) setProfile(profileData || { username: null });
       setLoading(false);
     }
 
@@ -50,10 +43,7 @@ export default function ProfileEditPage() {
   }, []);
 
   const updateUsername = async () => {
-    if (!user || !username) {
-      return;
-    }
-
+    if (!user || !username) return;
     setLoading(true);
     const supabase = createClient();
     const { error } = await supabase
@@ -61,61 +51,52 @@ export default function ProfileEditPage() {
       .update({ username })
       .eq("id", user.id);
 
-    if (error) {
-      console.error("Error updating username:", error.message);
-    } else {
-      setUsername("");
+    if (!error) {
       setProfile({ username });
+      setUsername("");
     }
-
     setLoading(false);
   };
 
   if (loading) {
     return (
-      <div className="text-2xl text-center text-blue-500 font-bold">
-        Loading...
+      <div className="flex items-center justify-center h-dvh">
+        <span className="font-mono text-sm text-muted-foreground">Loading...</span>
       </div>
     );
   }
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        padding: "1rem",
-      }}
-    >
-      {user?.email && <div>Email: {user?.email}</div>}
-      <div className="text-lime-500 bg-black border-blue-500 border rounded p-1 px-2">
-        Username:{" "}
-        <span className="text-white font-bold">
-          {profile.username || "No username set"}
-        </span>
-      </div>
-      <form action="submit" onSubmit={updateUsername}>
-        <input
-          type="text"
-          placeholder="Enter new username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          style={{
-            margin: "1rem 0",
-            padding: "0.5rem",
-            fontSize: "1rem",
-            textAlign: "center",
-          }}
-        />
-      </form>
-      <Button
-        variant="outline"
-        style={{ padding: "0.5rem 1rem", borderColor: "#22c55e", color: "#22c55e" }}
-        onClick={updateUsername}
-      >
-        Update Username
-      </Button>
+    <div className="flex flex-col items-center justify-center min-h-dvh p-8">
+      <Card className="w-full max-w-sm">
+        <CardContent className="p-6 flex flex-col gap-4">
+          <h1 className="font-display text-3xl text-foreground dark:text-primary text-center">Edit Profile</h1>
+
+          {user?.email && (
+            <p className="font-mono text-xs text-muted-foreground text-center">{user.email}</p>
+          )}
+
+          <div className="app-card flex items-center gap-2">
+            <span className="font-mono text-xs text-muted-foreground">Current username</span>
+            <span className="font-mono text-sm text-foreground dark:text-primary font-bold">
+              @{profile.username || "not set"}
+            </span>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <Input
+              type="text"
+              placeholder="New username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && updateUsername()}
+            />
+            <Button variant="outline" onClick={updateUsername} disabled={loading || !username}>
+              Update Username
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

@@ -5,7 +5,7 @@ import { createClient } from "@/utils/supabase/server";
 import { notFound } from "next/navigation";
 
 export const metadata = {
-  title: "Station — fRIQuencyRADIO",
+  title: "Station | fRIQuencyRADIO",
 };
 
 const RoomPage = async ({ params }: { params: { id: string } }) => {

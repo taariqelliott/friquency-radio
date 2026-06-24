@@ -119,9 +119,9 @@ function SidebarContent({
         {currentUsername && (
           <div className="flex items-center justify-between">
             <span className="font-mono text-sm text-muted-foreground truncate">
-              <span className="text-primary">@</span>{currentUsername}
+              <span className="text-foreground dark:text-primary">@</span>{currentUsername}
               {isOwner && (
-                <span className="ml-1 text-xs text-primary">(owner)</span>
+                <span className="ml-1 text-xs text-foreground dark:text-primary">(owner)</span>
               )}
             </span>
             <form action={handleLogout}>
@@ -145,7 +145,7 @@ export default function AppSidebar(props: AppSidebarProps) {
       </aside>
 
       {/* Mobile trigger — rendered inside room page header area */}
-      <div className="md:hidden fixed top-3 left-3 z-20">
+      <div className="md:hidden fixed top-3 right-3 z-20">
         <Sheet>
           <SheetTrigger
             render={

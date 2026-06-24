@@ -9,27 +9,26 @@ export default async function Home() {
 
   if (user) {
     return (
-      <main className="flex flex-col items-center justify-center min-h-dvh p-8">
-        <Card className="w-full max-w-md">
-          <CardContent className="p-8 flex flex-col items-center gap-6">
-            <h1 className="font-display text-4xl text-primary">Dashboard</h1>
+      <main className="flex items-center justify-center min-h-dvh p-8">
+        <Card className="w-full max-w-sm bg-foreground text-background border-0">
+          <CardContent className="p-8 flex flex-col gap-6">
+            <div>
+              <p className="font-mono text-xs uppercase tracking-wider mb-1 text-background/50">Welcome back</p>
+              <h1 className="font-display text-4xl text-background">FRIQUENCY RADIO</h1>
+            </div>
+
             <DemoClientComponent />
-            <div className="w-full flex justify-center">
+
+            <div className="border-t border-background/20 pt-4">
               {user.user.is_anonymous ? (
                 <form action={handleDeleteAccount}>
-                  <button
-                    type="submit"
-                    className="app-action-danger px-6 py-2 text-sm font-semibold"
-                  >
+                  <button type="submit" className="w-full py-2 text-sm font-semibold rounded-md bg-destructive text-destructive-foreground hover:opacity-90 transition-opacity">
                     End Session
                   </button>
                 </form>
               ) : (
                 <form action={handleLogout}>
-                  <button
-                    type="submit"
-                    className="app-action-secondary px-6 py-2 text-sm font-semibold"
-                  >
+                  <button type="submit" className="w-full py-2 text-sm font-semibold rounded-md border border-background/30 text-background hover:bg-background/10 transition-colors">
                     Logout
                   </button>
                 </form>
@@ -93,7 +92,7 @@ export default async function Home() {
           },
           {
             title: "Quick Jam",
-            body: "No account needed — jump in as a guest and start listening in seconds.",
+            body: "No account needed. Jump in as a guest and start listening in seconds.",
           },
         ].map((card, i) => (
           <Card
@@ -102,7 +101,7 @@ export default async function Home() {
             style={{ animationDelay: `${i * 80}ms` }}
           >
             <CardContent className="p-6">
-              <h3 className="font-display text-2xl text-primary mb-2">{card.title}</h3>
+              <h3 className="font-display text-2xl text-foreground dark:text-primary mb-2">{card.title}</h3>
               <p className="text-sm text-muted-foreground">{card.body}</p>
             </CardContent>
           </Card>

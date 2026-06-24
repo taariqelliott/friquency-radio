@@ -49,31 +49,25 @@ export default function DemoClientComponent() {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center font-bold text-2xl text-blue-500 justify-center p-4">
+      <div className="flex flex-col items-center font-mono text-sm text-muted-foreground justify-center p-4">
         Loading...
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col items-center justify-center p-4 rounded-lg shadow-lg m-2">
-      <div className="text-sm text-lime-500 text-center">Welcome to</div>
-      <div className="text-sm text-black font-bold text-center bg-lime-500 rounded p-2">
-        FRIQUENCY RADIO
-      </div>
-      <div className="flex flex-row justify-center items-center mt-2 font-bold">
-        <span className="text-lime-500">@</span>
-        <span className="text-white"> {profile.username || "Not set"}</span>
+    <div className="flex flex-col gap-3">
+      <div className="flex items-center gap-2 text-sm">
+        <span className="font-mono text-background/50">signed in as</span>
+        <span className="font-mono font-semibold text-background">@{profile.username || "not set"}</span>
       </div>
       {user && (
-        <div className="flex flex-col justify-center items-center ">
-          <Link href="/rooms/all">
-            <button className="mt-4 transition duration-200 text-lime-500 text-center border border-blue-500 w-[200px] max-w-xs hover:bg-lime-500 hover:text-black font-bold py-2 px-4 rounded">
-              Join Station
-            </button>
+        <>
+          <Link href="/rooms/all" className="py-2 text-sm font-semibold text-center rounded-md bg-background text-foreground hover:opacity-90 transition-opacity">
+            Browse Stations
           </Link>
           <CreateRoom />
-        </div>
+        </>
       )}
     </div>
   );

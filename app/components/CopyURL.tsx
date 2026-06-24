@@ -17,7 +17,7 @@ const ShareButton = () => {
     <Button
       variant="outline"
       onClick={handleCopyURL}
-      className="border-blue-500 text-white hover:opacity-65"
+      className="border-border text-foreground hover:opacity-65"
     >
       📋 {copied ? "Copied!" : "Share"}
     </Button>
