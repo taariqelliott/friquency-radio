@@ -1,90 +1,60 @@
+import AppSidebar from "@/app/components/AppSidebar";
 import ChatContainer from "@/app/components/ChatContainer";
-import CopyURL from "@/app/components/CopyURL";
+import PlayerCard from "@/app/components/PlayerCard";
 import { createClient } from "@/utils/supabase/server";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import TwitchClientPlayer from "../../components/TwitchComponent";
+
+export const metadata = {
+  title: "Station — fRIQuencyRADIO",
+};
 
 const RoomPage = async ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const supabase = createClient();
 
-  // Fetch room data
   const { data: room, error: roomError } = await supabase
     .from("rooms")
-    .select("id, name, created_by")
+    .select("id, name, created_by, audio_url, audio_filename")
     .eq("id", id)
     .single();
 
-  if (roomError || !room) {
-    notFound();
-  }
+  if (roomError || !room) notFound();
 
-  // Fetch current user data
   const { data: currentUserResponse } = await supabase.auth.getUser();
-  const currentUsername = currentUserResponse?.user?.id ?? null;
+  const currentUserId = currentUserResponse?.user?.id ?? null;
 
-  // Fetch current user's username if logged in
-  const { data: currentUser } = currentUsername
+  const { data: currentUser } = currentUserId
     ? await supabase
         .from("users")
         .select("username")
-        .eq("id", currentUsername)
+        .eq("id", currentUserId)
         .single()
     : { data: null };
 
-  // Fetch room owner's username
-  const { data: user, error: userError } = await supabase
+  const { data: ownerUser } = await supabase
     .from("users")
     .select("username")
     .eq("id", room.created_by)
     .single();
 
-  if (userError) {
-    console.error("Error fetching user:", userError);
-    notFound();
-  }
+  const isOwner =
+    !!currentUser?.username &&
+    !!ownerUser?.username &&
+    currentUser.username === ownerUser.username;
 
   return (
-    <main className="flex flex-col items-center justify-start h-dvh pt-6">
-      <div className="lg:scale-110 md:scale-100 sm:scale-90 scale-90">
-        {user?.username && currentUser?.username === user.username && (
-          <div className="flex justify-center opacity-0 w-full">
-            <h3 className="text-white bg-red-600 p-1 m-1 text-sm rounded-lg border-2 border-black">
-              {"Room Owner"}
-            </h3>
-          </div>
-        )}
-
-        <div className="flex flex-col items-center justify-center sm:p-2 rounded-lg bg-stone-700 mx-auto p-1 mt-5">
-          <div className=" hover:text-blue-500 text-white transition-all duration-200 hidden md:block">
-            <Link href="/">FRIQUENCY RADIO</Link>
-          </div>
-
-          <div className="text-2xl mt-1">
-            📡{" "}
-            <span className="text-blue-500 hover:text-blue-600 cursor-pointer transition-all duration-200">
-              {room.name}
-            </span>{" "}
-            📡
-          </div>
-
-          <p className="text-lime-500 text-sm px-2">
-            By:{" "}
-            <span className="font-bold">
-              {"@" + (user?.username || "Unknown")}
-            </span>
-          </p>
-
-          <div className="p-1 pb-2 hover:opacity-75 ">
-            <CopyURL />
-          </div>
-        </div>
-      </div>
-
-      <TwitchClientPlayer room={room} />
-      <ChatContainer id={id} />
-    </main>
+    <div className="flex h-dvh overflow-hidden">
+      <AppSidebar
+        roomId={id}
+        currentUsername={currentUser?.username ?? null}
+        isOwner={isOwner}
+      />
+      <main className="flex flex-1 flex-col overflow-hidden">
+        <PlayerCard room={room} isOwner={isOwner} />
+        <ChatContainer id={id} />
+      </main>
+    </div>
   );
 };
+
 export default RoomPage;

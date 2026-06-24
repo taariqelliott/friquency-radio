@@ -4,7 +4,7 @@ import "@mantine/core/styles.css";
 import type { Metadata } from "next";
 import { Alexandria, JetBrains_Mono, VT323 } from "next/font/google";
 import { Suspense } from "react";
-import Header from "./components/Header";
+import ConditionalHeader from "./components/ConditionalHeader";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 
@@ -59,7 +59,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           <MantineProvider defaultColorScheme="dark">
             <Suspense fallback={null}>
-              <Header />
+              <ConditionalHeader />
               {children}
             </Suspense>
           </MantineProvider>
